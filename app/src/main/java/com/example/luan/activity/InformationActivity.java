@@ -3,15 +3,21 @@ package com.example.luan.activity;
 /**
  * Created by Luan on 3/30/2016.
  */
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -46,33 +52,73 @@ public class InformationActivity extends AppCompatActivity {
         age = (EditText) findViewById(R.id.age);
         update = (Button) findViewById(R.id.update);
 
-        email.setText("Email: " + user.getLocal().getEmail());
-        firstName.setText("First name: "  + user.getBio().getFirstName());
-        lastName.setText("Last name: "  + user.getBio().getLastName());
-
+        email.setText(user.getLocal().getEmail());
+        firstName.setText(user.getBio().getFirstName());
+        lastName.setText(user.getBio().getLastName());
+        phoneNumber.setText(user.getBio().getPhoneNumber());
+        age.setText(String.valueOf(user.getBio().getAge()));
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Create a user object
+                Support support = new Support();
                 User u = new User();
+                // validate email
+                if(support.isValidEmail(email.getText().toString())){
+                    u.getLocal().setEmail(email.getText().toString());
+                }
+                else {
+                    showError(email);
+                    email.setError("Please enter your email");
+                    return;
+                }
+
                 u.getBio().setFirstName(firstName.getText().toString());
                 u.getBio().setLastName(lastName.getText().toString());
-                //TO-DO: need check age
-                u.getBio().setAge(Integer.getInteger(age.getText().toString()));
-                u.getBio().setPhoneNumber(phoneNumber.getText().toString());
-                String url = "http://" + Support.HOST + ":8080/restful-java/user/updateInfo";
+                // validate age
+                try {
+                    int num = Integer.parseInt(age.getText().toString());
+                    if (num <= 0) throw new NumberFormatException();
+                    u.getBio().setAge(num);
+                } catch (NumberFormatException e) {
+                    showError(age);
+                    age.setError("Please enter your age");
+                    return;
+                }
+
+                // validate phoneNumber
+                if(TextUtils.isEmpty(phoneNumber.getText().toString()) || support.isValidPhoneNumber(phoneNumber.getText().toString())){
+                    u.getBio().setPhoneNumber(phoneNumber.getText().toString());
+                }
+                else {
+                    showError(phoneNumber);
+                    age.setError("Please enter your phone number");
+                    return;
+                }
+                String url = Support.HOST + "mobile/user";
                 UpdateRequest updateRequest = new UpdateRequest();
                 updateRequest.u = u;
                 updateRequest.execute(url);
-
-
             }
         });
     }
+
+    private void showError(EditText editText) {
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        editText.startAnimation(shake);
+    }
+
     private class UpdateRequest extends AsyncTask<String, Void, Integer> {
 
         public User u;
+        private final ProgressDialog dialog = new ProgressDialog(InformationActivity.this);
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Updating...");
+            this.dialog.setCancelable(false);
+            this.dialog.show();
+        }
         @Override
         protected Integer doInBackground(String... urls) {
             try {
@@ -104,6 +150,20 @@ public class InformationActivity extends AppCompatActivity {
 
             }
             return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer responseCode) {
+            if (this.dialog.isShowing()) {
+                this.dialog.dismiss();
+            }
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                Toast.makeText(InformationActivity.this, "Update successfully!", Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(InformationActivity.this, "Error when update information", Toast.LENGTH_LONG).show();
+            }
+
         }
 
     }

@@ -46,7 +46,8 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Check empty field or blank space
-                if(email.getText().toString().isEmpty() || email.getText().toString().contains(" ")){
+                Support support = new Support();
+                if(support.isValidEmail(email.getText().toString())){
                     showError(email);
                     email.setError("Please enter your email");
                     return;

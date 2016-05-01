@@ -1,18 +1,19 @@
 package com.example.luan.activity;
 
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,27 +23,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.luan.activity.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
-import Fragment.ContentFragment;
-import entity.Local;
+import Fragment.CardFragment;
+import Fragment.StudentFragment;
+import adapter.ViewPagerAdapter;
 import entity.User;
 import support.Support;
 
@@ -52,16 +48,33 @@ public class HomeActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
     TextView name, email;
     User user;
     String jsonUser;
     String[] SPINNERLIST = {"A student", "A teacher"};
     private BroadcastReceiver broadcastReceiver;
     private AlertDialog.Builder logoutDialog;
+    private int[] tabIcons = {
+            R.drawable.card,
+            R.drawable.student,
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        setupTabIcons();
 
         TextView name = (TextView) findViewById(R.id.username);
         TextView email = (TextView) findViewById(R.id.email);
@@ -106,13 +119,13 @@ public class HomeActivity extends AppCompatActivity {
         intentFilter.addAction("com.package.ACTION_LOGOUT");
         registerReceiver( broadcastReceiver, intentFilter);
 
-        // create spinner for choosing user type
+/*        // create spinner for choosing user type
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
         MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
                 findViewById(R.id.user_type_spinner);
-        materialDesignSpinner.setAdapter(arrayAdapter);
+        materialDesignSpinner.setAdapter(arrayAdapter);*/
 
         // Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -198,6 +211,24 @@ public class HomeActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new CardFragment(), "Card");
+        adapter.addFragment(new StudentFragment(), "Student");
+        viewPager.setAdapter(adapter);
+    }
+
+    private void setupTabIcons() {
+        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabOne.setText("CARD");
+        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_card, 0, 0);
+        tabLayout.getTabAt(0).setCustomView(tabOne);
+
+        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabTwo.setText("STUDENT");
+        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_student, 0, 0);
+        tabLayout.getTabAt(1).setCustomView(tabTwo);
+    }
     @Override
     protected void onStop()
     {
@@ -283,4 +314,5 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+
 }
