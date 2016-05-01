@@ -10,42 +10,43 @@
     tools:context="com.example.luan.activity.LoginActivity"
     android:orientation="vertical">
 
+    <ImageView android:id="@+id/splashscreen_logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/yuyo_logo"
+        android:layout_gravity="center"
+        />
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_top_margin"
         android:hint="email" />
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_top_margin"
         android:hint="password"
         android:password="true"/>
     <EditText
         android:id="@+id/confirm_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_top_margin"
         android:hint="confirm password"
         android:password="true"/>
-    <EditText
-        android:id="@+id/firstname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:hint="first name"/>
-    <EditText
-        android:id="@+id/lastname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:hint="last name"/>
 
     <Button
         android:id="@+id/signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/activity_top_margin"
+        android:layout_marginLeft="@dimen/activity_left_margin"
+        android:layout_marginRight="@dimen/activity_right_margin"
+        android:background="@color/accent_material_light"
+        android:textColor="@color/white"
+        android:textSize="20dp"
         android:hint="Sign up"/>
 </LinearLayout>

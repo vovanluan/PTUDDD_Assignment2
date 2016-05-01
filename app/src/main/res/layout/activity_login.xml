@@ -16,38 +16,93 @@
         android:layout_height="150dp"
         android:scaleType="centerInside"
         android:src="@drawable/yuyo_logo"
-
+        android:layout_gravity="center"
         />
 
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="@dimen/activity_left_margin"
+        android:layout_marginRight="@dimen/activity_right_margin"
+        android:layout_marginTop="@dimen/activity_top_margin"
+        android:textSize="@dimen/text_size"
         android:hint="Email" />
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="@dimen/activity_left_margin"
+        android:layout_marginRight="@dimen/activity_right_margin"
+        android:textSize="@dimen/text_size"
         android:hint="Password"
         android:inputType="textPassword"/>
     <Button
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:background="@color/accent_material_light"
         android:textColor="@color/white"
         android:textColorHighlight="@color/white"
+        android:layout_marginTop="@dimen/activity_top_margin"
+        android:layout_marginLeft="@dimen/activity_left_margin"
+        android:layout_marginRight="@dimen/activity_right_margin"
+        android:textSize="@dimen/text_size"
         android:hint="Sign in"/>
     <Button
         android:id="@+id/signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/activity_top_margin"
+        android:layout_marginLeft="@dimen/activity_left_margin"
+        android:layout_marginRight="@dimen/activity_right_margin"
+        android:textSize="@dimen/text_size"
         android:hint="Sign up"/>
+
+    <LinearLayout
+        android:id="@+id/logInFb"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="@dimen/activity_top_margin"
+        android:layout_marginLeft="@dimen/activity_left_margin"
+        android:layout_marginRight="@dimen/activity_right_margin"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/facebook" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:lines="1"
+            android:text="Sign in with Facebook" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/logInGoogle"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="@dimen/activity_top_margin"
+        android:layout_marginLeft="@dimen/activity_left_margin"
+        android:layout_marginRight="@dimen/activity_right_margin"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/google" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:lines="1"
+            android:text="Sign in with Google+" />
+
+    </LinearLayout>
+
 </LinearLayout>

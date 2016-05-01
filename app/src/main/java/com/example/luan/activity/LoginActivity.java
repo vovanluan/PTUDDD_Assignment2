@@ -6,8 +6,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -45,12 +48,22 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = Support.HOST + "mobile/login";
-                local = new Local();
-                local.setEmail(email.getText().toString());
-                local.setPassword(password.getText().toString());
-                Log.e("URL", url);
-                new LoginRequest().execute(url);
+                if(email.getText().toString().isEmpty() || email.getText().toString().contains(" ")){
+                    showError(email);
+                    email.setError("Please enter your email");
+                }
+                else if(password.getText().toString().isEmpty() || password.getText().toString().contains(" ")){
+                    showError(password);
+                    password.setError("Please enter your password");
+                }
+                else {
+                    String url = Support.HOST + "mobile/login";
+                    local = new Local();
+                    local.setEmail(email.getText().toString());
+                    local.setPassword(password.getText().toString());
+                    Log.e("URL", url);
+                    new LoginRequest().execute(url);
+                }
             }
         });
         signup.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +74,11 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void showError(EditText editText) {
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        editText.startAnimation(shake);
     }
 
     private class LoginRequest extends AsyncTask<String, Void, Integer> {

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -35,30 +37,55 @@ public class RegisterActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.password);
         confirmPassword = (EditText) findViewById(R.id.confirm_password);
         email = (EditText) findViewById(R.id.email);
-        firstName = (EditText) findViewById(R.id.firstname);
-        lastName = (EditText) findViewById(R.id.lastname);
+/*        firstName = (EditText) findViewById(R.id.firstname);
+        lastName = (EditText) findViewById(R.id.lastname);*/
         signup = (Button) findViewById(R.id.signup);
 
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
-                    Toast.makeText(getApplicationContext(), "Password not match. Please type again", Toast.LENGTH_LONG).show();
+                // Check empty field or blank space
+                if(email.getText().toString().isEmpty() || email.getText().toString().contains(" ")){
+                    showError(email);
+                    email.setError("Please enter your email");
                     return;
                 }
+                else if(password.getText().toString().isEmpty() || password.getText().toString().contains(" ")){
+                    showError(password);
+                    password.setError("Please enter your password");
+                    return;
+                }
+                else if(confirmPassword.getText().toString().isEmpty() || confirmPassword.getText().toString().contains(" ")){
+                    showError(confirmPassword);
+                    confirmPassword.setError("Please confirm your password");
+                    return;
+                }                
+
+                // Check password and confirm password fields have the same value
+                if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
+                    confirmPassword.setError("Password not match");
+                    return;
+                }
+
+
                 // Create a user object
                 user = new User();
                 user.getLocal().setPassword(password.getText().toString());
                 user.getLocal().setEmail(email.getText().toString());
-                user.getBio().setFirstName(firstName.getText().toString());
-                user.getBio().setLastName(lastName.getText().toString());
+/*                user.getBio().setFirstName(firstName.getText().toString());
+                user.getBio().setLastName(lastName.getText().toString());*/
                 String url = Support.HOST + "mobile/signup";
                 new RegisterRequest().execute(url);
             }
         });
     }
 
+    private void showError(EditText editText) {
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        editText.startAnimation(shake);
+    }
+    
     private class RegisterRequest extends AsyncTask<String, Void, Integer> {
         private final ProgressDialog dialog = new ProgressDialog(RegisterActivity.this);
         @Override
