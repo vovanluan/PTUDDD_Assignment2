@@ -45,8 +45,8 @@
         android:layout_marginTop="@dimen/activity_top_margin"
         android:layout_marginLeft="@dimen/activity_left_margin"
         android:layout_marginRight="@dimen/activity_right_margin"
-        android:background="@color/accent_material_light"
-        android:textColor="@color/white"
+        android:textColor="@drawable/button_text_color"
+        android:background="@drawable/btn"
         android:textSize="20dp"
-        android:hint="Sign up"/>
+        android:text="Sign up"/>
 </LinearLayout>

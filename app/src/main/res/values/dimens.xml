@@ -5,8 +5,9 @@
     <dimen name="activity_top_margin">16dp</dimen>
     <dimen name="activity_right_margin">40dp</dimen>
     <dimen name="activity_left_margin">40dp</dimen>
+    <dimen name="left_button">30dp</dimen>
     <dimen name="small_top_margin">5dp</dimen>
-    <dimen name="button_width">40dp</dimen>
+    <dimen name="button_width">120dp</dimen>
     <dimen name="button_height">40dp</dimen>
     <dimen name="text_size">20dp</dimen>
 </resources>
