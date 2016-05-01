@@ -7,7 +7,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/yuyo"/>
+            android:src="@drawable/yuyo_logo"/>
     </item>
 
 </layer-list>
