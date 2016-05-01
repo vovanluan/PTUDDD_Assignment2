@@ -43,7 +43,7 @@
         android:background="@color/accent_material_light"
         android:textColor="@color/white"
         android:textColorHighlight="@color/white"
-        android:hint="Log in"/>
+        android:hint="Sign in"/>
     <Button
         android:id="@+id/signup"
         android:layout_width="match_parent"

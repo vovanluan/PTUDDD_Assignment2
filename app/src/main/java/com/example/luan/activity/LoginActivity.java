@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -131,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     intent.putExtra("User", jsonResponse);
                     startActivity(intent);
+                    LoginActivity.this.finish();
                 }
                 else {
                     Toast.makeText(getApplicationContext(),"Wrong username or password", Toast.LENGTH_LONG).show();

@@ -110,6 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
                 intent.putExtra("User", new Gson().toJson(user));
                 startActivity(intent);
+                finish();
             }
             else {
                 Toast.makeText(RegisterActivity.this, "Email already in use. Please use another email!", Toast.LENGTH_LONG).show();

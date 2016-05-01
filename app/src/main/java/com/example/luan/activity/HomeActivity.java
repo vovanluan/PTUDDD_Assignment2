@@ -1,7 +1,14 @@
 package com.example.luan.activity;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -26,10 +33,18 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import Fragment.ContentFragment;
+import entity.Local;
 import entity.User;
+import support.Support;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -41,6 +56,8 @@ public class HomeActivity extends AppCompatActivity {
     User user;
     String jsonUser;
     String[] SPINNERLIST = {"A student", "A teacher"};
+    private BroadcastReceiver broadcastReceiver;
+    private AlertDialog.Builder logoutDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +65,21 @@ public class HomeActivity extends AppCompatActivity {
 
         TextView name = (TextView) findViewById(R.id.username);
         TextView email = (TextView) findViewById(R.id.email);
+        logoutDialog = new AlertDialog.Builder(HomeActivity.this)
+                .setTitle("Log out")
+                .setMessage("Are you sure you want to log out?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String url = Support.HOST + "mobile/logout";
+                        new LogoutRequest().execute(url);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert);
 
         // Get data from previous activity
         jsonUser =  getIntent().getStringExtra("User");
@@ -58,6 +90,21 @@ public class HomeActivity extends AppCompatActivity {
         // parse data to header
         name.setText(user.getBio().getFirstName() + " " + user.getBio().getLastName());
         email.setText(user.getLocal().getEmail());
+
+        // receive broadcast on secured activity
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("onReceive", "Logout in progress");
+                //start login activity
+                Intent i = new Intent(HomeActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.package.ACTION_LOGOUT");
+        registerReceiver( broadcastReceiver, intentFilter);
 
         // create spinner for choosing user type
 
@@ -114,8 +161,8 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"About us Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.logOut:
-                        Toast.makeText(getApplicationContext(),"Log out Selected",Toast.LENGTH_SHORT).show();
-                        return true;                    
+                        logoutDialog.show();
+                        return true;
                     default:
                         Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
                         return true;
@@ -150,6 +197,13 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop()
+    {
+        unregisterReceiver(broadcastReceiver);
+        super.onStop();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -169,5 +223,62 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        logoutDialog.show();
+    }
+    private class LogoutRequest extends AsyncTask<String, Void, Integer> {
+        private String jsonResponse;
+        private final ProgressDialog dialog = new ProgressDialog(HomeActivity.this);
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Log out...");
+            this.dialog.setCancelable(false);
+            this.dialog.show();
+        }
+
+        @Override
+        protected Integer doInBackground(String... urls) {
+            try {
+                // Step 1 : Create a HttpURLConnection object send REQUEST to server
+                URL url = new URL(urls[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoInput(true);
+                urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                return urlConnection.getResponseCode();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("error", e.toString());
+            }
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer responseCode) {
+            try {
+                Log.e("ResponseCode", String.valueOf(responseCode));
+                if (this.dialog.isShowing()) {
+                    this.dialog.dismiss();
+                }
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    // Send broadcast to every activity
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("com.package.ACTION_LOGOUT");
+                    sendBroadcast(broadcastIntent);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"Can not log out!", Toast.LENGTH_LONG).show();
+                }
+            } catch (Exception e) {
+
+            }
+        }
     }
 }
