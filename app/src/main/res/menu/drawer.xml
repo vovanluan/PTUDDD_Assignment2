@@ -34,5 +34,11 @@
             android:icon="@drawable/aboutus"
             android:title="@string/aboutus" />
 
+        <item
+            android:id="@+id/logOut"
+            android:checked="false"
+            android:icon="@drawable/logout"
+            android:title="@string/logout" />
+
     </group>
 </menu>

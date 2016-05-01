@@ -113,6 +113,9 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.aboutUs:
                         Toast.makeText(getApplicationContext(),"About us Selected",Toast.LENGTH_SHORT).show();
                         return true;
+                    case R.id.logOut:
+                        Toast.makeText(getApplicationContext(),"Log out Selected",Toast.LENGTH_SHORT).show();
+                        return true;                    
                     default:
                         Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
                         return true;
