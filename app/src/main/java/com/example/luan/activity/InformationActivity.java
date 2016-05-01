@@ -23,7 +23,8 @@ import java.net.URL;
 import entity.User;
 import support.Support;
 public class InformationActivity extends AppCompatActivity {
-    TextView email, firstName, lastName;
+    EditText email, firstName, lastName, password, confirmPassword, phoneNumber, age;
+    Button update;
     User user;
     String jsonUser;
     @Override
@@ -36,20 +37,18 @@ public class InformationActivity extends AppCompatActivity {
         Type  type = new TypeToken<User>(){}.getType();
         user = gson.fromJson(jsonUser, type);
 
-        email = (TextView) findViewById(R.id.email);
-        firstName = (TextView) findViewById(R.id.firstname);
-        lastName = (TextView) findViewById(R.id.lastname);
-       // update = (Button) findViewById(R.id.update);
-
+        email = (EditText) findViewById(R.id.email);
+        firstName = (EditText) findViewById(R.id.firstname);
+        lastName = (EditText) findViewById(R.id.lastname);
+/*        password = (EditText) findViewById(R.id.password);
+        confirmPassword = (EditText) findViewById(R.id.confirm_password);*/
+        phoneNumber = (EditText) findViewById(R.id.phone);
+        age = (EditText) findViewById(R.id.age);
+        update = (Button) findViewById(R.id.update);
 
         email.setText("Email: " + user.getLocal().getEmail());
         firstName.setText("First name: "  + user.getBio().getFirstName());
         lastName.setText("Last name: "  + user.getBio().getLastName());
-/*
-        username.setText(user.getUsername());
-        username.setFocusable(false);
-        username.setClickable(true);
-        password.setText(user.getPassword());
 
 
         update.setOnClickListener(new View.OnClickListener() {
@@ -57,10 +56,11 @@ public class InformationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Create a user object
                 User u = new User();
-                u.setUsername(username.getText().toString());
-                u.setPassword(password.getText().toString());
-                u.setEmail(email.getText().toString());
-                u.setName(name.getText().toString());
+                u.getBio().setFirstName(firstName.getText().toString());
+                u.getBio().setLastName(lastName.getText().toString());
+                //TO-DO: need check age
+                u.getBio().setAge(Integer.getInteger(age.getText().toString()));
+                u.getBio().setPhoneNumber(phoneNumber.getText().toString());
                 String url = "http://" + Support.HOST + ":8080/restful-java/user/updateInfo";
                 UpdateRequest updateRequest = new UpdateRequest();
                 updateRequest.u = u;
@@ -68,9 +68,9 @@ public class InformationActivity extends AppCompatActivity {
 
 
             }
-        });*/
+        });
     }
-/*    private class UpdateRequest extends AsyncTask<String, Void, Integer> {
+    private class UpdateRequest extends AsyncTask<String, Void, Integer> {
 
         public User u;
         @Override
@@ -106,5 +106,5 @@ public class InformationActivity extends AppCompatActivity {
             return 0;
         }
 
-    }*/
+    }
 }

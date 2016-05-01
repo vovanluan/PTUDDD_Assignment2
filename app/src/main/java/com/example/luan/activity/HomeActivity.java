@@ -152,7 +152,9 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"Student Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.profile:
-                        Toast.makeText(getApplicationContext(),"Profile Selected",Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(HomeActivity.this, InformationActivity.class);
+                        i.putExtra("User", jsonUser);
+                        startActivity(i);
                         return true;
                     case R.id.settings:
                         Toast.makeText(getApplicationContext(),"Setttings Selected",Toast.LENGTH_SHORT).show();
@@ -199,7 +201,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStop()
     {
-        unregisterReceiver(broadcastReceiver);
+        //unregisterReceiver(broadcastReceiver);
         super.onStop();
     }
 
