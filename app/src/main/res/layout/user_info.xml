@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_top_margin"
         android:hint="last name"/>
-    <EditText
+    <TextView
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

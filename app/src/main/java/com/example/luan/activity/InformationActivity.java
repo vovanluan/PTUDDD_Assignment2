@@ -29,7 +29,8 @@ import java.net.URL;
 import entity.User;
 import support.Support;
 public class InformationActivity extends AppCompatActivity {
-    EditText email, firstName, lastName, password, confirmPassword, phoneNumber, age;
+    EditText firstName, lastName, password, confirmPassword, phoneNumber, age;
+    TextView email;
     Button update;
     User user;
     String jsonUser;
@@ -43,7 +44,7 @@ public class InformationActivity extends AppCompatActivity {
         Type  type = new TypeToken<User>(){}.getType();
         user = gson.fromJson(jsonUser, type);
 
-        email = (EditText) findViewById(R.id.email);
+        email = (TextView) findViewById(R.id.email);
         firstName = (EditText) findViewById(R.id.firstname);
         lastName = (EditText) findViewById(R.id.lastname);
 /*        password = (EditText) findViewById(R.id.password);
@@ -64,16 +65,9 @@ public class InformationActivity extends AppCompatActivity {
                 // Create a user object
                 Support support = new Support();
                 User u = new User();
-                // validate email
-                if(support.isValidEmail(email.getText().toString())){
-                    u.getLocal().setEmail(email.getText().toString());
-                }
-                else {
-                    showError(email);
-                    email.setError("Please enter your email");
-                    return;
-                }
 
+                u.getLocal().setEmail(email.getText().toString());
+                u.getLocal().setPassword(u.getLocal().getPassword());
                 u.getBio().setFirstName(firstName.getText().toString());
                 u.getBio().setLastName(lastName.getText().toString());
                 // validate age
