@@ -1,7 +1,13 @@
 package support;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
+
+import entity.DataHolder;
 
 /**
  * Created by Luan on 29/03/2016.
@@ -21,4 +27,5 @@ public class Support {
         }
         return false;
     }
+
 }

@@ -166,7 +166,12 @@ public class InformationActivity extends AppCompatActivity {
             }
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 Toast.makeText(InformationActivity.this, "Update successfully!", Toast.LENGTH_LONG).show();
+                String _id = DataHolder.getInstance().getData().get_id();
                 DataHolder.getInstance().setData(user);
+                DataHolder.getInstance().getData().set_id(_id);
+                Intent broadcastIntent = new Intent();
+                broadcastIntent.setAction("USER_CHANGE");
+                sendBroadcast(broadcastIntent);
             }
             else {
                 Toast.makeText(InformationActivity.this, "Error when update information", Toast.LENGTH_LONG).show();

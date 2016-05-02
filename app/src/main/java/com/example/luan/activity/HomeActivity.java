@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
     String jsonUser;
     ArrayList<Card> cardList;
     String[] SPINNERLIST = {"A student", "A teacher"};
-    private BroadcastReceiver broadcastReceiver;
+    private BroadcastReceiver logOutBroadcastReceiver, userChangeBroadcastReceiver;
     private AlertDialog.Builder logoutDialog;
     private CardFragment cardFragment;
     private StudentFragment studentFragment;
@@ -96,8 +96,8 @@ public class HomeActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
 
-        TextView name = (TextView) findViewById(R.id.username);
-        TextView email = (TextView) findViewById(R.id.email);
+        final TextView name = (TextView) findViewById(R.id.username);
+        final TextView email = (TextView) findViewById(R.id.email);
         logoutDialog = new AlertDialog.Builder(HomeActivity.this)
                 .setTitle("Log out")
                 .setMessage("Are you sure you want to log out?")
@@ -119,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
         email.setText(DataHolder.getInstance().getData().getLocal().getEmail());
 
         // receive broadcast on secured activity
-        broadcastReceiver = new BroadcastReceiver() {
+        logOutBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.d("onReceive", "Logout in progress");
@@ -130,8 +130,22 @@ public class HomeActivity extends AppCompatActivity {
             }
         };
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("com.package.ACTION_LOGOUT");
-        registerReceiver(broadcastReceiver, intentFilter);
+        intentFilter.addAction("ACTION_LOGOUT");
+        registerReceiver(logOutBroadcastReceiver, intentFilter);
+
+        // receive broadcast on user change
+        userChangeBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // Update text view
+                Log.e("Update", DataHolder.getInstance().getData().getBio().getFirstName());
+                name.setText(DataHolder.getInstance().getData().getBio().getFirstName() + " " + DataHolder.getInstance().getData().getBio().getLastName());
+                email.setText(DataHolder.getInstance().getData().getLocal().getEmail());
+            }
+        };
+        IntentFilter userChangeIntentFilter = new IntentFilter();
+        userChangeIntentFilter.addAction("USER_CHANGE");
+        registerReceiver(userChangeBroadcastReceiver, userChangeIntentFilter);
 
 /*        // create spinner for choosing user type
 
@@ -324,7 +338,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     // Send broadcast to every activity
                     Intent broadcastIntent = new Intent();
-                    broadcastIntent.setAction("com.package.ACTION_LOGOUT");
+                    broadcastIntent.setAction("ACTION_LOGOUT");
                     sendBroadcast(broadcastIntent);
                 }
                 else {
