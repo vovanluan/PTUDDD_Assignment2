@@ -2,11 +2,9 @@ package com.example.luan.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -26,6 +24,7 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import entity.DataHolder;
 import entity.Local;
 import entity.User;
 import support.Support;
@@ -48,7 +47,8 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(email.getText().toString().isEmpty() || email.getText().toString().contains(" ")){
+                Support support = new Support();
+                if(!support.isValidEmail(email.getText().toString())){
                     showError(email);
                     email.setError("Please enter your email");
                 }
@@ -145,9 +145,10 @@ public class LoginActivity extends AppCompatActivity {
                     // Step 4 : Convert JSON string to User object
                     Gson gson = new Gson();
                     Type  type = new TypeToken<User>(){}.getType();
-                    user = gson.fromJson(jsonResponse, type);
+                    //user = gson.fromJson(jsonResponse, type);
+                    DataHolder.getInstance().setData((User) gson.fromJson(jsonResponse, type));
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.putExtra("User", jsonResponse);
+                    //intent.putExtra("User", jsonResponse);
                     startActivity(intent);
                     LoginActivity.this.finish();
                 }

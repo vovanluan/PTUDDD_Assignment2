@@ -45,6 +45,7 @@ import Fragment.StudentFragment;
 import adapter.UserAdapter;
 import adapter.ViewPagerAdapter;
 import entity.Card;
+import entity.DataHolder;
 import entity.User;
 import support.Support;
 
@@ -113,15 +114,9 @@ public class HomeActivity extends AppCompatActivity {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert);
 
-        // Get data from previous activity
-        jsonUser =  getIntent().getStringExtra("User");
-        Gson gson = new Gson();
-        Type type = new TypeToken<User>(){}.getType();
-        user = gson.fromJson(jsonUser, type);
-
         // parse data to header
-        name.setText(user.getBio().getFirstName() + " " + user.getBio().getLastName());
-        email.setText(user.getLocal().getEmail());
+        name.setText(DataHolder.getInstance().getData().getBio().getFirstName() + " " + DataHolder.getInstance().getData().getBio().getLastName());
+        email.setText(DataHolder.getInstance().getData().getLocal().getEmail());
 
         // receive broadcast on secured activity
         broadcastReceiver = new BroadcastReceiver() {
@@ -185,7 +180,7 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
                     case R.id.profile:
                         Intent i = new Intent(HomeActivity.this, InformationActivity.class);
-                        i.putExtra("User", jsonUser);
+                        //i.putExtra("User", jsonUser);
                         startActivity(i);
                         return true;
                     case R.id.settings:
@@ -193,6 +188,7 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
                     case R.id.aboutUs:
                         Toast.makeText(getApplicationContext(),"About us Selected",Toast.LENGTH_SHORT).show();
+                        Log.e("USER: ", DataHolder.getInstance().getData().getBio().getLastName());
                         return true;
                     case R.id.logOut:
                         logoutDialog.show();

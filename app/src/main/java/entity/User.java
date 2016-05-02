@@ -3,14 +3,17 @@ package entity;
 /**
  * Created by Luan on 29/03/2016.
  */
-
-import java.io.Serializable;
-
-/**
- *
- * @author Luan
- */
 public class User{
+    private String _id;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
     private Local local;
     private Bio bio;
     private String[] image;

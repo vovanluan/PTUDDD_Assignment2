@@ -21,6 +21,7 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import entity.DataHolder;
 import entity.Local;
 import entity.User;
 import support.Support;
@@ -37,8 +38,6 @@ public class RegisterActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.password);
         confirmPassword = (EditText) findViewById(R.id.confirm_password);
         email = (EditText) findViewById(R.id.email);
-/*        firstName = (EditText) findViewById(R.id.firstname);
-        lastName = (EditText) findViewById(R.id.lastname);*/
         signup = (Button) findViewById(R.id.signup);
 
 
@@ -47,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Check empty field or blank space
                 Support support = new Support();
-                if(support.isValidEmail(email.getText().toString())){
+                if(!support.isValidEmail(email.getText().toString())){
                     showError(email);
                     email.setError("Please enter your email");
                     return;
@@ -74,8 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
                 user = new User();
                 user.getLocal().setPassword(password.getText().toString());
                 user.getLocal().setEmail(email.getText().toString());
-/*                user.getBio().setFirstName(firstName.getText().toString());
-                user.getBio().setLastName(lastName.getText().toString());*/
+
                 String url = Support.HOST + "mobile/signup";
                 new RegisterRequest().execute(url);
             }
@@ -120,7 +118,6 @@ public class RegisterActivity extends AppCompatActivity {
                 wr.close();
                 Log.e("Response Message", urlConnection.getResponseMessage());
                 return urlConnection.getResponseCode();
-
             }
             catch (Exception e) {
 
@@ -135,8 +132,8 @@ public class RegisterActivity extends AppCompatActivity {
                 this.dialog.dismiss();
             }
             if (responseCode == HttpURLConnection.HTTP_OK) {
+                DataHolder.getInstance().setData(user);
                 Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-                intent.putExtra("User", new Gson().toJson(user));
                 startActivity(intent);
                 finish();
             }

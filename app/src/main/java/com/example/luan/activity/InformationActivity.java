@@ -22,14 +22,19 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import entity.DataHolder;
 import entity.User;
 import support.Support;
 public class InformationActivity extends AppCompatActivity {
-    EditText firstName, lastName, password, confirmPassword, phoneNumber, age;
+    EditText firstName, lastName, phoneNumber, age, university;
     TextView email;
     Button update;
     User user;
@@ -39,42 +44,36 @@ public class InformationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_info);
 
-        jsonUser =  getIntent().getStringExtra("User");
-        Gson gson = new Gson();
-        Type  type = new TypeToken<User>(){}.getType();
-        user = gson.fromJson(jsonUser, type);
-
         email = (TextView) findViewById(R.id.email);
         firstName = (EditText) findViewById(R.id.firstname);
         lastName = (EditText) findViewById(R.id.lastname);
-/*        password = (EditText) findViewById(R.id.password);
-        confirmPassword = (EditText) findViewById(R.id.confirm_password);*/
         phoneNumber = (EditText) findViewById(R.id.phone);
         age = (EditText) findViewById(R.id.age);
+        university = (EditText) findViewById(R.id.university);
         update = (Button) findViewById(R.id.update);
 
-        email.setText(user.getLocal().getEmail());
-        firstName.setText(user.getBio().getFirstName());
-        lastName.setText(user.getBio().getLastName());
-        phoneNumber.setText(user.getBio().getPhoneNumber());
-        age.setText(String.valueOf(user.getBio().getAge()));
+        email.setText(DataHolder.getInstance().getData().getLocal().getEmail());
+        firstName.setText(DataHolder.getInstance().getData().getBio().getFirstName());
+        lastName.setText(DataHolder.getInstance().getData().getBio().getLastName());
+        phoneNumber.setText(DataHolder.getInstance().getData().getBio().getPhoneNumber());
+        age.setText(String.valueOf(DataHolder.getInstance().getData().getBio().getAge()));
+        university.setText(DataHolder.getInstance().getData().getBio().getUniversity());
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create a user object
                 Support support = new Support();
-                User u = new User();
 
-                u.getLocal().setEmail(email.getText().toString());
-                u.getLocal().setPassword(u.getLocal().getPassword());
-                u.getBio().setFirstName(firstName.getText().toString());
-                u.getBio().setLastName(lastName.getText().toString());
+                user = new User();
+                user.getLocal().setEmail(email.getText().toString());
+                user.getBio().setFirstName(firstName.getText().toString());
+                user.getBio().setLastName(lastName.getText().toString());
+                user.getBio().setUniversity(university.getText().toString());
                 // validate age
                 try {
                     int num = Integer.parseInt(age.getText().toString());
                     if (num <= 0) throw new NumberFormatException();
-                    u.getBio().setAge(num);
+                    user.getBio().setAge(num);
                 } catch (NumberFormatException e) {
                     showError(age);
                     age.setError("Please enter your age");
@@ -83,16 +82,16 @@ public class InformationActivity extends AppCompatActivity {
 
                 // validate phoneNumber
                 if(TextUtils.isEmpty(phoneNumber.getText().toString()) || support.isValidPhoneNumber(phoneNumber.getText().toString())){
-                    u.getBio().setPhoneNumber(phoneNumber.getText().toString());
+                    user.getBio().setPhoneNumber(phoneNumber.getText().toString());
                 }
                 else {
                     showError(phoneNumber);
                     age.setError("Please enter your phone number");
                     return;
                 }
-                String url = Support.HOST + "mobile/user";
+                String url = Support.HOST + "mobile/users/" + DataHolder.getInstance().getData().get_id() + "/update";
+                Log.e("URL", url);
                 UpdateRequest updateRequest = new UpdateRequest();
-                updateRequest.u = u;
                 updateRequest.execute(url);
             }
         });
@@ -129,13 +128,27 @@ public class InformationActivity extends AppCompatActivity {
                 // Convert this object to json string using gson
                 Gson gson = new Gson();
                 Type type = new TypeToken<User>(){}.getType();
-                String json = gson.toJson(u, type);
+                String json = gson.toJson(user, type);
                 Log.e("Json", json);
 
                 OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
                 wr.write(json);
                 wr.flush();
                 wr.close();
+
+                // Step 2: wait for incoming RESPONSE stream, place data in a buffer
+                InputStream isResponse = urlConnection.getInputStream();
+                BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(isResponse));
+
+                // Step 3: Arriving JSON fragments are concatenate into a StringBuilder
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseBuffer.readLine()) != null){
+                    stringBuilder.append(line);
+                }
+                String jsonResponse = stringBuilder.toString();
+
+                Log.e("JSON response", jsonResponse);
                 Log.e("Response Message", urlConnection.getResponseMessage());
                 return urlConnection.getResponseCode();
 
@@ -153,6 +166,7 @@ public class InformationActivity extends AppCompatActivity {
             }
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 Toast.makeText(InformationActivity.this, "Update successfully!", Toast.LENGTH_LONG).show();
+                DataHolder.getInstance().setData(user);
             }
             else {
                 Toast.makeText(InformationActivity.this, "Error when update information", Toast.LENGTH_LONG).show();

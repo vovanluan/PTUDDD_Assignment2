@@ -2,11 +2,6 @@ package support;
 
 import android.text.TextUtils;
 import android.util.Patterns;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.EditText;
-
-import com.example.luan.activity.R;
 
 /**
  * Created by Luan on 29/03/2016.

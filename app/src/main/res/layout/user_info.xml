@@ -45,20 +45,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_top_margin"
         android:hint="Phone number"/>
-<!--    <EditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_top_margin"
-        android:hint="password"
-        android:password="true"/>
     <EditText
-        android:id="@+id/confirm_password"
+        android:id="@+id/university"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_top_margin"
-        android:hint="confirm password"
-        android:password="true"/>-->
+        android:hint="University"/>
     <Button
         android:id="@+id/update"
         android:layout_width="match_parent"
