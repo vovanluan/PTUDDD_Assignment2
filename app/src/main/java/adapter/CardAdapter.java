@@ -23,9 +23,9 @@ public class CardAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<Card> cards;
-    public CardAdapter(Context context, ArrayList<Card> cards) {
+    public CardAdapter(Context context) {
         this.context = context;
-        this.cards = cards;
+        this.cards = new ArrayList<>();
     }
 
     @Override
@@ -68,5 +68,11 @@ public class CardAdapter extends BaseAdapter {
         return convertView;
     }
 
-
+    // Update new data in adapter
+    public void setListCard(ArrayList<Card> cards) {
+        this.cards.clear();
+        this.cards.addAll(cards);
+        // Update adapter's data
+        notifyDataSetChanged();
+    }
 }

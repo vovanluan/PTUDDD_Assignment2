@@ -6,8 +6,10 @@ package com.example.luan.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -58,6 +60,17 @@ public class InformationActivity extends AppCompatActivity {
         phoneNumber.setText(DataHolder.getInstance().getData().getBio().getPhoneNumber());
         age.setText(String.valueOf(DataHolder.getInstance().getData().getBio().getAge()));
         university.setText(DataHolder.getInstance().getData().getBio().getUniversity());
+
+        // initialize a toolbar
+        Toolbar toolBar =
+                (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolBar);
+
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+
+        // Enable the Up button
+        ab.setDisplayHomeAsUpEnabled(true);
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override
