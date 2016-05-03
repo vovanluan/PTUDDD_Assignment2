@@ -61,7 +61,6 @@ public class LoginActivity extends AppCompatActivity {
                     local = new Local();
                     local.setEmail(email.getText().toString());
                     local.setPassword(password.getText().toString());
-                    Log.e("URL", url);
                     new LoginRequest().execute(url);
                 }
             }
@@ -106,7 +105,6 @@ public class LoginActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 Type type = new TypeToken<Local>(){}.getType();
                 String json = gson.toJson(local, type);
-                Log.e("Json Post", json);
 
                 OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
                 wr.write(json);
@@ -124,7 +122,6 @@ public class LoginActivity extends AppCompatActivity {
                     stringBuilder.append(line);
                 }
                 jsonResponse = stringBuilder.toString();
-                Log.e("Json Response", jsonResponse);
                 return urlConnection.getResponseCode();
 
             } catch (Exception e) {
@@ -137,7 +134,6 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer responseCode) {
             try {
-                Log.e("ResponseCode", String.valueOf(responseCode));
                 if (this.dialog.isShowing()) {
                     this.dialog.dismiss();
                 }

@@ -1,7 +1,5 @@
 package entity;
 
-import java.security.Timestamp;
-
 /**
  * Created by Luan on 5/2/2016.
  */
@@ -9,6 +7,8 @@ import java.security.Timestamp;
 
 public class Card
 {
+    private String _id;
+
     private int status;
 
     private User create_by;
@@ -17,17 +17,17 @@ public class Card
 
     private int upvotes;
 
-    private Timestamp date;
+    private String date;
 
-    private Timestamp updatedAt;
+    private String updatedAt;
 
-    private Timestamp time;
+    private String time;
 
     private String title;
 
     private String category;
 
-    private Timestamp createdAt;
+    private String createdAt;
 
     private String description;
 
@@ -35,9 +35,19 @@ public class Card
 
     private String place;
 
+
     public Card(){
         this.create_by = new User();
     }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
     public int getStatus ()
     {
         return status;
@@ -78,32 +88,32 @@ public class Card
         this.upvotes = upvotes;
     }
 
-    public Timestamp getDate ()
+    public String getDate ()
     {
         return date;
     }
 
-    public void setDate (Timestamp date)
+    public void setDate (String date)
     {
         this.date = date;
     }
 
-    public Timestamp getUpdatedAt ()
+    public String getUpdatedAt ()
     {
         return updatedAt;
     }
 
-    public void setUpdatedAt (Timestamp updatedAt)
+    public void setUpdatedAt (String updatedAt)
     {
         this.updatedAt = updatedAt;
     }
 
-    public Timestamp getTime ()
+    public String getTime ()
     {
         return time;
     }
 
-    public void setTime (Timestamp time)
+    public void setTime (String time)
     {
         this.time = time;
     }
@@ -128,12 +138,12 @@ public class Card
         this.category = category;
     }
 
-    public Timestamp getCreatedAt ()
+    public String getCreatedAt ()
     {
         return createdAt;
     }
 
-    public void setCreatedAt (Timestamp createdAt)
+    public void setCreatedAt (String createdAt)
     {
         this.createdAt = createdAt;
     }

@@ -39,6 +39,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import Fragment.CardFragment;
 import Fragment.StudentFragment;
@@ -75,10 +78,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        // get card list from server
-        String getCardListURL = Support.HOST +"mobile/cards";
-        new GetCardRequest().execute(getCardListURL);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -241,13 +240,6 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new CardFragment(), "Card");
-        adapter.addFragment(new StudentFragment(), "Student");
-        viewPager.setAdapter(adapter);
-    }
-
     private void setupTabIcons() {
         TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabOne.setText("CARD");
@@ -399,6 +391,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (this.dialog.isShowing()) {
                     this.dialog.dismiss();
                 }
+                Log.e("CODE", String.valueOf(responseCode));
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     // Step 4 : Convert JSON string to User object
                     Gson gson = new Gson();
@@ -406,9 +399,6 @@ public class HomeActivity extends AppCompatActivity {
                     cardList = gson.fromJson(jsonResponse, type);
                     Log.e("Size", String.valueOf(cardList.size()));
                     Log.e("Card list:", jsonResponse);
-                    Bundle cardsBundle = new Bundle();
-                    cardsBundle.putString("cards", jsonResponse);
-                    cardFragment.setArguments(cardsBundle);
                 }
                 else {
                     Toast.makeText(getApplicationContext(),"Error while getting card list", Toast.LENGTH_LONG).show();
@@ -416,7 +406,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
     }

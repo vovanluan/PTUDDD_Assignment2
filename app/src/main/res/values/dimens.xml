@@ -14,4 +14,17 @@
     <dimen name="tab_padding_bottom">16dp</dimen>
     <dimen name="tab_label">14sp</dimen>
     <dimen name="custom_tab_layout_height">72dp</dimen>
+    <dimen name="course_image">60dp</dimen>
+    <dimen name="info">70dp</dimen>
+    <dimen name="info_top_margin">2dp</dimen>
+    <dimen name="ava_width">50dp</dimen>
+    <dimen name="title_height">24dp</dimen>
+    <dimen name="title_size">18dp</dimen>
+    <dimen name="creator_height">20dp</dimen>
+    <dimen name="creator_size">12dp</dimen>
+    <dimen name="icon_height">18dp</dimen>
+    <dimen name="description_height">150dp</dimen>
+    <dimen name="description_top_margin">20dp</dimen>
+    <dimen name="description_left_margin">5dp</dimen>
+
 </resources>
