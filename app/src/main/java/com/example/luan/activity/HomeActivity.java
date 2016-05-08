@@ -11,28 +11,20 @@ import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -41,14 +33,10 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import Fragment.CardFragment;
-import Fragment.StudentFragment;
-import adapter.UserAdapter;
+import Fragment.UserFragment;
+import Fragment.NotificationFragment;
 import adapter.ViewPagerAdapter;
 import entity.Card;
 import entity.DataHolder;
@@ -72,7 +60,8 @@ public class HomeActivity extends AppCompatActivity {
     private BroadcastReceiver logOutBroadcastReceiver, userChangeBroadcastReceiver;
     private AlertDialog.Builder logoutDialog;
     private CardFragment cardFragment;
-    private StudentFragment studentFragment;
+    private UserFragment userFragment;
+    private NotificationFragment notificationFragment;
     private int[] tabIcons = {
             R.drawable.card,
             R.drawable.student,
@@ -90,9 +79,12 @@ public class HomeActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         cardFragment = new CardFragment();
-        studentFragment = new StudentFragment();
-        adapter.addFragment(cardFragment, "Card");
-        adapter.addFragment(studentFragment, "Student");
+        userFragment = new UserFragment();
+        notificationFragment = new NotificationFragment();
+        //adapter.addFragment(cardFragment, "Card");
+        adapter.addFragment(cardFragment, "");
+        adapter.addFragment(userFragment, "");
+        adapter.addFragment(notificationFragment, "Notification");
         viewPager.setAdapter(adapter);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -105,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to log out?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        String url = Support.HOST + "mobile/logout";
+                        String url = Support.HOST + "logout";
                         new LogoutRequest().execute(url);
                     }
                 })
@@ -177,19 +169,6 @@ public class HomeActivity extends AppCompatActivity {
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()){
-
-
-                    //Replacing the main content with ContentFragment Which is our Inbox View;
-                    case R.id.teacher:
-                        Toast.makeText(getApplicationContext(),"Teacher Selected",Toast.LENGTH_SHORT).show();
-/*                        ContentFragment fragment = new ContentFragment();
-                        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.frame,fragment);
-                        fragmentTransaction.commit();*/
-                        return true;
-                    case R.id.student:
-                        Toast.makeText(getApplicationContext(),"Student Selected",Toast.LENGTH_SHORT).show();
-                        return true;
                     case R.id.profile:
                         Intent i = new Intent(HomeActivity.this, InformationActivity.class);
                         //i.putExtra("User", jsonUser);
@@ -197,6 +176,9 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
                     case R.id.settings:
                         Toast.makeText(getApplicationContext(),"Setttings Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.feedback:
+                        Toast.makeText(getApplicationContext(),"Feedback Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.aboutUs:
                         Toast.makeText(getApplicationContext(),"About us Selected",Toast.LENGTH_SHORT).show();
@@ -349,75 +331,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {
 
-            }
-        }
-    }
-    private class GetCardRequest extends AsyncTask<String, Void, Integer> {
-
-        private String jsonResponse;
-        private final ProgressDialog dialog = new ProgressDialog(HomeActivity.this);
-        @Override
-        protected void onPreExecute() {
-            this.dialog.setMessage("Load cards...");
-            this.dialog.setCancelable(false);
-            this.dialog.show();
-        }
-
-        @Override
-        protected Integer doInBackground(String... urls) {
-            try {
-                // Create connection
-                URL url = new URL(urls[0]);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.setDoInput(true);
-                urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-                urlConnection.connect();
-
-                // Step 2: wait for incoming RESPONSE stream, place data in a buffer
-                InputStream isResponse = urlConnection.getInputStream();
-                BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(isResponse));
-
-                // Step 3: Arriving JSON fragments are concatenate into a StringBuilder
-                String line = "";
-                StringBuilder stringBuilder = new StringBuilder();
-                while ((line = responseBuffer.readLine()) != null){
-                    stringBuilder.append(line);
-                }
-                jsonResponse = stringBuilder.toString();
-                Log.e("Json", jsonResponse);
-                Log.e("message", urlConnection.getResponseMessage());
-                return urlConnection.getResponseCode();
-
-            }
-            catch (Exception e) {
-
-            }
-            return 0;
-        }
-        @Override
-        protected void onPostExecute(Integer responseCode) {
-            try {
-                if (this.dialog.isShowing()) {
-                    this.dialog.dismiss();
-                }
-                Log.e("CODE", String.valueOf(responseCode));
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    // Step 4 : Convert JSON string to User object
-                    Gson gson = new Gson();
-                    Type  type = new TypeToken<ArrayList<Card>>(){}.getType();
-                    cardList = gson.fromJson(jsonResponse, type);
-                    Log.e("Size", String.valueOf(cardList.size()));
-                    Log.e("Card list:", jsonResponse);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(),"Error while getting card list", Toast.LENGTH_LONG).show();
-                }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }

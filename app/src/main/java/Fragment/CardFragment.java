@@ -55,26 +55,27 @@ public class CardFragment extends Fragment implements AdapterView.OnItemClickLis
 
         // initialize card list
         cardList = new ArrayList<>();
-        String getCardListURL = Support.HOST +"mobile/cards";
+        String getCardListURL = Support.HOST +"cards";
         new GetCardRequest().execute(getCardListURL);
+
+        // initialize adapter
+        adapter = new CardAdapter(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        HomeActivity activity = (HomeActivity) getActivity();
-
         view = inflater.inflate(R.layout.card_fragment, container, false);
+        return view;
+    }
 
-        // initialize adapter
-        adapter = new CardAdapter(getActivity());
-
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         // initialize gridview
         gridView = (GridView) view.findViewById(R.id.gridview);
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(this);
-        return view;
     }
 
     @Override
@@ -159,10 +160,6 @@ public class CardFragment extends Fragment implements AdapterView.OnItemClickLis
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch(item.getItemId()){
-            case R.id.action_settings:
-                // handle click Setting event
-                Toast.makeText(getActivity(),"Action settings", Toast.LENGTH_LONG).show();
-                return true;
             case R.id.action_search:
                 // handle click Search button
                 Toast.makeText(getActivity(),"Action search", Toast.LENGTH_LONG).show();

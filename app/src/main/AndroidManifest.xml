@@ -21,7 +21,6 @@
         </activity>
         <activity android:name="com.example.luan.activity.LoginActivity" />
         <activity android:name="com.example.luan.activity.HomeActivity" />
-        <activity android:name=".GetListUserActivity" />
         <activity android:name="com.example.luan.activity.RegisterActivity" />
         <activity android:name="com.example.luan.activity.InformationActivity"
             android:parentActivityName=".HomeActivity"/>

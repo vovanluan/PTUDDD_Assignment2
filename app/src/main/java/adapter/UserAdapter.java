@@ -1,10 +1,12 @@
 package adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.luan.activity.R;
@@ -18,8 +20,10 @@ import entity.User;
  */
 public class UserAdapter extends ArrayAdapter<User> {
     private ArrayList<User> userList;
-    public UserAdapter(Context context, int view, ArrayList<User> users) {
-        super(context, view, users);
+    private Context context;
+    public UserAdapter(Context context, int layoutResourceId, ArrayList<User> users) {
+        super(context, layoutResourceId, users);
+        this.context = context;
         this.userList = users;
     }
 
@@ -27,7 +31,8 @@ public class UserAdapter extends ArrayAdapter<User> {
     public View getView(int position, View convertView, ViewGroup parent) {
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.short_info, parent, false);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            convertView = inflater.inflate(R.layout.short_info, parent, false);
         }
 
         // Get the data item for this position
@@ -35,11 +40,18 @@ public class UserAdapter extends ArrayAdapter<User> {
 
         if (user != null) {
             TextView firstName = (TextView) convertView.findViewById(R.id.firstname);
-            TextView email = (TextView) convertView.findViewById(R.id.email);
+            TextView age = (TextView) convertView.findViewById(R.id.age);
 
             firstName.setText(user.getBio().getFirstName());
-            email.setText(user.getLocal().getEmail());
+            age.setText(String.valueOf(user.getBio().getAge()));
         }
         return convertView;
+    }
+
+    // update list user
+    public void setListUser(ArrayList<User> users){
+        this.userList.clear();
+        this.userList.addAll(users);
+        notifyDataSetChanged();
     }
 }

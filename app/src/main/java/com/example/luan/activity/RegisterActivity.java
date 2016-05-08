@@ -74,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
                 user.getLocal().setPassword(password.getText().toString());
                 user.getLocal().setEmail(email.getText().toString());
 
-                String url = Support.HOST + "mobile/signup";
+                String url = Support.HOST + "signup";
                 new RegisterRequest().execute(url);
             }
         });

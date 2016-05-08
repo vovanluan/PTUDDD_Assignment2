@@ -26,5 +26,7 @@
     <dimen name="description_height">150dp</dimen>
     <dimen name="description_top_margin">20dp</dimen>
     <dimen name="description_left_margin">5dp</dimen>
+    <dimen name="user_height">76dp</dimen>
+    <dimen name="user_text">15dp</dimen>
 
 </resources>

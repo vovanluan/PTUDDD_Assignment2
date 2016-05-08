@@ -13,7 +13,7 @@ import entity.DataHolder;
  * Created by Luan on 29/03/2016.
  */
 public class Support {
-    public static final String HOST = "https://yuyo-beta.herokuapp.com/";
+    public static final String HOST = "https://yuyo-beta.herokuapp.com/mobile/";
     public boolean isValidEmail(CharSequence email) {
         if (!TextUtils.isEmpty(email)) {
             return Patterns.EMAIL_ADDRESS.matcher(email).matches();

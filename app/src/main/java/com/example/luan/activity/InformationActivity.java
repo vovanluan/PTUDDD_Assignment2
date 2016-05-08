@@ -102,7 +102,7 @@ public class InformationActivity extends AppCompatActivity {
                     age.setError("Please enter your phone number");
                     return;
                 }
-                String url = Support.HOST + "mobile/users/" + DataHolder.getInstance().getData().get_id() + "/update";
+                String url = Support.HOST + "users/" + DataHolder.getInstance().getData().get_id() + "/update";
                 Log.e("URL", url);
                 UpdateRequest updateRequest = new UpdateRequest();
                 updateRequest.execute(url);

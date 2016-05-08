@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                     password.setError("Please enter your password");
                 }
                 else {
-                    String url = Support.HOST + "mobile/login";
+                    String url = Support.HOST + "login";
                     local = new Local();
                     local.setEmail(email.getText().toString());
                     local.setPassword(password.getText().toString());
@@ -122,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                     stringBuilder.append(line);
                 }
                 jsonResponse = stringBuilder.toString();
+                Log.e("User", jsonResponse);
                 return urlConnection.getResponseCode();
 
             } catch (Exception e) {
