@@ -27,7 +27,8 @@
         android:layout_marginRight="@dimen/activity_right_margin"
         android:layout_marginTop="@dimen/activity_top_margin"
         android:textSize="@dimen/text_size"
-        android:hint="Email" />
+        android:hint="Email"
+        android:singleLine="true"/>
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
@@ -36,7 +37,8 @@
         android:layout_marginRight="@dimen/activity_right_margin"
         android:textSize="@dimen/text_size"
         android:hint="Password"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"
+        android:singleLine="true"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,62 +65,5 @@
             android:text="Sign up"
             android:layout_marginLeft="@dimen/left_button"/>
     </LinearLayout>
-<!--
-    <LinearLayout
-        android:id="@+id/logInFb"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/button_height"
-        android:layout_marginTop="@dimen/activity_top_margin"
-        android:layout_marginLeft="@dimen/activity_left_margin"
-        android:layout_marginRight="@dimen/activity_right_margin"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/facebook" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="FACEBOOK"
-            android:textColor="@color/white"
-            android:background="#4e69a2"/>
-
-    </LinearLayout>
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp" />
-
-    <LinearLayout
-        android:id="@+id/logInGoogle"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="@dimen/activity_top_margin"
-        android:layout_marginLeft="@dimen/activity_left_margin"
-        android:layout_marginRight="@dimen/activity_right_margin"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/google" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:lines="1"
-            android:text="GOOGLE"
-            android:textColor="@color/white"
-            android:background="@color/blue"/>
-
-    </LinearLayout>
-    -->
 
 </LinearLayout>

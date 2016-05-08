@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import Fragment.CardFragment;
 import Fragment.UserFragment;
 import Fragment.NotificationFragment;
+import Fragment.FeedbackDialogFragment;
 import adapter.ViewPagerAdapter;
 import entity.Card;
 import entity.DataHolder;
@@ -178,7 +180,9 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"Setttings Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.feedback:
-                        Toast.makeText(getApplicationContext(),"Feedback Selected",Toast.LENGTH_SHORT).show();
+                        FragmentManager fm = getSupportFragmentManager();
+                        FeedbackDialogFragment editNameDialogFragment = FeedbackDialogFragment.newInstance("Some Title");
+                        editNameDialogFragment.show(fm, "fragment_edit_name");
                         return true;
                     case R.id.aboutUs:
                         Toast.makeText(getApplicationContext(),"About us Selected",Toast.LENGTH_SHORT).show();
