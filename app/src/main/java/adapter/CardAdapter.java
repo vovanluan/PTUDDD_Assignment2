@@ -1,6 +1,7 @@
 package adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +14,10 @@ import com.example.luan.activity.R;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import entity.Card;
+import support.Support;
 
 /**
  * Created by Luan on 5/2/2016.
@@ -52,6 +55,12 @@ public class CardAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.card_item, parent, false);
         }
 
+        // Generate random color
+        Random generator = new Random();
+        int random = generator.nextInt(10);
+        String color = Support.COLOR[random];
+
+        convertView.setBackgroundColor(Color.parseColor(color));
         TextView title = (TextView) convertView.findViewById(R.id.title);
         TextView creator = (TextView) convertView.findViewById(R.id.creator);
         TextView description = (TextView) convertView.findViewById(R.id.description);

@@ -65,8 +65,7 @@ public class FeedbackDialogFragment extends DialogFragment {
 
 
         // Fetch arguments from bundle and set title
-        //String title = getArguments().getString("title", "Enter Name");
-        //getDialog().setTitle(title);
+        getDialog().setTitle("Send feed back for YuYo");
 
         title = (EditText) view.findViewById(R.id.title);
         description = (EditText) view.findViewById(R.id.description);

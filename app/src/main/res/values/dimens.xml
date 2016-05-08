@@ -28,6 +28,6 @@
     <dimen name="description_left_margin">5dp</dimen>
     <dimen name="user_height">76dp</dimen>
     <dimen name="user_text">15dp</dimen>
-    <dimen name="feedback_margin">15dp</dimen>
+    <dimen name="feedback_margin">5dp</dimen>
 
 </resources>

@@ -65,8 +65,9 @@ public class HomeActivity extends AppCompatActivity {
     private UserFragment userFragment;
     private NotificationFragment notificationFragment;
     private int[] tabIcons = {
-            R.drawable.card,
-            R.drawable.student,
+            R.drawable.ic_class,
+            R.drawable.ic_group,
+            R.drawable.ic_notifications
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,11 +87,14 @@ public class HomeActivity extends AppCompatActivity {
         //adapter.addFragment(cardFragment, "Card");
         adapter.addFragment(cardFragment, "");
         adapter.addFragment(userFragment, "");
-        adapter.addFragment(notificationFragment, "Notification");
+        adapter.addFragment(notificationFragment, "");
         viewPager.setAdapter(adapter);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        setupTabIcons();
+        // setup tab icons
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
 
         final TextView name = (TextView) findViewById(R.id.username);
         final TextView email = (TextView) findViewById(R.id.email);
@@ -223,17 +227,6 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private void setupTabIcons() {
-        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabOne.setText("CARD");
-        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_card, 0, 0);
-        tabLayout.getTabAt(0).setCustomView(tabOne);
-
-        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabTwo.setText("STUDENT");
-        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_student, 0, 0);
-        tabLayout.getTabAt(1).setCustomView(tabTwo);
-    }
     @Override
     protected void onStop()
     {

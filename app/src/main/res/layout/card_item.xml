@@ -34,7 +34,8 @@
                 android:layout_height="@dimen/title_height"
                 android:id="@+id/title"
                 android:textStyle="bold"
-                android:textSize="@dimen/title_size"/>
+                android:textSize="@dimen/title_size"
+                android:textColor="@color/textColorPrimary"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/creator_height"
@@ -44,12 +45,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="by "/>
+                    android:text="by "
+                    android:textColor="@color/textColorPrimary"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:id="@+id/creator"
-                    />
+                    android:textColor="@color/textColorPrimary"/>
             </LinearLayout>
 
             <LinearLayout
@@ -66,7 +68,8 @@
                 <TextView
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/star"/>
+                    android:id="@+id/star"
+                    android:textColor="@color/textColorPrimary"/>
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
@@ -75,7 +78,8 @@
                 <TextView
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/vote"/>
+                    android:id="@+id/vote"
+                    android:textColor="@color/textColorPrimary"/>
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
@@ -85,7 +89,8 @@
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:id="@+id/people"
-                    android:text="10"/>
+                    android:text="10"
+                    android:textColor="@color/textColorPrimary"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -96,5 +101,6 @@
         android:layout_height="@dimen/description_height"
         android:id="@+id/description"
         android:layout_marginTop="@dimen/description_top_margin"
-        android:layout_marginLeft="@dimen/description_left_margin"/>
+        android:layout_marginLeft="@dimen/description_left_margin"
+        android:textColor="@color/textColorPrimary"/>
 </LinearLayout>

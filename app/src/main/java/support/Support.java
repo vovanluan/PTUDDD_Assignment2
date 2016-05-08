@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 
+import java.util.ArrayList;
+
 import entity.DataHolder;
 
 /**
@@ -14,6 +16,18 @@ import entity.DataHolder;
  */
 public class Support {
     public static final String HOST = "https://yuyo-beta.herokuapp.com/mobile/";
+    public static final String[] COLOR = {
+        "#43A047",
+        "#689F38",
+        "#EEFF41",
+        "#FB8C00",
+            "#E0E0E0",
+            "#039BE5",
+            "#F44336",
+            "#EC407A",
+            "#AB47BC",
+            "#3F51B5"
+    };
     public boolean isValidEmail(CharSequence email) {
         if (!TextUtils.isEmpty(email)) {
             return Patterns.EMAIL_ADDRESS.matcher(email).matches();

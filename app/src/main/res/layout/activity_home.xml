@@ -35,15 +35,6 @@
 
 
          </android.support.v4.view.ViewPager>
-        <!--
-        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-            android:id="@+id/user_type_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="You wanna be: "
-            android:textColorHint="#05ab9a"
-            app:met_floatingLabel="normal"
-            android:layout_gravity="center"/> -->
 
     </LinearLayout>
 
@@ -54,6 +45,7 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/header"
         app:menu="@menu/drawer"
+        android:background="@color/colorPrimary"
         />
 </android.support.v4.widget.DrawerLayout>
 

@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text = "Send feed back for YuYo"
-        android:textSize="20dp"
-        android:layout_margin="@dimen/feedback_margin"/>
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text = "Send feed back for YuYo"-->
+        <!--android:textSize="20dp"-->
+        <!--android:layout_margin="@dimen/feedback_margin"/>-->
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -36,18 +36,19 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp">
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="from: "
-            android:textSize="15dp"
+            android:textSize="12dp"
             android:textColor="@color/gray"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/email"
-            android:textSize="15dp"
+            android:textSize="12dp"
             android:text="av@gmail.com"
             android:textColor="@color/gray"/>
         <TextView
@@ -55,8 +56,8 @@
             android:layout_height="wrap_content"
             android:text="Submit"
             android:id="@+id/submit"
-            android:textSize="20dp"
-            android:layout_marginLeft="30dp"
+            android:textSize="18dp"
+            android:layout_marginLeft="20dp"
             android:textColor="@color/black"
             android:onClick="onClick"
             android:clickable="true"/>
