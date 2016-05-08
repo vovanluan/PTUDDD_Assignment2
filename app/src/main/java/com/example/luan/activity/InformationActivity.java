@@ -67,10 +67,10 @@ public class InformationActivity extends AppCompatActivity {
         setSupportActionBar(toolBar);
 
         // Get a support ActionBar corresponding to this toolbar
-        ActionBar ab = getSupportActionBar();
+        //ActionBar ab = getSupportActionBar();
 
         // Enable the Up button
-        ab.setDisplayHomeAsUpEnabled(true);
+        //ab.setDisplayHomeAsUpEnabled(true);
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override

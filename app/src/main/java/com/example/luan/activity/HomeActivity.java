@@ -180,13 +180,11 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"Setttings Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.feedback:
-                        FragmentManager fm = getSupportFragmentManager();
-                        FeedbackDialogFragment editNameDialogFragment = FeedbackDialogFragment.newInstance("Some Title");
-                        editNameDialogFragment.show(fm, "fragment_edit_name");
+                        FeedbackDialogFragment feedbackDialogFragment = FeedbackDialogFragment.getInstance();
+                        feedbackDialogFragment.show(getSupportFragmentManager(), "feedback");
                         return true;
                     case R.id.aboutUs:
                         Toast.makeText(getApplicationContext(),"About us Selected",Toast.LENGTH_SHORT).show();
-                        Log.e("USER: ", DataHolder.getInstance().getData().getBio().getLastName());
                         return true;
                     case R.id.logOut:
                         logoutDialog.show();
@@ -242,40 +240,6 @@ public class HomeActivity extends AppCompatActivity {
         //unregisterReceiver(broadcastReceiver);
         super.onStop();
     }
-
-/*    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.action_menu, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView =
-                (SearchView) MenuItemCompat.getActionView(searchItem);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch(item.getItemId()){
-            case R.id.action_settings:
-                // handle click Setting event
-                Toast.makeText(getApplicationContext(),"Action settings", Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.action_search:
-                // handle click Search button
-                Toast.makeText(getApplicationContext(),"Action search", Toast.LENGTH_LONG).show();
-                return true;
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                Toast.makeText(getApplicationContext(),"Something else", Toast.LENGTH_LONG).show();
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
 
     @Override
     public void onBackPressed() {
