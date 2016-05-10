@@ -21,7 +21,6 @@ public class Support {
         "#689F38",
         "#EEFF41",
         "#FB8C00",
-            "#E0E0E0",
             "#039BE5",
             "#F44336",
             "#EC407A",

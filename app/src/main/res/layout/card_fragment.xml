@@ -7,5 +7,5 @@
     android:verticalSpacing="2dp"
     android:horizontalSpacing="2dp"
     android:gravity="center"
-    android:background="@color/gray"
+    android:background="@color/white"
     />

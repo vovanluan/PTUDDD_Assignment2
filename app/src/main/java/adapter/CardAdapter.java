@@ -58,7 +58,7 @@ public class CardAdapter extends BaseAdapter {
 
         // Generate random color
         Random generator = new Random();
-        int random = generator.nextInt(10);
+        int random = generator.nextInt(9);
         String color = Support.COLOR[random];
 
         convertView.setBackgroundColor(Color.parseColor(color));
