@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.ArrayList;
+
 /**
  * Created by Luan on 29/03/2016.
  */
@@ -17,10 +19,13 @@ public class User{
     private Local local;
     private Bio bio;
     private String[] image;
+    private ArrayList<Course> courses;
 
     public User(){
         local = new Local();
         bio = new Bio();
+        courses = new ArrayList<>();
+
     }
     public Local getLocal() {
         return local;
@@ -44,6 +49,14 @@ public class User{
 
     public void setImage(String[] image) {
         this.image = image;
+    }
+
+    public ArrayList<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(ArrayList<Course> courses) {
+        this.courses = courses;
     }
 }
 

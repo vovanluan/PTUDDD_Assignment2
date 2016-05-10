@@ -5,7 +5,7 @@ package entity;
  */
 
 
-public class Card
+public class Course
 {
     private String _id;
 
@@ -36,7 +36,7 @@ public class Card
     private String place;
 
 
-    public Card(){
+    public Course(){
         this.create_by = new User();
     }
 

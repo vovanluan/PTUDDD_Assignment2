@@ -8,13 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -34,11 +29,12 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import adapter.CardAdapter;
-import entity.Card;
+import entity.Course;
+import entity.DataHolder;
 import support.Support;
 
-public class UserCourseFragment extends Fragment implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener{
-    private ArrayList<Card> cardList;
+public class UserCourseFragment extends Fragment implements AdapterView.OnItemClickListener{
+    private ArrayList<Course> courseList;
     private CardAdapter adapter;
     private GridView gridView;
     private View view;
@@ -50,12 +46,13 @@ public class UserCourseFragment extends Fragment implements AdapterView.OnItemCl
         super.onCreate(savedInstanceState);
 
         // initialize card list
-        cardList = new ArrayList<>();
+        courseList = DataHolder.getInstance().getData().getCourses();
         String getCardListURL = Support.HOST +"cards";
-        new GetCardRequest().execute(getCardListURL);
+        //new GetCardRequest().execute(getCardListURL);
 
         // initialize adapter
         adapter = new CardAdapter(getActivity());
+        adapter.setListCard(courseList);
     }
 
     @Override
@@ -80,103 +77,15 @@ public class UserCourseFragment extends Fragment implements AdapterView.OnItemCl
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.action_menu, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView =
-                (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setOnQueryTextListener(this);
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.e("Clicked", "");
-            }
-        });
-
-        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                // Show all cards after collapsing
-                adapter.setListCard(cardList);
-                return true;  // Return true to collapse action view
-            }
-
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                return true;  // Return true to expand action view
-            }
-        });
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    // Hande event submit query on search
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        // Handle search card
-        ArrayList<Card> resultCards = new ArrayList<>();
-        for (Card card : cardList) {
-            // search by title, creator or description
-            if(card.getTitle().contains(query) || card.getCreate_by().getBio().getFirstName().contains(query)
-                    || card.getDescription().contains(query)) {
-                resultCards.add(card);
-            }
-        }
-        if(resultCards.isEmpty()) {
-            Toast.makeText(getActivity(),"Can't find this course", Toast.LENGTH_LONG).show();
-        }
-        else {
-            adapter.setListCard(resultCards);
-        }
-        return true;
-    }
-
-
-    // Handle event query change on search
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        ArrayList<Card> resultCards = new ArrayList<>();
-        for (Card card : cardList) {
-            // search by title, creator or description
-            if(card.getTitle().contains(newText) || card.getCreate_by().getBio().getFirstName().contains(newText)
-                    || card.getDescription().contains(newText)) {
-                resultCards.add(card);
-            }
-        }
-        adapter.setListCard(resultCards);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch(item.getItemId()){
-            case R.id.action_search:
-                // handle click Search button
-                Toast.makeText(getActivity(),"Action search", Toast.LENGTH_LONG).show();
-                return true;
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                Toast.makeText(getActivity(),"Something else", Toast.LENGTH_LONG).show();
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     // Handle click an card in fragment
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
         // retrieve the GridView item
-        Card card = cardList.get(position);
+        Course course = courseList.get(position);
 
         // do something
-        Toast.makeText(getActivity(), card.getTitle(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), course.getTitle(), Toast.LENGTH_SHORT).show();
     }
     private class GetCardRequest extends AsyncTask<String, Void, Integer> {
 
@@ -232,15 +141,15 @@ public class UserCourseFragment extends Fragment implements AdapterView.OnItemCl
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     // Step 4 : Convert JSON string to User object
                     Gson gson = new Gson();
-                    Type type = new TypeToken<ArrayList<Card>>(){}.getType();
-                    cardList = gson.fromJson(jsonResponse, type);
-                    Log.e("Size", String.valueOf(cardList.size()));
-                    Log.e("Card list:", jsonResponse);
+                    Type type = new TypeToken<ArrayList<Course>>(){}.getType();
+                    courseList = gson.fromJson(jsonResponse, type);
+                    Log.e("Size", String.valueOf(courseList.size()));
+                    Log.e("Course list:", jsonResponse);
                 }
                 else {
                     Toast.makeText(getActivity(), "Error while getting card list", Toast.LENGTH_LONG).show();
                 }
-                adapter.setListCard(cardList);
+                adapter.setListCard(courseList);
             } catch (Exception e) {
                 e.printStackTrace();
             }

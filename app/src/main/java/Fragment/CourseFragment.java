@@ -4,6 +4,7 @@ package fragment;
  * Created by Luan on 5/2/2016.
  */
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.example.luan.activity.CourseActivity;
 import com.example.luan.activity.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -34,11 +36,11 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import adapter.CardAdapter;
-import entity.Card;
+import entity.Course;
 import support.Support;
 
 public class CourseFragment extends Fragment implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener{
-    private ArrayList<Card> cardList;
+    private ArrayList<Course> courseList;
     private CardAdapter adapter;
     private GridView gridView;
     private View view;
@@ -50,7 +52,7 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
         super.onCreate(savedInstanceState);
 
         // initialize card list
-        cardList = new ArrayList<>();
+        courseList = new ArrayList<>();
         String getCardListURL = Support.HOST +"cards";
         new GetCardRequest().execute(getCardListURL);
 
@@ -99,7 +101,7 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 // Show all cards after collapsing
-                adapter.setListCard(cardList);
+                adapter.setListCard(courseList);
                 return true;  // Return true to collapse action view
             }
 
@@ -116,19 +118,19 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
     @Override
     public boolean onQueryTextSubmit(String query) {
         // Handle search card
-        ArrayList<Card> resultCards = new ArrayList<>();
-        for (Card card : cardList) {
+        ArrayList<Course> resultCourses = new ArrayList<>();
+        for (Course course : courseList) {
             // search by title, creator or description
-            if(card.getTitle().contains(query) || card.getCreate_by().getBio().getFirstName().contains(query)
-                    || card.getDescription().contains(query)) {
-                resultCards.add(card);
+            if(course.getTitle().contains(query) || course.getCreate_by().getBio().getFirstName().contains(query)
+                    || course.getDescription().contains(query)) {
+                resultCourses.add(course);
             }
         }
-        if(resultCards.isEmpty()) {
+        if(resultCourses.isEmpty()) {
             Toast.makeText(getActivity(),"Can't find this course", Toast.LENGTH_LONG).show();
         }
         else {
-            adapter.setListCard(resultCards);
+            adapter.setListCard(resultCourses);
         }
         return true;
     }
@@ -137,15 +139,15 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
     // Handle event query change on search
     @Override
     public boolean onQueryTextChange(String newText) {
-        ArrayList<Card> resultCards = new ArrayList<>();
-        for (Card card : cardList) {
+        ArrayList<Course> resultCourses = new ArrayList<>();
+        for (Course course : courseList) {
             // search by title, creator or description
-            if(card.getTitle().contains(newText) || card.getCreate_by().getBio().getFirstName().contains(newText)
-                    || card.getDescription().contains(newText)) {
-                resultCards.add(card);
+            if(course.getTitle().contains(newText) || course.getCreate_by().getBio().getFirstName().contains(newText)
+                    || course.getDescription().contains(newText)) {
+                resultCourses.add(course);
             }
         }
-        adapter.setListCard(resultCards);
+        adapter.setListCard(resultCourses);
 
         return true;
     }
@@ -173,10 +175,16 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
         // retrieve the GridView item
-        Card card = cardList.get(position);
+        Course course = courseList.get(position);
 
         // do something
-        Toast.makeText(getActivity(), card.getTitle(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), CourseActivity.class);
+        Gson gson = new Gson();
+        Type type = new TypeToken<Course>() {
+        }.getType();
+        String jsonCourse = gson.toJson(course, type);
+        intent.putExtra("course", jsonCourse);
+        startActivity(intent);
     }
     private class GetCardRequest extends AsyncTask<String, Void, Integer> {
 
@@ -232,15 +240,15 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     // Step 4 : Convert JSON string to User object
                     Gson gson = new Gson();
-                    Type type = new TypeToken<ArrayList<Card>>(){}.getType();
-                    cardList = gson.fromJson(jsonResponse, type);
-                    Log.e("Size", String.valueOf(cardList.size()));
-                    Log.e("Card list:", jsonResponse);
+                    Type type = new TypeToken<ArrayList<Course>>(){}.getType();
+                    courseList = gson.fromJson(jsonResponse, type);
+                    Log.e("Size", String.valueOf(courseList.size()));
+                    Log.e("Course list:", jsonResponse);
                 }
                 else {
                     Toast.makeText(getActivity(), "Error while getting card list", Toast.LENGTH_LONG).show();
                 }
-                adapter.setListCard(cardList);
+                adapter.setListCard(courseList);
             } catch (Exception e) {
                 e.printStackTrace();
             }

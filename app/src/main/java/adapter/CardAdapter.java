@@ -2,8 +2,6 @@ package adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.media.Image;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +11,10 @@ import android.widget.TextView;
 
 import com.example.luan.activity.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Random;
 
-import entity.Card;
+import entity.Course;
 import support.Support;
 
 /**
@@ -27,21 +23,21 @@ import support.Support;
 public class CardAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<Card> cards;
+    private ArrayList<Course> courses;
 
     public CardAdapter(Context context) {
         this.context = context;
-        this.cards = new ArrayList<>();
+        this.courses = new ArrayList<>();
     }
 
     @Override
     public int getCount() {
-        return cards.size();
+        return courses.size();
     }
 
     @Override
-    public Card getItem(int position) {
-        return cards.get(position);
+    public Course getItem(int position) {
+        return courses.get(position);
     }
 
     @Override
@@ -70,13 +66,13 @@ public class CardAdapter extends BaseAdapter {
         TextView description = (TextView) convertView.findViewById(R.id.description);
         TextView star = (TextView) convertView.findViewById(R.id.star);
         //TextView vote = (TextView) convertView.findViewById(R.id.vote);
-        Card card = cards.get(position);
+        Course course = courses.get(position);
 
-        title.setText(card.getTitle());
-        creator.setText(card.getCreate_by().getBio().getFirstName());
-        description.setText(card.getDescription());
-        star.setText(String.valueOf(card.getRating()));
-        //vote.setText(String.valueOf(card.getUpvotes()));
+        title.setText(course.getTitle());
+        creator.setText(course.getCreate_by().getBio().getFirstName());
+        description.setText(course.getDescription());
+        star.setText(String.valueOf(course.getRating()));
+        //vote.setText(String.valueOf(course.getUpvotes()));
 
         Random generator = new Random();
         int random = generator.nextInt(9);
@@ -87,9 +83,9 @@ public class CardAdapter extends BaseAdapter {
     }
 
     // Update new data in adapter
-    public void setListCard(ArrayList<Card> cards) {
-        this.cards.clear();
-        this.cards.addAll(cards);
+    public void setListCard(ArrayList<Course> courses) {
+        this.courses.clear();
+        this.courses.addAll(courses);
         // Update adapter's data
         notifyDataSetChanged();
     }
