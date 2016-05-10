@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -54,7 +53,7 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
         new GetListUserReQuest().execute(getUserList);
 
         // initialize adapter
-        adapter = new UserAdapter(getActivity(), R.layout.student_fragment, userList);
+        adapter = new UserAdapter(getActivity(), R.layout.user_fragment, userList);
 
     }
 
@@ -62,7 +61,7 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.student_fragment, container, false);
+        return inflater.inflate(R.layout.user_fragment, container, false);
     }
 
     @Override

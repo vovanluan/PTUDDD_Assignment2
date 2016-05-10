@@ -1,7 +1,7 @@
 package Fragment;
 
 /**
- * Created by Luan on 5/2/2016.
+ * Created by Luan on 5/10/2016.
  */
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 
 import com.example.luan.activity.R;
 
-public class NotificationFragment extends Fragment{
+public class CourseFragment extends Fragment{
 
-    public NotificationFragment() {
+    public CourseFragment() {
     }
 
     @Override

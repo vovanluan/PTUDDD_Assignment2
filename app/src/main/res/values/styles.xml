@@ -20,5 +20,19 @@
     <style name="MyMaterialTheme" parent="AppTheme.Base">
 
     </style>
+    <style name="TextViewApperance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:layout_marginTop">@dimen/activity_top_margin</item>
+    </style>
+    <style name="EditTextApperance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_margin">0dp</item>
+        <!--<item name="android:background">@android:color/transparent</item>-->
+        <item name="android:paddingTop">0dp</item>
+    </style>
 
 </resources>

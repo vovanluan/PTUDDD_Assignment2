@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     Button login, signup;
     User user;
     Local local;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,15 +49,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Support support = new Support();
-                if(!support.isValidEmail(email.getText().toString())){
+                if (!support.isValidEmail(email.getText().toString())) {
                     showError(email);
                     email.setError("Please enter your email");
-                }
-                else if(password.getText().toString().isEmpty() || password.getText().toString().contains(" ")){
+                } else if (password.getText().toString().isEmpty() || password.getText().toString().contains(" ")) {
                     showError(password);
                     password.setError("Please enter your password");
-                }
-                else {
+                } else {
                     String url = Support.HOST + "login";
                     local = new Local();
                     local.setEmail(email.getText().toString());
@@ -82,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
     private class LoginRequest extends AsyncTask<String, Void, Integer> {
         private String jsonResponse;
         private final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
+
         @Override
         protected void onPreExecute() {
             this.dialog.setMessage("Log in...");
@@ -103,7 +103,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Convert this object to json string using gson
                 Gson gson = new Gson();
-                Type type = new TypeToken<Local>(){}.getType();
+                Type type = new TypeToken<Local>() {
+                }.getType();
                 String json = gson.toJson(local, type);
 
                 OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
@@ -118,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Step 3: Arriving JSON fragments are concatenate into a StringBuilder
                 String line = "";
                 StringBuilder stringBuilder = new StringBuilder();
-                while ((line = responseBuffer.readLine()) != null){
+                while ((line = responseBuffer.readLine()) != null) {
                     stringBuilder.append(line);
                 }
                 jsonResponse = stringBuilder.toString();
@@ -141,16 +142,16 @@ public class LoginActivity extends AppCompatActivity {
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     // Step 4 : Convert JSON string to User object
                     Gson gson = new Gson();
-                    Type  type = new TypeToken<User>(){}.getType();
+                    Type type = new TypeToken<User>() {
+                    }.getType();
                     //user = gson.fromJson(jsonResponse, type);
                     DataHolder.getInstance().setData((User) gson.fromJson(jsonResponse, type));
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     //intent.putExtra("User", jsonResponse);
                     startActivity(intent);
                     LoginActivity.this.finish();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(),"Wrong username or password", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
                     email.setText("");
                     password.setText("");
                 }

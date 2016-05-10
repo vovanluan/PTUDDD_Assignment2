@@ -1,8 +1,9 @@
 package Fragment;
 
 /**
- * Created by Luan on 5/2/2016.
+ * Created by Admin on 5/10/2016.
  */
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,9 +12,10 @@ import android.view.ViewGroup;
 
 import com.example.luan.activity.R;
 
-public class NotificationFragment extends Fragment{
 
-    public NotificationFragment() {
+public class ProfileFragment extends Fragment {
+
+    public ProfileFragment() {
     }
 
     @Override
@@ -25,7 +27,7 @@ public class NotificationFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.user_fragment, container, false);
+        return inflater.inflate(R.layout.profile_fragment, container, false);
     }
 
 }

@@ -30,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText password, confirmPassword, email, firstName, lastName;
     Button signup;
     User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,21 +47,19 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Check empty field or blank space
                 Support support = new Support();
-                if(!support.isValidEmail(email.getText().toString())){
+                if (!support.isValidEmail(email.getText().toString())) {
                     showError(email);
                     email.setError("Please enter your email");
                     return;
-                }
-                else if(password.getText().toString().isEmpty() || password.getText().toString().contains(" ")){
+                } else if (password.getText().toString().isEmpty() || password.getText().toString().contains(" ")) {
                     showError(password);
                     password.setError("Please enter your password");
                     return;
-                }
-                else if(confirmPassword.getText().toString().isEmpty() || confirmPassword.getText().toString().contains(" ")){
+                } else if (confirmPassword.getText().toString().isEmpty() || confirmPassword.getText().toString().contains(" ")) {
                     showError(confirmPassword);
                     confirmPassword.setError("Please confirm your password");
                     return;
-                }                
+                }
 
                 // Check password and confirm password fields have the same value
                 if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
@@ -84,15 +83,17 @@ public class RegisterActivity extends AppCompatActivity {
         Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
         editText.startAnimation(shake);
     }
-    
+
     private class RegisterRequest extends AsyncTask<String, Void, Integer> {
         private final ProgressDialog dialog = new ProgressDialog(RegisterActivity.this);
+
         @Override
         protected void onPreExecute() {
             this.dialog.setMessage("Sign up...");
             this.dialog.setCancelable(false);
             this.dialog.show();
         }
+
         @Override
         protected Integer doInBackground(String... urls) {
             try {
@@ -108,7 +109,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                 // Convert this object to json string using gson
                 Gson gson = new Gson();
-                Type type = new TypeToken<Local>(){}.getType();
+                Type type = new TypeToken<Local>() {
+                }.getType();
                 String json = gson.toJson(user.getLocal(), type);
                 Log.e("Json", json);
 
@@ -118,8 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
                 wr.close();
                 Log.e("Response Message", urlConnection.getResponseMessage());
                 return urlConnection.getResponseCode();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
 
             }
 
@@ -136,8 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
-            }
-            else {
+            } else {
                 Toast.makeText(RegisterActivity.this, "Email already in use. Please use another email!", Toast.LENGTH_LONG).show();
             }
 

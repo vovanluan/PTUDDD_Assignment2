@@ -26,6 +26,7 @@ public class CardAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<Card> cards;
+
     public CardAdapter(Context context) {
         this.context = context;
         this.cards = new ArrayList<>();

@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -54,11 +55,6 @@ public class HomeActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
-    TextView name, email;
-    User user;
-    String jsonUser;
-    ArrayList<Card> cardList;
-    String[] SPINNERLIST = {"A student", "A teacher"};
     private BroadcastReceiver logOutBroadcastReceiver, userChangeBroadcastReceiver;
     private AlertDialog.Builder logoutDialog;
     private CardFragment cardFragment;
@@ -69,6 +65,7 @@ public class HomeActivity extends AppCompatActivity {
             R.drawable.ic_group,
             R.drawable.ic_notifications
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,12 +76,13 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // create navigation tab and viewpager
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
         cardFragment = new CardFragment();
         userFragment = new UserFragment();
         notificationFragment = new NotificationFragment();
-        //adapter.addFragment(cardFragment, "Card");
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(cardFragment, "");
         adapter.addFragment(userFragment, "");
         adapter.addFragment(notificationFragment, "");
@@ -167,34 +165,34 @@ public class HomeActivity extends AppCompatActivity {
 
 
                 //Checking if the item is in checked state or not, if not make it in checked state
-                if(menuItem.isChecked()) menuItem.setChecked(false);
+                if (menuItem.isChecked()) menuItem.setChecked(false);
                 else menuItem.setChecked(true);
 
                 //Closing drawer on item click
                 drawerLayout.closeDrawers();
 
                 //Check to see which item was being clicked and perform appropriate action
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.profile:
-                        Intent i = new Intent(HomeActivity.this, InformationActivity.class);
+                        Intent i = new Intent(HomeActivity.this, ProfileActivity.class);
                         //i.putExtra("User", jsonUser);
                         startActivity(i);
                         return true;
                     case R.id.settings:
-                        Toast.makeText(getApplicationContext(),"Setttings Selected",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Setttings Selected", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.feedback:
                         FeedbackDialogFragment feedbackDialogFragment = FeedbackDialogFragment.getInstance();
                         feedbackDialogFragment.show(getSupportFragmentManager(), "feedback");
                         return true;
                     case R.id.aboutUs:
-                        Toast.makeText(getApplicationContext(),"About us Selected",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "About us Selected", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.logOut:
                         logoutDialog.show();
                         return true;
                     default:
-                        Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
                         return true;
 
                 }
@@ -203,7 +201,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // Initializing Drawer Layout and ActionBarToggle
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.openDrawer, R.string.closeDrawer){
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -228,8 +226,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         //unregisterReceiver(broadcastReceiver);
         super.onStop();
     }
@@ -243,9 +240,10 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(startMain);
         //logoutDialog.show();
     }
+
     private class LogoutRequest extends AsyncTask<String, Void, Integer> {
-        private String jsonResponse;
         private final ProgressDialog dialog = new ProgressDialog(HomeActivity.this);
+
         @Override
         protected void onPreExecute() {
             this.dialog.setMessage("Log out...");
@@ -286,9 +284,8 @@ public class HomeActivity extends AppCompatActivity {
                     Intent broadcastIntent = new Intent();
                     broadcastIntent.setAction("ACTION_LOGOUT");
                     sendBroadcast(broadcastIntent);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(),"Can not log out!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Can not log out!", Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
 
