@@ -22,9 +22,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import entity.Course;
+import entity.User;
 import fragment.CourseFragment;
 import fragment.UserFragment;
 import fragment.NotificationFragment;
@@ -154,7 +160,12 @@ public class HomeActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.profile:
                         Intent i = new Intent(HomeActivity.this, ProfileActivity.class);
-                        //i.putExtra("User", jsonUser);
+                        // Send user information
+                        Gson gson = new Gson();
+                        Type type = new TypeToken<User>() {
+                        }.getType();
+                        String jsonUser = gson.toJson(DataHolder.getInstance().getData(), type);
+                        i.putExtra("User", jsonUser);
                         startActivity(i);
                         return true;
                     case R.id.settings:

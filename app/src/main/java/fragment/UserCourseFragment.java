@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import adapter.CardAdapter;
 import entity.Course;
 import entity.DataHolder;
+import entity.User;
 import support.Support;
 
 public class UserCourseFragment extends Fragment implements AdapterView.OnItemClickListener{
@@ -38,6 +39,7 @@ public class UserCourseFragment extends Fragment implements AdapterView.OnItemCl
     private CardAdapter adapter;
     private GridView gridView;
     private View view;
+    private User user;
     public UserCourseFragment() {
     }
 
@@ -46,8 +48,13 @@ public class UserCourseFragment extends Fragment implements AdapterView.OnItemCl
         super.onCreate(savedInstanceState);
 
         // initialize card list
-        courseList = DataHolder.getInstance().getData().getCourses();
-        String getCardListURL = Support.HOST +"cards";
+        String jsonUser = getArguments().getString("User");
+        Gson gson = new Gson();
+        Type type = new TypeToken<User>() {
+        }.getType();
+        user = gson.fromJson(jsonUser, type);
+        courseList = user.getCourses();
+        //String getCardListURL = Support.HOST +"cards";
         //new GetCardRequest().execute(getCardListURL);
 
         // initialize adapter

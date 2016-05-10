@@ -42,6 +42,7 @@ import support.Support;
 public class ProfileFragment extends Fragment {
     EditText firstName, lastName, phoneNumber, age, university;
     Button update;
+    User userFromActivity;
     User user;
     public ProfileFragment() {
     }
@@ -55,13 +56,13 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.profile_fragment, container, false);
-    }
+        String jsonUser = getArguments().getString("User");
+        Gson gson = new Gson();
+        Type type = new TypeToken<User>() {
+        }.getType();
+        userFromActivity = gson.fromJson(jsonUser, type);
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+        View view = inflater.inflate(R.layout.profile_fragment, container, false);
         firstName = (EditText) view.findViewById(R.id.firstname);
         lastName = (EditText) view.findViewById(R.id.lastname);
         phoneNumber = (EditText) view.findViewById(R.id.phone);
@@ -69,11 +70,22 @@ public class ProfileFragment extends Fragment {
         university = (EditText) view.findViewById(R.id.university);
         update = (Button) view.findViewById(R.id.update);
 
-        firstName.setText(DataHolder.getInstance().getData().getBio().getFirstName());
-        lastName.setText(DataHolder.getInstance().getData().getBio().getLastName());
-        phoneNumber.setText(DataHolder.getInstance().getData().getBio().getPhoneNumber());
-        age.setText(String.valueOf(DataHolder.getInstance().getData().getBio().getAge()));
-        university.setText(DataHolder.getInstance().getData().getBio().getUniversity());
+        //Check if user view another user's profile
+        if(!userFromActivity.get_id().equals(DataHolder.getInstance().getData().get_id())) {
+            update.setVisibility(View.GONE);
+        }
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        firstName.setText(userFromActivity.getBio().getFirstName());
+        lastName.setText(userFromActivity.getBio().getLastName());
+        phoneNumber.setText(userFromActivity.getBio().getPhoneNumber());
+        age.setText(String.valueOf(userFromActivity.getBio().getAge()));
+        university.setText(userFromActivity.getBio().getUniversity());
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +115,7 @@ public class ProfileFragment extends Fragment {
                     age.setError("Please enter your phone number");
                     return;
                 }
-                String url = Support.HOST + "users/" + DataHolder.getInstance().getData().get_id() + "/update";
+                String url = Support.HOST + "users/" + userFromActivity.get_id() + "/update";
                 Log.e("URL", url);
                 UpdateRequest updateRequest = new UpdateRequest();
                 updateRequest.execute(url);
@@ -167,6 +179,11 @@ public class ProfileFragment extends Fragment {
 
                 Log.e("JSON response", jsonResponse);
                 Log.e("Response Message", urlConnection.getResponseMessage());
+                String jsonUser = getArguments().getString("User");
+                Gson gsonResponse = new Gson();
+                Type typeResponse = new TypeToken<User>() {
+                }.getType();
+                user = gson.fromJson(jsonResponse, type);
                 return urlConnection.getResponseCode();
 
             } catch (Exception e) {
@@ -182,9 +199,7 @@ public class ProfileFragment extends Fragment {
             }
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 Toast.makeText(getActivity(), "Update successfully!", Toast.LENGTH_LONG).show();
-                String _id = DataHolder.getInstance().getData().get_id();
                 DataHolder.getInstance().setData(user);
-                DataHolder.getInstance().getData().set_id(_id);
                 Intent broadcastIntent = new Intent();
                 broadcastIntent.setAction("USER_CHANGE");
                 getActivity().sendBroadcast(broadcastIntent);
