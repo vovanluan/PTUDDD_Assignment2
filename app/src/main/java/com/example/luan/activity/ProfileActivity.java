@@ -6,13 +6,10 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ScrollView;
 
-import Fragment.ContactFragment;
-import Fragment.CourseFragment;
-import Fragment.ProfileFragment;
+import fragment.ContactFragment;
+import fragment.UserCourseFragment;
+import fragment.ProfileFragment;
 import adapter.ViewPagerAdapter;
 
 /**
@@ -25,7 +22,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ViewPagerAdapter adapter;
     private ProfileFragment profileFragment;
     private ContactFragment contactFragment;
-    private CourseFragment courseFragment;
+    private UserCourseFragment userCourseFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,13 +32,13 @@ public class ProfileActivity extends AppCompatActivity {
         // create navigation tab and viewpager
         profileFragment = new ProfileFragment();
         contactFragment = new ContactFragment();
-        courseFragment = new CourseFragment();
+        userCourseFragment = new UserCourseFragment();
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(profileFragment, "Profile");
         adapter.addFragment(contactFragment, "Contact");
-        adapter.addFragment(courseFragment, "Course");
+        adapter.addFragment(userCourseFragment, "Course");
         viewPager.setAdapter(adapter);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);

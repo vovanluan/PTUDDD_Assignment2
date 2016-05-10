@@ -10,8 +10,6 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,31 +17,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
-import Fragment.CardFragment;
-import Fragment.UserFragment;
-import Fragment.NotificationFragment;
-import Fragment.FeedbackDialogFragment;
+import fragment.CourseFragment;
+import fragment.UserFragment;
+import fragment.NotificationFragment;
+import fragment.FeedbackDialogFragment;
 import adapter.ViewPagerAdapter;
-import entity.Card;
 import entity.DataHolder;
-import entity.User;
 import support.Support;
 
 public class HomeActivity extends AppCompatActivity {
@@ -57,12 +44,12 @@ public class HomeActivity extends AppCompatActivity {
     private ViewPagerAdapter adapter;
     private BroadcastReceiver logOutBroadcastReceiver, userChangeBroadcastReceiver;
     private AlertDialog.Builder logoutDialog;
-    private CardFragment cardFragment;
+    private CourseFragment courseFragment;
     private UserFragment userFragment;
     private NotificationFragment notificationFragment;
     private int[] tabIcons = {
             R.drawable.ic_class,
-            R.drawable.ic_group,
+            R.drawable.ic_user_list,
             R.drawable.ic_notifications
     };
 
@@ -77,13 +64,13 @@ public class HomeActivity extends AppCompatActivity {
 
         // create navigation tab and viewpager
 
-        cardFragment = new CardFragment();
+        courseFragment = new CourseFragment();
         userFragment = new UserFragment();
         notificationFragment = new NotificationFragment();
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(cardFragment, "");
+        adapter.addFragment(courseFragment, "");
         adapter.addFragment(userFragment, "");
         adapter.addFragment(notificationFragment, "");
         viewPager.setAdapter(adapter);
@@ -144,14 +131,6 @@ public class HomeActivity extends AppCompatActivity {
         IntentFilter userChangeIntentFilter = new IntentFilter();
         userChangeIntentFilter.addAction("USER_CHANGE");
         registerReceiver(userChangeBroadcastReceiver, userChangeIntentFilter);
-
-/*        // create spinner for choosing user type
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
-        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
-                findViewById(R.id.user_type_spinner);
-        materialDesignSpinner.setAdapter(arrayAdapter);*/
 
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);

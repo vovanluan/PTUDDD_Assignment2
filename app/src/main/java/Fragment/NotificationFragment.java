@@ -1,4 +1,4 @@
-package Fragment;
+package fragment;
 
 /**
  * Created by Luan on 5/2/2016.

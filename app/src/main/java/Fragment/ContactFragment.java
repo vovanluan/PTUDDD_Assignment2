@@ -1,4 +1,4 @@
-package Fragment;
+package fragment;
 
 /**
  * Created by Luan on 5/10/2016.
@@ -25,7 +25,7 @@ public class ContactFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.user_fragment, container, false);
+        return inflater.inflate(R.layout.contact_fragment, container, false);
     }
 
 }

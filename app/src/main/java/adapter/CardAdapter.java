@@ -2,11 +2,13 @@ package adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.luan.activity.R;
@@ -57,23 +59,29 @@ public class CardAdapter extends BaseAdapter {
         }
 
         // Generate random color
-        Random generator = new Random();
+/*        Random generator = new Random();
         int random = generator.nextInt(9);
         String color = Support.COLOR[random];
 
-        convertView.setBackgroundColor(Color.parseColor(color));
+        convertView.setBackgroundColor(Color.parseColor(color));*/
+        ImageView courseImage = (ImageView) convertView.findViewById(R.id.courseImage);
         TextView title = (TextView) convertView.findViewById(R.id.title);
         TextView creator = (TextView) convertView.findViewById(R.id.creator);
         TextView description = (TextView) convertView.findViewById(R.id.description);
         TextView star = (TextView) convertView.findViewById(R.id.star);
-        TextView vote = (TextView) convertView.findViewById(R.id.vote);
+        //TextView vote = (TextView) convertView.findViewById(R.id.vote);
         Card card = cards.get(position);
 
         title.setText(card.getTitle());
         creator.setText(card.getCreate_by().getBio().getFirstName());
         description.setText(card.getDescription());
         star.setText(String.valueOf(card.getRating()));
-        vote.setText(String.valueOf(card.getUpvotes()));
+        //vote.setText(String.valueOf(card.getUpvotes()));
+
+        Random generator = new Random();
+        int random = generator.nextInt(9);
+        String color = Support.COLOR[random];
+        courseImage.setBackgroundColor(Color.parseColor(color));
 
         return convertView;
     }
