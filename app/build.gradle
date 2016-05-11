@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:design:22.2.0'
     compile 'com.weiwangcn.betterspinner:library-material:1.1.0'
     compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.toptoche.searchablespinner:searchablespinnerlibrary:1.2.0'
 }

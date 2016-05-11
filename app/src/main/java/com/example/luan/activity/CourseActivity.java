@@ -1,11 +1,13 @@
 package com.example.luan.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import java.lang.reflect.Type;
 import java.util.Random;
 
 import entity.Course;
+import entity.User;
 import support.Support;
 
 /**
@@ -32,7 +35,7 @@ public class CourseActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
 
-        String jsonCourse = getIntent().getStringExtra("course");
+        final String jsonCourse = getIntent().getStringExtra("course");
         Log.e("Course:", jsonCourse);
         Gson gson = new Gson();
         Type type = new TypeToken<Course>() {
@@ -57,5 +60,18 @@ public class CourseActivity extends AppCompatActivity{
         String color = Support.COLOR[random];
         courseImage.setBackgroundColor(Color.parseColor(color));
 
+        creator.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+/*                Intent i = new Intent(CourseActivity.this, ProfileActivity.class);
+                User user = course.getCreate_by();
+                Gson gson = new Gson();
+                Type type = new TypeToken<User>(){}.getType();
+                String jsonUser = gson.toJson(user, type);
+                i.putExtra("User", jsonUser);
+                startActivity(i);*/
+            }
+        });
     }
 }

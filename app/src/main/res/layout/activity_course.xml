@@ -65,7 +65,9 @@
                         android:id="@+id/creator"
                         style="@style/BigCreator"
                         android:text="abc"
-                        android:layout_toRightOf="@+id/by"/>
+                        android:layout_toRightOf="@+id/by"
+                        android:onClick="onClick"
+                        android:clickable="true"/>
                 </RelativeLayout>
 
                 <RelativeLayout

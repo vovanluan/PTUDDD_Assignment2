@@ -37,5 +37,6 @@
     <dimen name="profile_info_size">18dp</dimen>
     <dimen name="rectangle_margin">4dp</dimen>
     <dimen name="avatar_margin">5dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>
