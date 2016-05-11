@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rectangle">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_image"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/profile"
+                app:border_color="#FF000000"
+                android:layout_margin="@dimen/avatar_margin"
+                android:layout_centerInParent="true"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray"
+                android:layout_marginBottom="2dp"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/titleRL">
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/title"
+                        style="@style/BigTitle"
+                        android:hint="Course's Name"
+                        android:layout_centerInParent="true"
+                        android:background="@android:color/transparent"
+                        android:maxLines="1"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/titleRL"
+                    android:id="@+id/creatorRL"
+                    android:layout_centerInParent="true">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="by "
+                        style="@style/BigCreator"
+                        android:id="@+id/by" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/creator"
+                        style="@style/BigCreator"
+                        android:text="abc"
+                        android:layout_toRightOf="@+id/by" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop = "12dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_language"
+                android:id="@+id/languageIcon"
+                android:layout_centerVertical="true"/>
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/languageIcon"
+                android:id="@+id/languageSpinner" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_centerInParent="true"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_location_on"
+                android:id="@+id/locationIcon"
+                android:layout_centerVertical="true"/>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/locationIcon"
+                android:text="The Coffee house, Ly Thuong Kiet, Q.10"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/place"
+                style="@style/BigDescription"
+                android:background="@android:color/transparent"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_centerInParent="true"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_access_time"
+                android:id="@+id/timeIcon"
+                android:layout_centerVertical="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/timeIcon"
+                android:text="Thursday, 3:00 PM - 5:00 PM"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/time"
+                style="@style/BigDescription"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_centerInParent="true"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_description"
+                android:id="@+id/descriptionIcon"
+                android:layout_centerVertical="true"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/descriptionIcon"
+                android:id="@+id/description"
+                style="@style/BigDescription"
+                android:hint="Write something about your course..."
+                android:maxLines="10"
+                android:background="@android:color/transparent"/>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  Create"
+                    android:id="@+id/createBtn"
+                    style="@style/buttonStyle"
+                    android:background="@drawable/icon_button"
+                    android:drawableLeft="@drawable/ic_play"
+                    android:layout_centerInParent="true"/>
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

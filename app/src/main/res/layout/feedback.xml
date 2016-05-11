@@ -2,18 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text = "Send feed back for YuYo"-->
-        <!--android:textSize="20dp"-->
-        <!--android:layout_margin="@dimen/feedback_margin"/>-->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/gray"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +19,7 @@
         android:lines="5"
         android:gravity="top"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -43,23 +31,27 @@
             android:layout_height="wrap_content"
             android:text="from: "
             android:textSize="12dp"
-            android:textColor="@color/gray"/>
+            android:textColor="@color/gray"
+            android:id="@+id/from"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/email"
             android:textSize="12dp"
             android:text="av@gmail.com"
-            android:textColor="@color/gray"/>
+            android:textColor="@color/gray"
+            android:layout_toRightOf="@+id/from"
+            android:layout_marginLeft="10dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit"
             android:id="@+id/submit"
             android:textSize="18dp"
-            android:layout_marginLeft="20dp"
             android:textColor="@color/black"
             android:onClick="onClick"
-            android:clickable="true"/>
-    </LinearLayout>
+            android:clickable="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp" />
+    </RelativeLayout>
 </LinearLayout>

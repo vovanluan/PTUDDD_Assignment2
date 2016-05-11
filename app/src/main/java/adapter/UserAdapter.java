@@ -21,6 +21,7 @@ import entity.User;
 public class UserAdapter extends ArrayAdapter<User> {
     private ArrayList<User> userList;
     private Context context;
+
     public UserAdapter(Context context, int layoutResourceId, ArrayList<User> users) {
         super(context, layoutResourceId, users);
         this.context = context;
@@ -49,7 +50,7 @@ public class UserAdapter extends ArrayAdapter<User> {
     }
 
     // update list user
-    public void setListUser(ArrayList<User> users){
+    public void setListUser(ArrayList<User> users) {
         this.userList.clear();
         this.userList.addAll(users);
         notifyDataSetChanged();

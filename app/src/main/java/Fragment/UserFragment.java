@@ -1,9 +1,10 @@
-package Fragment;
+package fragment;
 
 /**
  * Created by Luan on 5/2/2016.
  */
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,10 +19,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.luan.activity.ProfileActivity;
 import com.example.luan.activity.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -34,6 +35,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import adapter.UserAdapter;
+import entity.DataHolder;
 import entity.User;
 import support.Support;
 
@@ -54,7 +56,7 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
         new GetListUserReQuest().execute(getUserList);
 
         // initialize adapter
-        adapter = new UserAdapter(getActivity(), R.layout.student_fragment, userList);
+        adapter = new UserAdapter(getActivity(), R.layout.user_fragment, userList);
 
     }
 
@@ -62,7 +64,7 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.student_fragment, container, false);
+        return inflater.inflate(R.layout.user_fragment, container, false);
     }
 
     @Override
@@ -172,8 +174,15 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
         // retrieve the ListView item
         User user = userList.get(position);
 
-        // do something
-        Toast.makeText(getActivity(), user.getBio().getFirstName(), Toast.LENGTH_SHORT).show();
+        // start new intent
+        Intent i = new Intent(getActivity(), ProfileActivity.class);
+        // Send user information
+        Gson gson = new Gson();
+        Type type = new TypeToken<User>() {
+        }.getType();
+        String jsonUser = gson.toJson(user, type);
+        i.putExtra("User", jsonUser);
+        startActivity(i);
     }
 
     private class GetListUserReQuest extends AsyncTask<String, Void, Integer> {

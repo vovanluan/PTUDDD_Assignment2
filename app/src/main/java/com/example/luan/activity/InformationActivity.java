@@ -3,6 +3,7 @@ package com.example.luan.activity;
 /**
  * Created by Luan on 3/30/2016.
  */
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -35,12 +36,14 @@ import java.net.URL;
 import entity.DataHolder;
 import entity.User;
 import support.Support;
+
 public class InformationActivity extends AppCompatActivity {
     EditText firstName, lastName, phoneNumber, age, university;
     TextView email;
     Button update;
     User user;
     String jsonUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,10 +97,9 @@ public class InformationActivity extends AppCompatActivity {
                 }
 
                 // validate phoneNumber
-                if(TextUtils.isEmpty(phoneNumber.getText().toString()) || support.isValidPhoneNumber(phoneNumber.getText().toString())){
+                if (TextUtils.isEmpty(phoneNumber.getText().toString()) || support.isValidPhoneNumber(phoneNumber.getText().toString())) {
                     user.getBio().setPhoneNumber(phoneNumber.getText().toString());
-                }
-                else {
+                } else {
                     showError(phoneNumber);
                     age.setError("Please enter your phone number");
                     return;
@@ -119,12 +121,14 @@ public class InformationActivity extends AppCompatActivity {
 
         public User u;
         private final ProgressDialog dialog = new ProgressDialog(InformationActivity.this);
+
         @Override
         protected void onPreExecute() {
             this.dialog.setMessage("Updating...");
             this.dialog.setCancelable(false);
             this.dialog.show();
         }
+
         @Override
         protected Integer doInBackground(String... urls) {
             try {
@@ -140,7 +144,8 @@ public class InformationActivity extends AppCompatActivity {
 
                 // Convert this object to json string using gson
                 Gson gson = new Gson();
-                Type type = new TypeToken<User>(){}.getType();
+                Type type = new TypeToken<User>() {
+                }.getType();
                 String json = gson.toJson(user, type);
                 Log.e("Json", json);
 
@@ -156,7 +161,7 @@ public class InformationActivity extends AppCompatActivity {
                 // Step 3: Arriving JSON fragments are concatenate into a StringBuilder
                 String line = "";
                 StringBuilder stringBuilder = new StringBuilder();
-                while ((line = responseBuffer.readLine()) != null){
+                while ((line = responseBuffer.readLine()) != null) {
                     stringBuilder.append(line);
                 }
                 String jsonResponse = stringBuilder.toString();
@@ -165,8 +170,7 @@ public class InformationActivity extends AppCompatActivity {
                 Log.e("Response Message", urlConnection.getResponseMessage());
                 return urlConnection.getResponseCode();
 
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
 
             }
             return 0;
@@ -185,8 +189,7 @@ public class InformationActivity extends AppCompatActivity {
                 Intent broadcastIntent = new Intent();
                 broadcastIntent.setAction("USER_CHANGE");
                 sendBroadcast(broadcastIntent);
-            }
-            else {
+            } else {
                 Toast.makeText(InformationActivity.this, "Error when update information", Toast.LENGTH_LONG).show();
             }
 
