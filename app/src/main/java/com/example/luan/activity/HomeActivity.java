@@ -170,6 +170,16 @@ public class HomeActivity extends AppCompatActivity {
         logOutIntentFilter.addAction("ACTION_LOGOUT");
         registerReceiver(logOutBroadcastReceiver, logOutIntentFilter);
 
+        BroadcastReceiver updateCardListBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                HomeActivity.this.courseFragment.adapter.setListCard(DataHolder.getInstance().getCourseList());
+            }
+        };
+        IntentFilter updateCardListIntentFilter = new IntentFilter();
+        updateCardListIntentFilter.addAction("UPDATE_CARD_LIST");
+        registerReceiver(updateCardListBroadcastReceiver, updateCardListIntentFilter);
+
         // receive broadcast on user change
         userChangeBroadcastReceiver = new BroadcastReceiver() {
             @Override

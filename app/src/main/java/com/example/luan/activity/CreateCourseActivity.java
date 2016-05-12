@@ -2,6 +2,7 @@ package com.example.luan.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,6 +27,10 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
+
+import net.danlew.android.joda.JodaTimeAndroid;
+
+import org.joda.time.DateTime;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -54,13 +59,14 @@ public class CreateCourseActivity extends AppCompatActivity implements DatePicke
     private SearchableSpinner searchableSpinner;
     private ArrayList<String> languages;
     private Course course;
-    private StringBuilder timeStart;
-    private Calendar timeCourseStart;
+    private int  year,  monthOfYear,  dayOfMonth,hourOfDay,  minute,  second;
+    private DateTime timeCourseStart;
     private TimePickerDialog.OnTimeSetListener fromTimeListener, toTimeListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_create_course);
 
         title = (EditText) findViewById(R.id.title);
@@ -71,9 +77,8 @@ public class CreateCourseActivity extends AppCompatActivity implements DatePicke
         fromTime = (Button) findViewById(R.id.fromTime);
         //toTime = (Button) findViewById(R.id.toTime);
         date = (Button) findViewById(R.id.date);
+        timeCourseStart = new DateTime();
         searchableSpinner = (SearchableSpinner) findViewById(R.id.languageSpinner);
-        timeStart = new StringBuilder();
-        timeCourseStart = new GregorianCalendar();
 
         creator.setText(DataHolder.getInstance().getUser().getBio().getFirstName());
         searchableSpinner.setTitle("Select Item");
@@ -168,15 +173,13 @@ public class CreateCourseActivity extends AppCompatActivity implements DatePicke
                 course.setCategory(searchableSpinner.getSelectedItem().toString());
                 course.setTitle(title.getText().toString());
                 course.setDescription(description.getText().toString());
-
-                Log.e("TIME",timeCourseStart.toString());
+                timeCourseStart = new DateTime(CreateCourseActivity.this.year, CreateCourseActivity.this.monthOfYear, CreateCourseActivity.this.dayOfMonth, CreateCourseActivity.this.hourOfDay, CreateCourseActivity.this.minute);
                 course.setTime(timeCourseStart.toString());
 
                 course.setPlace(place.getText().toString());
                 String postCourseURL = Support.HOST + "cards";
                 Log.e("URL", postCourseURL);
                 new PostCardRequest().execute(postCourseURL);
-                //TODO: Response Internal Server Error after sending post card request
             }
         });
 
@@ -235,24 +238,18 @@ public class CreateCourseActivity extends AppCompatActivity implements DatePicke
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-/*        timeStart.append(year);
-        timeStart.append("-");
-        timeStart.append(monthOfYear + 1);
-        timeStart.append("-");
-        timeStart.append(dayOfMonth);
-        timeStart.append("T");*/
-        timeCourseStart.set(Calendar.YEAR, year);
-        timeCourseStart.set(Calendar.MONTH, monthOfYear);
-        timeCourseStart.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        this.year = year;
+        this.monthOfYear = monthOfYear;
+        this.dayOfMonth = dayOfMonth;
         this.date.setText(date);
     }
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
         String time = hourOfDay + "h" + minute;
-        timeCourseStart.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        timeCourseStart.set(Calendar.MINUTE, minute);
-        timeCourseStart.set(Calendar.SECOND, second);
+        this.hourOfDay = hourOfDay;
+        this.minute = minute;
+        this.second = second;
         fromTime.setText(time);
     }
 
@@ -324,8 +321,12 @@ public class CreateCourseActivity extends AppCompatActivity implements DatePicke
                     }.getType();
                     course = gson.fromJson(jsonResponse, type);
                     DataHolder.getInstance().getUser().getCards().add(course.get_id());
-                    Log.e("Course:", jsonResponse);
+                    DataHolder.getInstance().getCourseList().add(course);
+                    DataHolder.getInstance().getUserById(course.getCreated_by()).getCards().add(course.get_id());
                     Toast.makeText(CreateCourseActivity.this, "Creating course successfully", Toast.LENGTH_LONG).show();
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("UPDATE_CARD_LIST");
+                    sendBroadcast(broadcastIntent);
                     finish();
                 } else {
                     Toast.makeText(CreateCourseActivity.this, "Error while creating new course", Toast.LENGTH_LONG).show();

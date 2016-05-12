@@ -1,6 +1,7 @@
 package com.example.luan.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import java.util.Random;
 
 import entity.Course;
 import entity.DataHolder;
+import entity.User;
 import fragment.ReviewDialogFragment;
 import support.Support;
 
@@ -76,14 +78,13 @@ public class CourseActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View v) {
-                //TODO: get user from server
-//                Intent i = new Intent(CourseActivity.this, ProfileActivity.class);
-//                User user = course.getCreated_by();
-//                Gson gson = new Gson();
-//                Type type = new TypeToken<User>(){}.getType();
-//                String jsonUser = gson.toJson(user, type);
-//                i.putExtra("User", jsonUser);
-//                startActivity(i);
+                Intent i = new Intent(CourseActivity.this, ProfileActivity.class);
+                User user = DataHolder.getInstance().getUserById(course.getCreated_by());
+                Gson gson = new Gson();
+                Type type = new TypeToken<User>(){}.getType();
+                String jsonUser = gson.toJson(user, type);
+                i.putExtra("User", jsonUser);
+                startActivity(i);
             }
         });
 
@@ -97,7 +98,6 @@ public class CourseActivity extends AppCompatActivity{
         reviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO user reviews (rating) a course
                 ReviewDialogFragment reviewDialogFragment = ReviewDialogFragment.getInstance();
                 reviewDialogFragment.course = CourseActivity.this.course;
                 reviewDialogFragment.show(getSupportFragmentManager(), "ReviewDialog");
@@ -170,8 +170,9 @@ public class CourseActivity extends AppCompatActivity{
                     DataHolder.getInstance().removeCourse(course.get_id());
                     //Update new course
                     DataHolder.getInstance().getCourseList().add(course);
+                    Toast.makeText(CourseActivity.this, "Upvoted", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Error while upvote", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CourseActivity.this, "Error while upvote", Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
 

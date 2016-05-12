@@ -98,13 +98,12 @@ public class ReviewDialogFragment extends DialogFragment {
 
                 review = new Review();
                 review.setTitle(title.getText().toString());
-                review.setBody(description.getText().toString());
+                review.setDescription(description.getText().toString());
                 review.setCreated_by(DataHolder.getInstance().getUser().get_id());
                 review.setFor_card(course.get_id());
                 review.setRating(((int) ratingBar.getRating()));
 
-                //TODO: waiting API for sending review
-                String sendReviewURL = Support.HOST + "reviews";
+                String sendReviewURL = Support.HOST + "users/review";
                 new FeedbackRequest().execute(sendReviewURL);
             }
         });

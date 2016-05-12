@@ -6,6 +6,7 @@ package fragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -72,6 +73,11 @@ public class ProfileFragment extends Fragment {
         //Check if user view another user's profile
         if(!userFromActivity.get_id().equals(DataHolder.getInstance().getUser().get_id())) {
             update.setVisibility(View.GONE);
+            firstName.setEnabled(false);
+            lastName.setEnabled(false);
+            phoneNumber.setEnabled(false);
+            age.setEnabled(false);
+            university.setEnabled(false);
         }
         return view;
     }

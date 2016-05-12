@@ -5,7 +5,7 @@ package entity;
  */
 public class Review {
     private String title;
-    private String body;
+    private String description;
     private int rating;
     private String created_by;
     private String for_card;
@@ -34,12 +34,12 @@ public class Review {
         this.title = title;
     }
 
-    public String getBody() {
-        return body;
+    public String getDescription() {
+        return description;
     }
 
-    public void setBody(String description) {
-        this.body = description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getRating() {
