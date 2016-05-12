@@ -71,7 +71,7 @@ public class CardAdapter extends BaseAdapter {
         Course course = courses.get(position);
 
         title.setText(course.getTitle());
-        //creator.setText(DataHolder.getInstance().getUserById(course.getCreated_by()).getBio().getFirstName());
+        creator.setText(DataHolder.getInstance().getUserById(course.getCreated_by()).getBio().getFirstName());
         description.setText(course.getDescription());
         star.setText(String.valueOf(course.getRating()));
         //vote.setText(String.valueOf(course.getUpvotes()));

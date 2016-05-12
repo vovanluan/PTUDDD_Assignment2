@@ -47,7 +47,7 @@ import support.Support;
 
 public class UserFragment extends Fragment implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener {
     ListView myListView;
-    UserAdapter adapter;
+    public UserAdapter adapter;
 
     public UserFragment() {
     }
@@ -56,12 +56,8 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // initialize user list
-        DataHolder.getInstance().setUserList(new ArrayList<User>());
-        String getUserList = Support.HOST + "users";
-        new GetListUserReQuest().execute(getUserList);
-
         // initialize adapter
+        DataHolder.getInstance().setUserList(new ArrayList<User>());
         adapter = new UserAdapter(getActivity(), R.layout.user_fragment, DataHolder.getInstance().getUserList());
 
     }

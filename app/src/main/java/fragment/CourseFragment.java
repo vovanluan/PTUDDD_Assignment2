@@ -41,7 +41,7 @@ import entity.DataHolder;
 import support.Support;
 
 public class CourseFragment extends Fragment implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener{
-    private CardAdapter adapter;
+    public CardAdapter adapter;
     private GridView gridView;
     private View view;
     public CourseFragment() {
@@ -51,12 +51,13 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // initialize card list
+/*        // initialize card list
         DataHolder.getInstance().setCourseList(new ArrayList<Course>());
         String getCardListURL = Support.HOST +"cards";
-        new GetCardRequest().execute(getCardListURL);
+        new GetCardRequest().execute(getCardListURL);*/
 
         // initialize adapter
+        DataHolder.getInstance().setCourseList(new ArrayList<Course>());
         adapter = new CardAdapter(getActivity());
     }
 

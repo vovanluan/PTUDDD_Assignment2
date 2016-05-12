@@ -26,10 +26,15 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
+import entity.Course;
 import entity.User;
 import fragment.CourseFragment;
 import fragment.UserFragment;
@@ -37,6 +42,7 @@ import fragment.NotificationFragment;
 import fragment.FeedbackDialogFragment;
 import adapter.ViewPagerAdapter;
 import entity.DataHolder;
+import support.BackgroundRequest;
 import support.Support;
 
 public class HomeActivity extends AppCompatActivity {
@@ -54,6 +60,7 @@ public class HomeActivity extends AppCompatActivity {
     private UserFragment userFragment;
     private NotificationFragment notificationFragment;
     private FloatingActionButton floatingActionButton;
+    private BackgroundRequest backgroundRequest;
     private int[] tabIcons = {
             R.drawable.ic_class,
             R.drawable.ic_user_list,
@@ -78,14 +85,40 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // create navigation tab and viewpager
+        backgroundRequest = new BackgroundRequest(this);
+        backgroundRequest.getUserListRequest();
 
+        // get broadcast that get user list finished
+        BroadcastReceiver gotUserListBroadCastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                backgroundRequest.getCardListRequest();
+                userFragment.adapter.setListUser(DataHolder.getInstance().getUserList());
+            }
+        };
+        IntentFilter gotUserListIntentFilter = new IntentFilter();
+        gotUserListIntentFilter.addAction("GOT_USER_LIST");
+        registerReceiver(gotUserListBroadCastReceiver, gotUserListIntentFilter);
+
+        // get broadcast that get card list finished
+        BroadcastReceiver gotCardListBroadCastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                courseFragment.adapter.setListCard(DataHolder.getInstance().getCourseList());
+            }
+        };
+
+        IntentFilter gotCardListIntentFilter = new IntentFilter();
+        gotCardListIntentFilter.addAction("GOT_CARD_LIST");
+        registerReceiver(gotCardListBroadCastReceiver, gotCardListIntentFilter);
+        // create navigation tab and viewpager
         courseFragment = new CourseFragment();
         userFragment = new UserFragment();
         notificationFragment = new NotificationFragment();
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
         adapter.addFragment(courseFragment, "");
         adapter.addFragment(userFragment, "");
         adapter.addFragment(notificationFragment, "");
@@ -126,13 +159,16 @@ public class HomeActivity extends AppCompatActivity {
                 Log.d("onReceive", "Logout in progress");
                 //start login activity
                 Intent i = new Intent(HomeActivity.this, LoginActivity.class);
+                DataHolder.getInstance().setUser(null);
+                DataHolder.getInstance().setUserList(null);
+                DataHolder.getInstance().setCourseList(null);
                 startActivity(i);
                 finish();
             }
         };
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("ACTION_LOGOUT");
-        registerReceiver(logOutBroadcastReceiver, intentFilter);
+        IntentFilter logOutIntentFilter = new IntentFilter();
+        logOutIntentFilter.addAction("ACTION_LOGOUT");
+        registerReceiver(logOutBroadcastReceiver, logOutIntentFilter);
 
         // receive broadcast on user change
         userChangeBroadcastReceiver = new BroadcastReceiver() {
@@ -292,4 +328,5 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+
 }

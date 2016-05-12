@@ -169,10 +169,6 @@ public class CreateCourseActivity extends AppCompatActivity implements DatePicke
                 course.setTitle(title.getText().toString());
                 course.setDescription(description.getText().toString());
 
-                Long tsLong = System.currentTimeMillis() / 1000;
-                String ts = tsLong.toString();
-                course.setCreatedAt(ts);
-
                 Log.e("TIME",timeCourseStart.toString());
                 course.setTime(timeCourseStart.toString());
 
