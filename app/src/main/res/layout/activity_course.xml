@@ -66,7 +66,6 @@
                         style="@style/BigCreator"
                         android:text="abc"
                         android:layout_toRightOf="@+id/by"
-                        android:onClick="onClick"
                         android:clickable="true"/>
                 </RelativeLayout>
 
@@ -203,7 +202,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="    Pair up"
-                android:id="@+id/pairUp"
+                android:id="@+id/pairUpBtn"
                 style="@style/pairUpButton"
                 android:background="@drawable/icon_button"
                 android:drawableLeft="@drawable/ic_email"
@@ -245,4 +244,5 @@
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
+
 </ScrollView>

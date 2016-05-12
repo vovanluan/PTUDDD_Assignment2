@@ -7,7 +7,6 @@ package com.example.luan.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +17,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,12 +55,12 @@ public class InformationActivity extends AppCompatActivity {
         university = (EditText) findViewById(R.id.university);
         update = (Button) findViewById(R.id.update);
 
-        email.setText(DataHolder.getInstance().getData().getLocal().getEmail());
-        firstName.setText(DataHolder.getInstance().getData().getBio().getFirstName());
-        lastName.setText(DataHolder.getInstance().getData().getBio().getLastName());
-        phoneNumber.setText(DataHolder.getInstance().getData().getBio().getPhoneNumber());
-        age.setText(String.valueOf(DataHolder.getInstance().getData().getBio().getAge()));
-        university.setText(DataHolder.getInstance().getData().getBio().getUniversity());
+        email.setText(DataHolder.getInstance().getUser().getLocal().getEmail());
+        firstName.setText(DataHolder.getInstance().getUser().getBio().getFirstName());
+        lastName.setText(DataHolder.getInstance().getUser().getBio().getLastName());
+        phoneNumber.setText(DataHolder.getInstance().getUser().getBio().getPhoneNumber());
+        age.setText(String.valueOf(DataHolder.getInstance().getUser().getBio().getAge()));
+        university.setText(DataHolder.getInstance().getUser().getBio().getUniversity());
 
         // initialize a toolbar
         Toolbar toolBar =
@@ -104,7 +102,7 @@ public class InformationActivity extends AppCompatActivity {
                     age.setError("Please enter your phone number");
                     return;
                 }
-                String url = Support.HOST + "users/" + DataHolder.getInstance().getData().get_id() + "/update";
+                String url = Support.HOST + "users/" + DataHolder.getInstance().getUser().get_id() + "/update";
                 Log.e("URL", url);
                 UpdateRequest updateRequest = new UpdateRequest();
                 updateRequest.execute(url);
@@ -183,9 +181,9 @@ public class InformationActivity extends AppCompatActivity {
             }
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 Toast.makeText(InformationActivity.this, "Update successfully!", Toast.LENGTH_LONG).show();
-                String _id = DataHolder.getInstance().getData().get_id();
-                DataHolder.getInstance().setData(user);
-                DataHolder.getInstance().getData().set_id(_id);
+                String _id = DataHolder.getInstance().getUser().get_id();
+                DataHolder.getInstance().setUser(user);
+                DataHolder.getInstance().getUser().set_id(_id);
                 Intent broadcastIntent = new Intent();
                 broadcastIntent.setAction("USER_CHANGE");
                 sendBroadcast(broadcastIntent);

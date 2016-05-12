@@ -1,6 +1,7 @@
 package fragment;
 
 import android.app.ProgressDialog;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -40,6 +41,7 @@ public class FeedbackDialogFragment extends DialogFragment {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance` instead as shown below
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Light_Dialog);
     }
 
     public static FeedbackDialogFragment getInstance() {
@@ -63,7 +65,7 @@ public class FeedbackDialogFragment extends DialogFragment {
         title = (EditText) view.findViewById(R.id.title);
         description = (EditText) view.findViewById(R.id.description);
         email = (TextView) view.findViewById(R.id.email);
-        email.setText(DataHolder.getInstance().getData().getLocal().getEmail());
+        email.setText(DataHolder.getInstance().getUser().getLocal().getEmail());
         submit = (TextView) view.findViewById(R.id.submit);
 
         // Show soft keyboard automatically and request focus to field
@@ -77,7 +79,7 @@ public class FeedbackDialogFragment extends DialogFragment {
                 feedBack = new Feedback();
                 feedBack.setTitle(title.getText().toString());
                 feedBack.setDescription(description.getText().toString());
-                feedBack.setCreated_by(DataHolder.getInstance().getData().get_id());
+                feedBack.setCreated_by(DataHolder.getInstance().getUser().get_id());
                 String sendFeedBackURL = Support.HOST + "feedbacks";
                 new FeedbackRequest().execute(sendFeedBackURL);
             }

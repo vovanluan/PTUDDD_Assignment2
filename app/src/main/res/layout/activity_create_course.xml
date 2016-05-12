@@ -117,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/locationIcon"
-                android:text="The Coffee house, Ly Thuong Kiet, Q.10"
+                android:hint="Course's Location"
                 android:layout_marginLeft="5dp"
                 android:id="@+id/place"
                 style="@style/BigDescription"
@@ -142,14 +142,34 @@
                 android:src="@drawable/ic_access_time"
                 android:id="@+id/timeIcon"
                 android:layout_centerVertical="true"/>
-            <TextView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/timeIcon"
-                android:text="Thursday, 3:00 PM - 5:00 PM"
-                android:layout_marginLeft="5dp"
-                android:id="@+id/time"
-                style="@style/BigDescription"/>
+                android:layout_toRightOf="@id/timeIcon">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fromToRL">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="From"
+                        android:id="@+id/fromTime"
+                        style="@style/buttonStyle"
+                        android:onClick="showFromTimePicker"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="Date"
+                        android:id="@+id/date"
+                        style="@style/buttonStyle"
+                        android:layout_centerHorizontal="true"
+                        android:onClick="showDatePicker"/>
+                </RelativeLayout>
+
+            </RelativeLayout>
+
         </RelativeLayout>
 
         <View

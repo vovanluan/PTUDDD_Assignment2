@@ -133,7 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
                 this.dialog.dismiss();
             }
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                DataHolder.getInstance().setData(user);
+                DataHolder.getInstance().setUser(user);
                 Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();

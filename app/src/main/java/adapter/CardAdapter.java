@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import entity.Course;
+import entity.DataHolder;
+import entity.User;
 import support.Support;
 
 /**
@@ -69,7 +71,7 @@ public class CardAdapter extends BaseAdapter {
         Course course = courses.get(position);
 
         title.setText(course.getTitle());
-        creator.setText(course.getCreate_by().getBio().getFirstName());
+        //creator.setText(DataHolder.getInstance().getUserById(course.getCreated_by()).getBio().getFirstName());
         description.setText(course.getDescription());
         star.setText(String.valueOf(course.getRating()));
         //vote.setText(String.valueOf(course.getUpvotes()));

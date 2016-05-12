@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by Luan on 29/03/2016.
  */
-public class User{
+public class User {
     private String _id;
 
     public String get_id() {
@@ -19,14 +19,19 @@ public class User{
     private Local local;
     private Bio bio;
     private String[] image;
-    private ArrayList<Course> courses;
-
-    public User(){
+    private ArrayList<String> cards;
+    private ArrayList<String> followers;
+    private ArrayList<String> following;
+    private ArrayList<String> upvoted;
+    private ArrayList<String> reviews;
+    public User() {
         local = new Local();
         bio = new Bio();
-        courses = new ArrayList<>();
-
+        cards = new ArrayList<>();
+        followers = new ArrayList<>();
+        following = new ArrayList<>();
     }
+
     public Local getLocal() {
         return local;
     }
@@ -51,12 +56,44 @@ public class User{
         this.image = image;
     }
 
-    public ArrayList<Course> getCourses() {
-        return courses;
+    public ArrayList<String> getCards() {
+        return cards;
     }
 
-    public void setCourses(ArrayList<Course> courses) {
-        this.courses = courses;
+    public void setCards(ArrayList<String> cards) {
+        this.cards = cards;
+    }
+
+    public ArrayList<String> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(ArrayList<String> following) {
+        this.following = following;
+    }
+
+    public ArrayList<String> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(ArrayList<String> followers) {
+        this.followers = followers;
+    }
+
+    public ArrayList<String> getUpvoted() {
+        return upvoted;
+    }
+
+    public void setUpvoted(ArrayList<String> upvoted) {
+        this.upvoted = upvoted;
+    }
+
+    public ArrayList<String> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(ArrayList<String> reviews) {
+        this.reviews = reviews;
     }
 }
 

@@ -37,10 +37,10 @@ import java.util.ArrayList;
 
 import adapter.CardAdapter;
 import entity.Course;
+import entity.DataHolder;
 import support.Support;
 
 public class CourseFragment extends Fragment implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener{
-    private ArrayList<Course> courseList;
     private CardAdapter adapter;
     private GridView gridView;
     private View view;
@@ -52,7 +52,7 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
         super.onCreate(savedInstanceState);
 
         // initialize card list
-        courseList = new ArrayList<>();
+        DataHolder.getInstance().setCourseList(new ArrayList<Course>());
         String getCardListURL = Support.HOST +"cards";
         new GetCardRequest().execute(getCardListURL);
 
@@ -101,7 +101,7 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 // Show all cards after collapsing
-                adapter.setListCard(courseList);
+                adapter.setListCard(DataHolder.getInstance().getCourseList());
                 return true;  // Return true to collapse action view
             }
 
@@ -119,9 +119,9 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
     public boolean onQueryTextSubmit(String query) {
         // Handle search card
         ArrayList<Course> resultCourses = new ArrayList<>();
-        for (Course course : courseList) {
+        for (Course course : DataHolder.getInstance().getCourseList()) {
             // search by title, creator or description
-            if(course.getTitle().contains(query) || course.getCreate_by().getBio().getFirstName().contains(query)
+            if(course.getTitle().contains(query) || DataHolder.getInstance().getUserById(course.getCreated_by()).getBio().getFirstName().contains(query)
                     || course.getDescription().contains(query)) {
                 resultCourses.add(course);
             }
@@ -140,9 +140,9 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
     @Override
     public boolean onQueryTextChange(String newText) {
         ArrayList<Course> resultCourses = new ArrayList<>();
-        for (Course course : courseList) {
+        for (Course course : DataHolder.getInstance().getCourseList()) {
             // search by title, creator or description
-            if(course.getTitle().contains(newText) || course.getCreate_by().getBio().getFirstName().contains(newText)
+            if(course.getTitle().contains(newText) || DataHolder.getInstance().getUserById(course.getCreated_by()).getBio().getFirstName().contains(newText)
                     || course.getDescription().contains(newText)) {
                 resultCourses.add(course);
             }
@@ -175,7 +175,7 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
         // retrieve the GridView item
-        Course course = courseList.get(position);
+        Course course = DataHolder.getInstance().getCourseList().get(position);
 
         // do something
         Intent intent = new Intent(getActivity(), CourseActivity.class);
@@ -220,7 +220,7 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
                     stringBuilder.append(line);
                 }
                 jsonResponse = stringBuilder.toString();
-                Log.e("Json", jsonResponse);
+                Log.e("CourseList", jsonResponse);
                 Log.e("message", urlConnection.getResponseMessage());
                 return urlConnection.getResponseCode();
 
@@ -238,17 +238,14 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
                 }
                 Log.e("CODE", String.valueOf(responseCode));
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    // Step 4 : Convert JSON string to User object
                     Gson gson = new Gson();
                     Type type = new TypeToken<ArrayList<Course>>(){}.getType();
-                    courseList = gson.fromJson(jsonResponse, type);
-                    Log.e("Size", String.valueOf(courseList.size()));
-                    Log.e("Course list:", jsonResponse);
+                    DataHolder.getInstance().setCourseList((ArrayList<Course>) gson.fromJson(jsonResponse, type));
                 }
                 else {
                     Toast.makeText(getActivity(), "Error while getting card list", Toast.LENGTH_LONG).show();
                 }
-                adapter.setListCard(courseList);
+                adapter.setListCard(DataHolder.getInstance().getCourseList());
             } catch (Exception e) {
                 e.printStackTrace();
             }

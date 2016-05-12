@@ -30,7 +30,6 @@ import java.util.ArrayList;
 
 import adapter.CardAdapter;
 import entity.Course;
-import entity.DataHolder;
 import entity.User;
 import support.Support;
 
@@ -53,8 +52,9 @@ public class UserCourseFragment extends Fragment implements AdapterView.OnItemCl
         Type type = new TypeToken<User>() {
         }.getType();
         user = gson.fromJson(jsonUser, type);
-        courseList = user.getCourses();
-        //String getCardListURL = Support.HOST +"cards";
+        courseList = new ArrayList<>();
+        //courseList = user.getCards();
+        String getCardListURL = Support.HOST +"cards";
         //new GetCardRequest().execute(getCardListURL);
 
         // initialize adapter

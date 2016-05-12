@@ -1,23 +1,21 @@
 package entity;
 
+import java.security.Timestamp;
+import java.util.ArrayList;
+
 /**
  * Created by Luan on 5/2/2016.
  */
 
 
-public class Course
-{
+public class Course {
     private String _id;
 
     private int status;
 
-    private User create_by;
-
-    private String __v;
+    private String created_by;
 
     private int upvotes;
-
-    private String date;
 
     private String updatedAt;
 
@@ -31,13 +29,18 @@ public class Course
 
     private String description;
 
-    private int rating;
+    private float rating;
 
     private String place;
 
+    private ArrayList<String> reviews;
 
-    public Course(){
-        this.create_by = new User();
+    private int limit;
+
+    private int accepted;
+
+
+    public Course() {
     }
 
     public String get_id() {
@@ -48,134 +51,117 @@ public class Course
         this._id = _id;
     }
 
-    public int getStatus ()
-    {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus (int status)
-    {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public User getCreate_by ()
-    {
-        return create_by;
-    }
-
-    public void setCreate_by (User create_by)
-    {
-        this.create_by = create_by;
-    }
-
-    public String get__v ()
-    {
-        return __v;
-    }
-
-    public void set__v (String __v)
-    {
-        this.__v = __v;
-    }
-
-    public int getUpvotes ()
-    {
+    public int getUpvotes() {
         return upvotes;
     }
 
-    public void setUpvotes (int upvotes)
-    {
+    public void setUpvotes(int upvotes) {
         this.upvotes = upvotes;
     }
 
-    public String getDate ()
-    {
-        return date;
-    }
-
-    public void setDate (String date)
-    {
-        this.date = date;
-    }
-
-    public String getUpdatedAt ()
-    {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt (String updatedAt)
-    {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public String getTime ()
-    {
+    public String getTime() {
         return time;
     }
 
-    public void setTime (String time)
-    {
+    public void setTime(String time) {
         this.time = time;
     }
 
-    public String getTitle ()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle (String title)
-    {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getCategory ()
-    {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory (String category)
-    {
+    public void setCategory(String category) {
         this.category = category;
     }
 
-    public String getCreatedAt ()
-    {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt (String createdAt)
-    {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getDescription ()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription (String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public int getRating ()
-    {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating (int rating)
-    {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 
-    public String getPlace ()
-    {
+    public String getPlace() {
         return place;
     }
 
-    public void setPlace (String place)
-    {
+    public void setPlace(String place) {
         this.place = place;
+    }
+
+
+    public ArrayList<String> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(ArrayList<String> review) {
+        this.reviews = review;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(int accepted) {
+        this.accepted = accepted;
+    }
+
+    public String getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(String created_by) {
+        this.created_by = created_by;
     }
 
 }

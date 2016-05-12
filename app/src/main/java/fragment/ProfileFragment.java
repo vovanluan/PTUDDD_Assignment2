@@ -19,7 +19,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.luan.activity.R;
@@ -71,7 +70,7 @@ public class ProfileFragment extends Fragment {
         update = (Button) view.findViewById(R.id.update);
 
         //Check if user view another user's profile
-        if(!userFromActivity.get_id().equals(DataHolder.getInstance().getData().get_id())) {
+        if(!userFromActivity.get_id().equals(DataHolder.getInstance().getUser().get_id())) {
             update.setVisibility(View.GONE);
         }
         return view;
@@ -199,7 +198,7 @@ public class ProfileFragment extends Fragment {
             }
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 Toast.makeText(getActivity(), "Update successfully!", Toast.LENGTH_LONG).show();
-                DataHolder.getInstance().setData(user);
+                DataHolder.getInstance().setUser(user);
                 Intent broadcastIntent = new Intent();
                 broadcastIntent.setAction("USER_CHANGE");
                 getActivity().sendBroadcast(broadcastIntent);

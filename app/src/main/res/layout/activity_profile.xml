@@ -21,7 +21,8 @@
             android:src="@drawable/ic_star_border"
             android:layout_alignParentRight="true"
             android:layout_margin="10dp"
-            android:id="@+id/follow"/>
+            android:id="@+id/followBtn"
+            android:clickable="true" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:id="@+id/courses"
+                android:id="@+id/cards"
                 android:textSize="@dimen/profile_info_size"/>
         </LinearLayout>
 

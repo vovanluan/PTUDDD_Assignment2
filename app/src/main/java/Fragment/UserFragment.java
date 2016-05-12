@@ -3,7 +3,9 @@ package fragment;
 /**
  * Created by Luan on 5/2/2016.
  */
+
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,12 +30,16 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+
 import adapter.UserAdapter;
 import entity.DataHolder;
 import entity.User;
@@ -41,8 +47,8 @@ import support.Support;
 
 public class UserFragment extends Fragment implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener {
     ListView myListView;
-    ArrayList<User> userList;
     UserAdapter adapter;
+
     public UserFragment() {
     }
 
@@ -51,12 +57,12 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
         super.onCreate(savedInstanceState);
 
         // initialize user list
-        userList = new ArrayList<>();
+        DataHolder.getInstance().setUserList(new ArrayList<User>());
         String getUserList = Support.HOST + "users";
         new GetListUserReQuest().execute(getUserList);
 
         // initialize adapter
-        adapter = new UserAdapter(getActivity(), R.layout.user_fragment, userList);
+        adapter = new UserAdapter(getActivity(), R.layout.user_fragment, DataHolder.getInstance().getUserList());
 
     }
 
@@ -82,7 +88,7 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     @Override
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.action_menu, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -100,7 +106,7 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 // Show all users after collapsing
-                adapter.setListUser(userList);
+                adapter.setListUser(DataHolder.getInstance().getUserList());
                 return true;  // Return true to collapse action view
             }
 
@@ -118,16 +124,15 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
     public boolean onQueryTextSubmit(String query) {
         // Handle search card
         ArrayList<User> users = new ArrayList<>();
-        for (User user : userList) {
+        for (User user : DataHolder.getInstance().getUserList()) {
             // search by first name
-            if(user.getBio().getFirstName().contains(query)) {
+            if (user.getBio().getFirstName().contains(query)) {
                 users.add(user);
             }
         }
-        if(users.isEmpty()) {
-            Toast.makeText(getActivity(),"Can't find this user", Toast.LENGTH_LONG).show();
-        }
-        else {
+        if (users.isEmpty()) {
+            Toast.makeText(getActivity(), "Can't find this user", Toast.LENGTH_LONG).show();
+        } else {
             adapter.setListUser(users);
         }
         return true;
@@ -138,9 +143,9 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public boolean onQueryTextChange(String newText) {
         ArrayList<User> users = new ArrayList<>();
-        for (User user : userList) {
+        for (User user : DataHolder.getInstance().getUserList()) {
             // search by first name
-            if(user.getBio().getFirstName().contains(newText)) {
+            if (user.getBio().getFirstName().contains(newText)) {
                 users.add(user);
             }
         }
@@ -154,15 +159,15 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_search:
                 // handle click Search button
-                Toast.makeText(getActivity(),"Action search", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Action search", Toast.LENGTH_LONG).show();
                 return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
-                Toast.makeText(getActivity(),"Something else", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Something else", Toast.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
         }
     }
@@ -172,7 +177,7 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
         // retrieve the ListView item
-        User user = userList.get(position);
+        User user = DataHolder.getInstance().getUserList().get(position);
 
         // start new intent
         Intent i = new Intent(getActivity(), ProfileActivity.class);
@@ -189,6 +194,7 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
 
         private String jsonResponse;
         private final ProgressDialog dialog = new ProgressDialog(getActivity());
+
         @Override
         protected void onPreExecute() {
             this.dialog.setMessage("Load list user...");
@@ -215,20 +221,20 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
                 // Step 3: Arriving JSON fragments are concatenate into a StringBuilder
                 String line = "";
                 StringBuilder stringBuilder = new StringBuilder();
-                while ((line = responseBuffer.readLine()) != null){
+                while ((line = responseBuffer.readLine()) != null) {
                     stringBuilder.append(line);
                 }
                 jsonResponse = stringBuilder.toString();
-                Log.e("Json", jsonResponse);
-                Log.e("message", urlConnection.getResponseMessage());
+                Log.e("Json User", jsonResponse);
+                Log.e("message USer", urlConnection.getResponseMessage());
                 return urlConnection.getResponseCode();
 
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
 
             }
             return 0;
         }
+
         @Override
         protected void onPostExecute(Integer responseCode) {
             try {
@@ -238,18 +244,20 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     // Step 4 : Convert JSON string to User object
                     Gson gson = new Gson();
-                    Type type = new TypeToken<ArrayList<User>>(){}.getType();
-                    userList = gson.fromJson(jsonResponse, type);
-                    Log.e("Size", String.valueOf(userList.size()));
-                }
-                else {
+                    Type type = new TypeToken<ArrayList<User>>() {
+                    }.getType();
+                    //jsonResponse = "[{\"_id\":\"56ffa1817cd3b998110c6ba6\",\"__v\":2,\"following\":[],\"followers\":[\"56ffc829e7fb7511006fddea\"],\"cards\":[],\"image\":[\"http://i.imgur.com/gfJTLEs.jpg\"],\"bio\":{\"phoneNumber\":\"02851858102\",\"university\":\"To change account information\",\"age\":22,\"lastName\":\"Your Email on Top\",\"firstName\":\">> Click\"},\"local\":{\"password\":\"$2a$09$jyHO2tczZBD1c4mb9s0X9uP9TxLI7rS6lOgUS0.EgIJ/jUoBLdLZO\",\"email\":\"testmail3@gmail.com\"}},{\"_id\":\"56ffbc7c740a253017e53658\",\"__v\":2,\"following\":[],\"followers\":[\"56ffc829e7fb7511006fddea\"],\"cards\":[],\"image\":[\"http://i.imgur.com/pz5Q8HB.jpg\"],\"bio\":{\"phoneNumber\":\"090111111\",\"university\":\"some University\",\"age\":10,\"lastName\":\"some last name\",\"firstName\":\"some first name\"},\"local\":{\"password\":\"$2a$09$eDsUAVkUiWWEjyTBuGl4jO/3HNE0JBytT0Wv1T.qvcc.Soiu9nPn6\",\"email\":\"testads@gmail.com\"}}]";
+                    DataHolder.getInstance().setUserList((ArrayList<User>) gson.fromJson(jsonResponse, type));
+                    Log.e("Size User", String.valueOf(DataHolder.getInstance().getUserList().size()));
+                } else {
                     Toast.makeText(getActivity(), "Error while getting user list", Toast.LENGTH_LONG).show();
                 }
-                adapter.setListUser(userList);
+                adapter.setListUser(DataHolder.getInstance().getUserList());
             } catch (Exception e) {
 
             }
         }
-
     }
+
+
 }

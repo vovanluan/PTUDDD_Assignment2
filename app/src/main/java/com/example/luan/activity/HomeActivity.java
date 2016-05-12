@@ -30,7 +30,6 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import entity.Course;
 import entity.User;
 import fragment.CourseFragment;
 import fragment.UserFragment;
@@ -117,8 +116,8 @@ public class HomeActivity extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert);
 
         // parse data to header
-        name.setText(DataHolder.getInstance().getData().getBio().getFirstName() + " " + DataHolder.getInstance().getData().getBio().getLastName());
-        email.setText(DataHolder.getInstance().getData().getLocal().getEmail());
+        name.setText(DataHolder.getInstance().getUser().getBio().getFirstName() + " " + DataHolder.getInstance().getUser().getBio().getLastName());
+        email.setText(DataHolder.getInstance().getUser().getLocal().getEmail());
 
         // receive broadcast on secured activity
         logOutBroadcastReceiver = new BroadcastReceiver() {
@@ -140,9 +139,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 // Update text view
-                Log.e("Update", DataHolder.getInstance().getData().getBio().getFirstName());
-                name.setText(DataHolder.getInstance().getData().getBio().getFirstName() + " " + DataHolder.getInstance().getData().getBio().getLastName());
-                email.setText(DataHolder.getInstance().getData().getLocal().getEmail());
+                Log.e("Update", DataHolder.getInstance().getUser().getBio().getFirstName());
+                name.setText(DataHolder.getInstance().getUser().getBio().getFirstName() + " " + DataHolder.getInstance().getUser().getBio().getLastName());
+                email.setText(DataHolder.getInstance().getUser().getLocal().getEmail());
             }
         };
         IntentFilter userChangeIntentFilter = new IntentFilter();
@@ -175,7 +174,7 @@ public class HomeActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         Type type = new TypeToken<User>() {
                         }.getType();
-                        String jsonUser = gson.toJson(DataHolder.getInstance().getData(), type);
+                        String jsonUser = gson.toJson(DataHolder.getInstance().getUser(), type);
                         i.putExtra("User", jsonUser);
                         startActivity(i);
                         return true;
