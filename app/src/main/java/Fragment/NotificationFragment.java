@@ -40,14 +40,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import adapter.NotificationAdapter;
 import adapter.UserAdapter;
 import entity.DataHolder;
+import entity.Notification;
 import entity.User;
 import support.Support;
 
 public class NotificationFragment extends Fragment implements AdapterView.OnItemClickListener{
     ListView myListView;
-    public UserAdapter adapter;
+    public NotificationAdapter adapter;
 
     public NotificationFragment() {
     }
@@ -57,8 +59,9 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
 
         // initialize adapter
-        //DataHolder.getInstance().setUserList(new ArrayList<User>());
-        //adapter = new UserAdapter(getActivity(), R.layout.user_fragment, DataHolder.getInstance().getUserList());
+        DataHolder.getInstance().setOldNotifications(new ArrayList<Notification>());
+        DataHolder.getInstance().setNewNotifications(new ArrayList<Notification>());
+        adapter = new NotificationAdapter(getActivity(), R.layout.user_fragment, DataHolder.getInstance().getNewNotifications());
 
     }
 
@@ -88,17 +91,8 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
         // retrieve the ListView item
-        User user = DataHolder.getInstance().getUserList().get(position);
-
-        // start new intent
-        Intent i = new Intent(getActivity(), ProfileActivity.class);
-        // Send user information
-        Gson gson = new Gson();
-        Type type = new TypeToken<User>() {
-        }.getType();
-        String jsonUser = gson.toJson(user, type);
-        i.putExtra("User", jsonUser);
-        startActivity(i);
+        Notification notification = DataHolder.getInstance().getNewNotifications().get(position);
+        //TODO: handle when user click into a notification
     }
 
     private class GetNotificationListRequest extends AsyncTask<String, Void, Integer> {
@@ -108,7 +102,7 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
 
         @Override
         protected void onPreExecute() {
-            this.dialog.setMessage("Load list user...");
+            this.dialog.setMessage("Load notification list...");
             this.dialog.setCancelable(false);
             this.dialog.show();
         }
@@ -155,15 +149,19 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     // Step 4 : Convert JSON string to User object
                     Gson gson = new Gson();
-                    Type type = new TypeToken<ArrayList<User>>() {
+                    Type type = new TypeToken<ArrayList<Notification>>() {
                     }.getType();
-                    //jsonResponse = "[{\"_id\":\"56ffa1817cd3b998110c6ba6\",\"__v\":2,\"following\":[],\"followers\":[\"56ffc829e7fb7511006fddea\"],\"cards\":[],\"image\":[\"http://i.imgur.com/gfJTLEs.jpg\"],\"bio\":{\"phoneNumber\":\"02851858102\",\"university\":\"To change account information\",\"age\":22,\"lastName\":\"Your Email on Top\",\"firstName\":\">> Click\"},\"local\":{\"password\":\"$2a$09$jyHO2tczZBD1c4mb9s0X9uP9TxLI7rS6lOgUS0.EgIJ/jUoBLdLZO\",\"email\":\"testmail3@gmail.com\"}},{\"_id\":\"56ffbc7c740a253017e53658\",\"__v\":2,\"following\":[],\"followers\":[\"56ffc829e7fb7511006fddea\"],\"cards\":[],\"image\":[\"http://i.imgur.com/pz5Q8HB.jpg\"],\"bio\":{\"phoneNumber\":\"090111111\",\"university\":\"some University\",\"age\":10,\"lastName\":\"some last name\",\"firstName\":\"some first name\"},\"local\":{\"password\":\"$2a$09$eDsUAVkUiWWEjyTBuGl4jO/3HNE0JBytT0Wv1T.qvcc.Soiu9nPn6\",\"email\":\"testads@gmail.com\"}}]";
-                    DataHolder.getInstance().setUserList((ArrayList<User>) gson.fromJson(jsonResponse, type));
-                    Log.e("Size User", String.valueOf(DataHolder.getInstance().getUserList().size()));
+                    ArrayList<Notification> notificationList =  gson.fromJson(jsonResponse, type);
+                    // Add a notification to the new notification list if it is not contained by the old notification list
+                    for (Notification notification: notificationList) {
+                        if(!DataHolder.getInstance().getOldNotifications().contains(notification)) {
+                            DataHolder.getInstance().getNewNotifications().add(notification);
+                        }
+                    }
                 } else {
-                    Toast.makeText(getActivity(), "Error while getting user list", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Error while getting notification list", Toast.LENGTH_LONG).show();
                 }
-                adapter.setListUser(DataHolder.getInstance().getUserList());
+                adapter.setNotificationList(DataHolder.getInstance().getNewNotifications());
             } catch (Exception e) {
 
             }

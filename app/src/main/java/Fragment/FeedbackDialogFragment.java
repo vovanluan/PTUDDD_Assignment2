@@ -19,6 +19,8 @@ import com.example.luan.activity.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.w3c.dom.Text;
+
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -31,10 +33,10 @@ import support.Support;
 
 public class FeedbackDialogFragment extends DialogFragment {
 
-    public EditText title;
-    public EditText description;
-    public TextView email;
-    public TextView submit;
+    private EditText title;
+    private EditText description;
+    private TextView submit;
+    private TextView cancel;
     public Feedback feedBack;
     private static final FeedbackDialogFragment frag = new FeedbackDialogFragment();
     public FeedbackDialogFragment() {
@@ -64,9 +66,8 @@ public class FeedbackDialogFragment extends DialogFragment {
 
         title = (EditText) view.findViewById(R.id.title);
         description = (EditText) view.findViewById(R.id.description);
-        email = (TextView) view.findViewById(R.id.email);
-        email.setText(DataHolder.getInstance().getUser().getLocal().getEmail());
         submit = (TextView) view.findViewById(R.id.submit);
+        cancel = (TextView) view.findViewById(R.id.cancel);
 
         // Show soft keyboard automatically and request focus to field
         title.requestFocus();
@@ -82,6 +83,13 @@ public class FeedbackDialogFragment extends DialogFragment {
                 feedBack.setCreated_by(DataHolder.getInstance().getUser().get_id());
                 String sendFeedBackURL = Support.HOST + "feedbacks";
                 new FeedbackRequest().execute(sendFeedBackURL);
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FeedbackDialogFragment.getInstance().dismiss();
             }
         });
     }

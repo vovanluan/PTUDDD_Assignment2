@@ -49,7 +49,7 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
     }
 
     // update list user
-    public void setListUser(ArrayList<Notification> notifications) {
+    public void setNotificationList(ArrayList<Notification> notifications) {
         this.notificationList.clear();
         this.notificationList.addAll(notifications);
         notifyDataSetChanged();

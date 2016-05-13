@@ -40,7 +40,7 @@ public class ReviewDialogFragment extends DialogFragment {
 
     private EditText title;
     private EditText description;
-    private TextView submit, rating;
+    private TextView submit, rating, cancel;
     private RatingBar ratingBar;
     private Review review;
     private static final ReviewDialogFragment frag = new ReviewDialogFragment();
@@ -77,6 +77,7 @@ public class ReviewDialogFragment extends DialogFragment {
         submit = (TextView) view.findViewById(R.id.submit);
         rating = (TextView) view.findViewById(R.id.ratingText);
         ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
+        cancel = (TextView) view.findViewById(R.id.cancel);
 
         // Show soft keyboard automatically and request focus to field
         title.requestFocus();
@@ -105,6 +106,13 @@ public class ReviewDialogFragment extends DialogFragment {
 
                 String sendReviewURL = Support.HOST + "users/review";
                 new FeedbackRequest().execute(sendReviewURL);
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReviewDialogFragment.getInstance().dismiss();
             }
         });
 
