@@ -57,7 +57,7 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
         super.onCreate(savedInstanceState);
 
         // initialize adapter
-        DataHolder.getInstance().setUserList(new ArrayList<User>());
+
         adapter = new UserAdapter(getActivity(), R.layout.user_fragment, DataHolder.getInstance().getUserList());
 
     }

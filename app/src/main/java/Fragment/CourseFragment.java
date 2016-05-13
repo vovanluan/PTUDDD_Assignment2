@@ -52,7 +52,6 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
         super.onCreate(savedInstanceState);
 
         // initialize adapter
-        DataHolder.getInstance().setCourseList(new ArrayList<Course>());
         adapter = new CardAdapter(getActivity());
     }
 

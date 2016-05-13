@@ -8,9 +8,9 @@ import java.util.ArrayList;
 public class DataHolder {
     private User user;
 
-    public ArrayList<User> userList;
+    public ArrayList<User> userList = new ArrayList<>();
 
-    public ArrayList<Course> courseList;
+    public ArrayList<Course> courseList = new ArrayList<>();
 
     private ArrayList<Notification> oldNotifications = new ArrayList<>();
 

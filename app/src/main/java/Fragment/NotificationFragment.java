@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -68,8 +69,9 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
 
         // initialize adapter
-        adapter = new NotificationAdapter(getActivity(), R.layout.user_fragment, DataHolder.getInstance().getNewNotifications());
-        Timer timer = new Timer();
+        ArrayList<Notification> initialNotificationList = DataHolder.getInstance().getNewNotifications();
+        adapter = new NotificationAdapter(getActivity(), R.layout.user_fragment, initialNotificationList);
+/*        Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
@@ -78,7 +80,9 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
                 new GetNotificationListRequest().execute(Support.HOST + "users/" + DataHolder.getInstance().getUser().get_id() + "/notification");
             }
 
-        }, 0, INTERVAL);
+        }, 0, INTERVAL);*/
+        new GetNotificationListRequest().execute(Support.HOST + "users/" + DataHolder.getInstance().getUser().get_id() + "/notification");
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mPreferenceListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
@@ -110,20 +114,6 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(mPreferenceListener);
         super.onDestroy();
     }
-
-/*    @Override
-    public void onResume() {
-        super.onResume();
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        Log.e("Register", "WTF");
-    }
-
-    @Override
-    public void onPause() {
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
-        Log.e("Unregister", "WTF");
-        super.onPause();
-    }*/
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -201,15 +191,8 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
                     }
                     Log.e("New size", String.valueOf(DataHolder.getInstance().getNewNotifications().size()));
                     Log.e("Old size", String.valueOf(DataHolder.getInstance().getOldNotifications().size()));
-                } else {
                 }
-                String notifications = "[{\"_id\":\"57360ab1411b131100c4e513\",\"updatedAt\":\"2016-05-13T17:21:13.926Z\",\"createdAt\":\"2016-05-13T17:11:13.933Z\",\"cardName\":\"English class\",\"created_by\":\"57360aae411b131100c4e512\",\"description\":\"some first name some last name wants to join class: English class taught by some first name some last name\",\"for_card\":\"57360a94411b131100c4e511\",\"studentName\":\"some first name some last name\",\"teacherName\":\"some first name some last name\",\"to\":\"57360a7b411b131100c4e510\",\"__v\":0,\"status\":0}]";
-                Gson gson = new Gson();
-                Type type = new TypeToken<ArrayList<Notification>>() {
-                }.getType();
-                ArrayList<Notification> notificationList =  gson.fromJson(notifications, type);
-                Log.e("Notifications size", String.valueOf(notificationList.size()));
-                adapter.setNotificationList(notificationList);
+                adapter.setNotificationList(DataHolder.getInstance().getNewNotifications());
             } catch (Exception e) {
 
             }

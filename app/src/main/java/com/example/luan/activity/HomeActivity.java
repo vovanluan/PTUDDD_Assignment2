@@ -69,62 +69,6 @@ public class HomeActivity extends AppCompatActivity {
             R.drawable.ic_notifications
     };
 
-/*    @Override
-    protected void onPause() {
-        if (gotUserListBroadCastReceiver != null)
-            unregisterReceiver(gotUserListBroadCastReceiver);
-        if (gotCardListBroadCastReceiver != null)
-            unregisterReceiver(gotCardListBroadCastReceiver);
-        if (userChangeBroadcastReceiver != null)
-            unregisterReceiver(userChangeBroadcastReceiver);
-        if (logOutBroadcastReceiver != null)
-            unregisterReceiver(logOutBroadcastReceiver);
-        if (updateCardListBroadcastReceiver != null)
-            unregisterReceiver(updateCardListBroadcastReceiver);
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(gotUserListBroadCastReceiver, gotUserListIntentFilter);
-        registerReceiver(gotCardListBroadCastReceiver, gotCardListIntentFilter);
-        registerReceiver(logOutBroadcastReceiver, logOutIntentFilter);
-        registerReceiver(updateCardListBroadcastReceiver, updateCardListIntentFilter);
-        registerReceiver(userChangeBroadcastReceiver, userChangeIntentFilter);
-    }*/
-
-/*    @Override
-    protected void onStop()
-    {
-        try {
-            if (gotUserListBroadCastReceiver != null) {
-                unregisterReceiver(gotUserListBroadCastReceiver);
-                gotUserListBroadCastReceiver = null;
-            }
-            if (gotCardListBroadCastReceiver != null) {
-                unregisterReceiver(gotCardListBroadCastReceiver);
-                gotCardListBroadCastReceiver = null;
-            }
-            if (userChangeBroadcastReceiver != null) {
-                unregisterReceiver(userChangeBroadcastReceiver);
-                userChangeBroadcastReceiver = null;
-            }
-            if (logOutBroadcastReceiver != null) {
-                unregisterReceiver(logOutBroadcastReceiver);
-                logOutBroadcastReceiver = null;
-            }
-            if (updateCardListBroadcastReceiver != null) {
-                unregisterReceiver(updateCardListBroadcastReceiver);
-                updateCardListBroadcastReceiver = null;
-            }
-        }
-        catch (Exception e) {
-            throw e;
-        }
-        super.onStop();
-    }*/
-
     @Override
     protected void onDestroy() {
         try {

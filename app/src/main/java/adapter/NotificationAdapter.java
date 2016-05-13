@@ -45,15 +45,18 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
         if (notification != null) {
             TextView notificationTextView = (TextView) convertView.findViewById(R.id.notification);
             Course course = DataHolder.getInstance().getCourseById(notification.getFor_card());
-            notificationTextView.setText(notification.getCreated_by()+ " wants to study English in your class: " + course.getTitle());
+            notificationTextView.setText(notification.getDescription());
         }
         return convertView;
     }
 
     // update list user
     public void setNotificationList(ArrayList<Notification> notifications) {
-        this.notificationList.clear();
+        Log.e("NOTI SIZE", String.valueOf(notifications.size()));
+        this.notificationList = new ArrayList<>();
+        Log.e("NOTI SIZE", String.valueOf(notifications.size()));
         this.notificationList.addAll(notifications);
+        Log.e("NOTI SIZE", String.valueOf(notifications.size()));
         notifyDataSetChanged();
     }
 
