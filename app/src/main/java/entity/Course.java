@@ -39,6 +39,8 @@ public class Course {
 
     private int accepted;
 
+    private ArrayList<String> students;
+
 
     public Course() {
     }
@@ -164,6 +166,13 @@ public class Course {
         this.created_by = created_by;
     }
 
+    public ArrayList<String> getStudents() {
+        return students;
+    }
+
+    public void setStudents(ArrayList<String> students) {
+        this.students = students;
+    }
 }
 
 

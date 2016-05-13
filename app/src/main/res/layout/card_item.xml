@@ -23,8 +23,8 @@
        <de.hdodenhof.circleimageview.CircleImageView
            xmlns:app="http://schemas.android.com/apk/res-auto"
            android:id="@+id/profile_image"
-           android:layout_width="60dp"
-           android:layout_height="60dp"
+           android:layout_width="50dp"
+           android:layout_height="50dp"
            android:src="@drawable/profile"
            app:border_color="#FF000000"
            android:layout_margin="@dimen/avatar_margin"
@@ -62,38 +62,63 @@
                     android:layout_toRightOf="@+id/by"/>
             </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/info_top_margin">
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="0dp"
-                    android:src="@drawable/ic_star"
-                    android:layout_marginRight="4dp"
-                    />
-                <TextView
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/star"
-                    android:textColor="@color/gray"/>
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="0dp"
-                    android:src="@drawable/ic_group"
-                    android:layout_marginRight="4dp"/>
-                <TextView
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/people"
-                    android:text="10"
-                    android:textColor="@color/gray"/>
 
-            </LinearLayout>
         </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/info_top_margin">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_star"
+            android:id="@+id/starImg"
+            android:layout_marginLeft="10dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentStart="true"
+            />
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/star"
+            android:textColor="@color/gray"
+            android:text="0"
+            android:layout_toEndOf="@+id/starImg"
+            android:layout_centerVertical="true"/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_like"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/star"
+            android:id="@+id/likeImg"
+            />
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/upvotes"
+            android:textColor="@color/gray"
+            android:layout_toEndOf="@+id/likeImg"
+            android:text="3"
+            android:layout_centerInParent="true"/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_group"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/upvotes"
+            android:id="@+id/peopleImg"
+            android:layout_centerInParent="true"/>
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/people"
+            android:text="10"
+            android:textColor="@color/gray"
+            android:layout_toEndOf="@+id/peopleImg"
+            android:layout_centerInParent="true"/>
+
     </RelativeLayout>
 
     <TextView

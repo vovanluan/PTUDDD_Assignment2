@@ -13,6 +13,8 @@ import com.example.luan.activity.R;
 
 import java.util.ArrayList;
 
+import entity.Course;
+import entity.DataHolder;
 import entity.Notification;
 import entity.User;
 
@@ -42,8 +44,8 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
         if (notification != null) {
             TextView notificationTextView = (TextView) convertView.findViewById(R.id.notification);
-            //TODO: set text here
-            notificationTextView.setText("Luan wants to study English in your class: Intermediate English");
+            Course course = DataHolder.getInstance().getCourseById(notification.getFor_card());
+            notificationTextView.setText(notification.getCreated_by()+ " wants to study English in your class: " + course.getTitle());
         }
         return convertView;
     }
