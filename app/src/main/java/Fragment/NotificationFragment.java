@@ -39,6 +39,8 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import adapter.NotificationAdapter;
 import adapter.UserAdapter;
@@ -49,6 +51,7 @@ import support.Support;
 
 public class NotificationFragment extends Fragment implements AdapterView.OnItemClickListener{
     ListView myListView;
+    private int INTERVAL = 10 * 1000;
     public NotificationAdapter adapter;
 
     public NotificationFragment() {
@@ -78,6 +81,18 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         myListView = (ListView) view.findViewById(R.id.listView);
         myListView.setAdapter(adapter);
         myListView.setOnItemClickListener(this);
+
+        //
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                //TODO waiting for API
+                //new GetNotificationListRequest().execute(Support.HOST + "users/pairup");
+            }
+
+        }, 0, INTERVAL);
     }
 
     @Override
@@ -91,8 +106,11 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
         // retrieve the ListView item
-        Notification notification = DataHolder.getInstance().getNewNotifications().get(position);
+        Notification notification = adapter.getNotificationList().get(position);
         //TODO: handle when user click into a notification
+        DataHolder.getInstance().getNewNotifications().remove(notification);
+        DataHolder.getInstance().getOldNotifications().add(notification);
+        adapter.setNotificationList(DataHolder.getInstance().getNewNotifications());
     }
 
     private class GetNotificationListRequest extends AsyncTask<String, Void, Integer> {
@@ -119,19 +137,17 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
                 urlConnection.setRequestProperty("Content-Type", "application/json");
                 urlConnection.connect();
 
-                // Step 2: wait for incoming RESPONSE stream, place data in a buffer
                 InputStream isResponse = urlConnection.getInputStream();
                 BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(isResponse));
 
-                // Step 3: Arriving JSON fragments are concatenate into a StringBuilder
                 String line = "";
                 StringBuilder stringBuilder = new StringBuilder();
                 while ((line = responseBuffer.readLine()) != null) {
                     stringBuilder.append(line);
                 }
                 jsonResponse = stringBuilder.toString();
-                Log.e("Json User", jsonResponse);
-                Log.e("message USer", urlConnection.getResponseMessage());
+                Log.e("Json Notification", jsonResponse);
+                Log.e("message Notification", urlConnection.getResponseMessage());
                 return urlConnection.getResponseCode();
 
             } catch (Exception e) {
@@ -147,12 +163,10 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
                     this.dialog.dismiss();
                 }
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    // Step 4 : Convert JSON string to User object
                     Gson gson = new Gson();
                     Type type = new TypeToken<ArrayList<Notification>>() {
                     }.getType();
                     ArrayList<Notification> notificationList =  gson.fromJson(jsonResponse, type);
-                    // Add a notification to the new notification list if it is not contained by the old notification list
                     for (Notification notification: notificationList) {
                         if(!DataHolder.getInstance().getOldNotifications().contains(notification)) {
                             DataHolder.getInstance().getNewNotifications().add(notification);

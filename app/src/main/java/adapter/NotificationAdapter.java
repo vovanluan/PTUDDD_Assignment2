@@ -56,4 +56,8 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
         this.notificationList.addAll(notifications);
         notifyDataSetChanged();
     }
+
+    public ArrayList<Notification> getNotificationList(){
+        return notificationList;
+    }
 }

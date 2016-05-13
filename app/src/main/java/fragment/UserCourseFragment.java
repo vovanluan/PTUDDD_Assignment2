@@ -53,9 +53,8 @@ public class UserCourseFragment extends Fragment implements AdapterView.OnItemCl
         }.getType();
         user = gson.fromJson(jsonUser, type);
         courseList = new ArrayList<>();
-        //courseList = user.getCards();
-        String getCardListURL = Support.HOST +"cards";
-        //new GetCardRequest().execute(getCardListURL);
+        String getCardListURL = Support.HOST +"users/" + user.get_id() + "/cards";
+        new GetCardRequest().execute(getCardListURL);
 
         // initialize adapter
         adapter = new CardAdapter(getActivity());
@@ -117,11 +116,9 @@ public class UserCourseFragment extends Fragment implements AdapterView.OnItemCl
                 urlConnection.setRequestProperty("Content-Type", "application/json");
                 urlConnection.connect();
 
-                // Step 2: wait for incoming RESPONSE stream, place data in a buffer
                 InputStream isResponse = urlConnection.getInputStream();
                 BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(isResponse));
 
-                // Step 3: Arriving JSON fragments are concatenate into a StringBuilder
                 String line = "";
                 StringBuilder stringBuilder = new StringBuilder();
                 while ((line = responseBuffer.readLine()) != null){
@@ -146,7 +143,6 @@ public class UserCourseFragment extends Fragment implements AdapterView.OnItemCl
                 }
                 Log.e("CODE", String.valueOf(responseCode));
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    // Step 4 : Convert JSON string to User object
                     Gson gson = new Gson();
                     Type type = new TypeToken<ArrayList<Course>>(){}.getType();
                     courseList = gson.fromJson(jsonResponse, type);
