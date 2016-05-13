@@ -68,9 +68,17 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
 
         // initialize adapter
-        DataHolder.getInstance().setOldNotifications(new ArrayList<Notification>());
-        DataHolder.getInstance().setNewNotifications(new ArrayList<Notification>());
         adapter = new NotificationAdapter(getActivity(), R.layout.user_fragment, DataHolder.getInstance().getNewNotifications());
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                Log.e("Get notification list", "10s");
+                new GetNotificationListRequest().execute(Support.HOST + "users/" + DataHolder.getInstance().getUser().get_id() + "/notification");
+            }
+
+        }, 0, INTERVAL);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mPreferenceListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
@@ -123,18 +131,6 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         myListView = (ListView) view.findViewById(R.id.listView);
         myListView.setAdapter(adapter);
         myListView.setOnItemClickListener(this);
-
-        //
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-
-            @Override
-            public void run() {
-                Log.e("Get notification list", "10s");
-                new GetNotificationListRequest().execute(Support.HOST + "users/" + DataHolder.getInstance().getUser().get_id() + "/notification");
-            }
-
-        }, 0, INTERVAL);
     }
 
     @Override
@@ -158,15 +154,6 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
     private class GetNotificationListRequest extends AsyncTask<String, Void, Integer> {
 
         private String jsonResponse;
-        private final ProgressDialog dialog = new ProgressDialog(getActivity());
-
-        @Override
-        protected void onPreExecute() {
-            this.dialog.setMessage("Load notification list...");
-            this.dialog.setCancelable(false);
-            this.dialog.show();
-        }
-
         @Override
         protected Integer doInBackground(String... urls) {
             try {
@@ -201,23 +188,28 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         @Override
         protected void onPostExecute(Integer responseCode) {
             try {
-                if (this.dialog.isShowing()) {
-                    this.dialog.dismiss();
-                }
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     Gson gson = new Gson();
                     Type type = new TypeToken<ArrayList<Notification>>() {
                     }.getType();
                     ArrayList<Notification> notificationList =  gson.fromJson(jsonResponse, type);
                     for (Notification notification: notificationList) {
+                        Log.e("Old contains", String.valueOf(DataHolder.getInstance().getOldNotifications().contains(notification)));
                         if(!DataHolder.getInstance().getOldNotifications().contains(notification)) {
                             DataHolder.getInstance().getNewNotifications().add(notification);
                         }
                     }
+                    Log.e("New size", String.valueOf(DataHolder.getInstance().getNewNotifications().size()));
+                    Log.e("Old size", String.valueOf(DataHolder.getInstance().getOldNotifications().size()));
                 } else {
-                    Toast.makeText(getActivity(), "Error while getting notification list", Toast.LENGTH_LONG).show();
                 }
-                adapter.setNotificationList(DataHolder.getInstance().getNewNotifications());
+                String notifications = "[{\"_id\":\"57360ab1411b131100c4e513\",\"updatedAt\":\"2016-05-13T17:21:13.926Z\",\"createdAt\":\"2016-05-13T17:11:13.933Z\",\"cardName\":\"English class\",\"created_by\":\"57360aae411b131100c4e512\",\"description\":\"some first name some last name wants to join class: English class taught by some first name some last name\",\"for_card\":\"57360a94411b131100c4e511\",\"studentName\":\"some first name some last name\",\"teacherName\":\"some first name some last name\",\"to\":\"57360a7b411b131100c4e510\",\"__v\":0,\"status\":0}]";
+                Gson gson = new Gson();
+                Type type = new TypeToken<ArrayList<Notification>>() {
+                }.getType();
+                ArrayList<Notification> notificationList =  gson.fromJson(notifications, type);
+                Log.e("Notifications size", String.valueOf(notificationList.size()));
+                adapter.setNotificationList(notificationList);
             } catch (Exception e) {
 
             }

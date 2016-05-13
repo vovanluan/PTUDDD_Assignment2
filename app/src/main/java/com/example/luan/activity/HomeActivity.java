@@ -322,7 +322,8 @@ public class HomeActivity extends AppCompatActivity {
                         feedbackDialogFragment.show(getSupportFragmentManager(), "feedback");
                         return true;
                     case R.id.aboutUs:
-                        Toast.makeText(getApplicationContext(), "About us Selected", Toast.LENGTH_SHORT).show();
+                        Intent aboutUsIntent = new Intent(HomeActivity.this, AboutUsActivity.class);
+                        startActivity(aboutUsIntent);
                         return true;
                     case R.id.logOut:
                         logoutDialog.show();

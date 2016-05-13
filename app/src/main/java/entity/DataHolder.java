@@ -12,9 +12,9 @@ public class DataHolder {
 
     public ArrayList<Course> courseList;
 
-    private ArrayList<Notification> oldNotifications;
+    private ArrayList<Notification> oldNotifications = new ArrayList<>();
 
-    private ArrayList<Notification> newNotifications;
+    private ArrayList<Notification> newNotifications = new ArrayList<>();
 
     public ArrayList<Course> getCourseList() {
         return courseList;
