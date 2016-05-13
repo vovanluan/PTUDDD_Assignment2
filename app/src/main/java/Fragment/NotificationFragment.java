@@ -7,8 +7,11 @@ package fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -41,6 +44,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.prefs.PreferenceChangeListener;
 
 import adapter.NotificationAdapter;
 import adapter.UserAdapter;
@@ -49,10 +53,11 @@ import entity.Notification;
 import entity.User;
 import support.Support;
 
-public class NotificationFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class NotificationFragment extends Fragment implements AdapterView.OnItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     ListView myListView;
     private int INTERVAL = 10 * 1000;
     public NotificationAdapter adapter;
+    SharedPreferences prefs;
 
     public NotificationFragment() {
     }
@@ -69,10 +74,36 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("notification")) {
+            boolean turnOn = sharedPreferences.getBoolean("notification", true);
+            //TODO: turn on/off notification
+            if (turnOn) {
+                Log.e("TURN ON", "TEST");
+            } else {
+                Log.e("TURN OFF", "TEST");
+            }
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.user_fragment, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(this);
+
+    }
+
+    @Override
+    public void onPause() {
+        PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
     }
 
     @Override

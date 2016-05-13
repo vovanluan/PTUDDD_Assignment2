@@ -27,6 +27,10 @@
         <activity android:name=".CreateCourseActivity" />
         <activity android:name="com.example.luan.activity.InformationActivity"
             android:parentActivityName=".HomeActivity"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Preferences">
+        </activity>
     </application>
 
 </manifest>

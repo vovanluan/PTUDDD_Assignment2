@@ -225,7 +225,8 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(i);
                         return true;
                     case R.id.settings:
-                        Toast.makeText(getApplicationContext(), "Setttings Selected", Toast.LENGTH_SHORT).show();
+                        Intent settingIntent = new Intent(HomeActivity.this, SettingsActivity.class);
+                        startActivity(settingIntent);
                         return true;
                     case R.id.feedback:
                         FeedbackDialogFragment feedbackDialogFragment = FeedbackDialogFragment.getInstance();
