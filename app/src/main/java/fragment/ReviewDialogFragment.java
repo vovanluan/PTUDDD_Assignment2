@@ -1,6 +1,7 @@
 package fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,10 +20,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.luan.activity.CourseActivity;
 import com.example.luan.activity.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -173,7 +178,6 @@ public class ReviewDialogFragment extends DialogFragment {
                 urlConnection.setRequestMethod("POST");
                 urlConnection.connect();
 
-                // Convert this object to json string using gson
                 Gson gson = new Gson();
                 Type type = new TypeToken<Review>(){}.getType();
                 String json = gson.toJson(review, type);
@@ -183,6 +187,15 @@ public class ReviewDialogFragment extends DialogFragment {
                 wr.flush();
                 wr.close();
 
+                InputStream isResponse = urlConnection.getInputStream();
+                BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(isResponse));
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseBuffer.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                jsonResponse = stringBuilder.toString();
+                Log.e("Update course", jsonResponse);
                 return urlConnection.getResponseCode();
 
             } catch (Exception e) {
@@ -199,7 +212,22 @@ public class ReviewDialogFragment extends DialogFragment {
                     this.dialog.dismiss();
                 }
                 if (responseCode == HttpURLConnection.HTTP_OK) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<Course>() {
+                    }.getType();
+                    course = gson.fromJson(jsonResponse, type);
+                    ((CourseActivity)getActivity()).star.setText(String.valueOf(course.getRating()));
                     Toast.makeText(getActivity(), "Thanks for your review!", Toast.LENGTH_LONG).show();
+
+                    DataHolder.getInstance().removeCourse(course.get_id());
+                    //Update new course
+                    DataHolder.getInstance().getCourseList().add(course);
+
+                    //Broadcast update card list
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("UPDATE_CARD_LIST");
+                    getActivity().sendBroadcast(broadcastIntent);
+                    //TODO: Update review in course activity
                 }
                 else {
                     Toast.makeText(getActivity(), "Sending review failed", Toast.LENGTH_LONG).show();
@@ -210,7 +238,7 @@ public class ReviewDialogFragment extends DialogFragment {
                 ReviewDialogFragment.getInstance().dismiss();
                 ratingBar.setRating(2);
                 rating.setText(SATISFACTION[1]);
-                //TODO: Update review in course activity
+
             } catch (Exception e) {
 
             }

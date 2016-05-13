@@ -44,7 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ProfileFragment profileFragment;
     private ContactFragment contactFragment;
     private UserCourseFragment userCourseFragment;
-    private TextView name;
+    private TextView name, followers, cards;
     private ImageButton followBtn;
     private User user;
     private Follow follow;
@@ -54,6 +54,8 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         name = (TextView) findViewById(R.id.name);
+        followers = (TextView) findViewById(R.id.followers);
+        cards = (TextView) findViewById(R.id.cards);
         followBtn = (ImageButton) findViewById(R.id.followBtn);
         // transfer user information to fragment
         String jsonUser = getIntent().getStringExtra("User");
@@ -63,8 +65,11 @@ public class ProfileActivity extends AppCompatActivity {
         java.lang.reflect.Type type = new TypeToken<User>() {
         }.getType();
         user = gson.fromJson(jsonUser, type);
+        Log.e("USER", jsonUser);
 
         name.setText(user.getBio().getFirstName());
+        followers.setText(String.valueOf(user.getFollowers().size()));
+        cards.setText(String.valueOf(user.getCards().size()));
         // create navigation tab and viewpager
         profileFragment = new ProfileFragment();
         profileFragment.setArguments(bundle);

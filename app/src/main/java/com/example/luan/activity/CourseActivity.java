@@ -39,9 +39,10 @@ import support.Support;
  */
 public class CourseActivity extends AppCompatActivity{
     private Course course;
-    private TextView title, creator, star, people, language, location, time, description, upvote;
+    public TextView star;
+    private TextView title, creator, people, language, location, time, description, upvote;
     private Button pairUpBtn, reviewBtn, upVoteBtn;
-    private ImageView courseImage;
+    private ImageView courseImage, upvoteIcon, starIcon;
     private Notification notification;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +66,25 @@ public class CourseActivity extends AppCompatActivity{
         pairUpBtn = (Button)  findViewById(R.id.pairUpBtn);
         reviewBtn = (Button)  findViewById(R.id.reviewBtn);
         upVoteBtn = (Button)  findViewById(R.id.upvoteBtn);
+        upvoteIcon = (ImageView) findViewById(R.id.upvoteIcon);
+        starIcon = (ImageView) findViewById(R.id.starIcon);
+
+        //initialize upvote icon and button
+        if(DataHolder.getInstance().getUser().getUpvoted().contains(course.get_id())) {
+            upVoteBtn.setText("Remove vote");
+            upvoteIcon.setImageResource(R.drawable.ic_action_liked);
+        }
+        else {
+            upVoteBtn.setText("Upvote");
+            upvoteIcon.setImageResource(R.drawable.ic_action_like);
+        }
+
+/*        if(DataHolder.getInstance().getUser().getReviews().contains(course.get_id())) {
+            starIcon.setImageResource(R.drawable.ic_action_reviewed);
+        }
+        else {
+            starIcon.setImageResource(R.drawable.ic_big_star);
+        }*/
 
         title.setText(course.getTitle());
         creator.setText(DataHolder.getInstance().getUserById(course.getCreated_by()).getBio().getFirstName());
@@ -119,15 +139,24 @@ public class CourseActivity extends AppCompatActivity{
                 reviewDialogFragment.show(getSupportFragmentManager(), "ReviewDialog");
             }
         });
-
-        upVoteBtn.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener mUpvoteClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String upVoteURL = Support.HOST + "cards/" + course.get_id() + "/" + DataHolder.getInstance().getUser().get_id() + "/upvote";
-                Log.e("UpvoteURL", upVoteURL);
-                new UpvoteRequest().execute(upVoteURL);
+                if(!DataHolder.getInstance().getUser().getUpvoted().contains(course.get_id())) {
+                    String upVoteURL = Support.HOST + "cards/" + course.get_id() + "/" + DataHolder.getInstance().getUser().get_id() + "/upvote";
+                    Log.e("UpvoteURL", upVoteURL);
+                    new UpvoteRequest().execute(upVoteURL);
+                }
+                else {
+                    String removeVoteURL = Support.HOST + "cards/" + course.get_id() + "/" + DataHolder.getInstance().getUser().get_id() + "/removeupvote";
+                    Log.e("removeVoteURL", removeVoteURL);
+                    new RemoveVoteRequest().execute(removeVoteURL);
+                }
             }
-        });
+        };
+        upvoteIcon.setOnClickListener(mUpvoteClickListener);
+
+        upVoteBtn.setOnClickListener(mUpvoteClickListener);
     }
 
     private class UpvoteRequest extends AsyncTask<String, Void, Integer> {
@@ -161,7 +190,8 @@ public class CourseActivity extends AppCompatActivity{
                     stringBuilder.append(line);
                 }
                 jsonResponse = stringBuilder.toString();
-                Log.e("User", jsonResponse);
+                Log.e("Upvote", jsonResponse);
+                Log.e("CODE", String.valueOf(urlConnection.getResponseCode()));
                 return urlConnection.getResponseCode();
 
             } catch (Exception e) {
@@ -185,10 +215,24 @@ public class CourseActivity extends AppCompatActivity{
                     upvote.setText(String.valueOf(course.getUpvotes()));
                     //Remove old course from course list
                     DataHolder.getInstance().removeCourse(course.get_id());
+                    DataHolder.getInstance().getUser().getUpvoted().add(course.get_id());
+                    DataHolder.getInstance().getUserById(DataHolder.getInstance().getUser().get_id()).getUpvoted().add(course.get_id());
                     //Update new course
                     DataHolder.getInstance().getCourseList().add(course);
                     Toast.makeText(CourseActivity.this, "Upvoted", Toast.LENGTH_SHORT).show();
-                } else {
+
+                    //Broadcast update card list
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("UPDATE_CARD_LIST");
+                    sendBroadcast(broadcastIntent);
+
+                    upVoteBtn.setText("Remove vote");
+                    upvoteIcon.setImageResource(R.drawable.ic_action_liked);
+                }
+                else if (responseCode == 400){
+
+                }
+                else {
                     Toast.makeText(CourseActivity.this, "Error while upvote", Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
@@ -197,6 +241,87 @@ public class CourseActivity extends AppCompatActivity{
         }
     }
 
+    private class RemoveVoteRequest extends AsyncTask<String, Void, Integer> {
+        private String jsonResponse;
+        private final ProgressDialog dialog = new ProgressDialog(CourseActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Upvoting...");
+            this.dialog.setCancelable(false);
+            this.dialog.show();
+        }
+
+        @Override
+        protected Integer doInBackground(String... urls) {
+            try {
+                URL url = new URL(urls[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoInput(true);
+                urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setRequestMethod("PUT");
+                urlConnection.connect();
+
+                InputStream isResponse = urlConnection.getInputStream();
+                BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(isResponse));
+
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseBuffer.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                jsonResponse = stringBuilder.toString();
+                Log.e("RemoveVote", jsonResponse);
+                Log.e("CODE", String.valueOf(urlConnection.getResponseCode()));
+                return urlConnection.getResponseCode();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("error", e.toString());
+            }
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer responseCode) {
+            try {
+                if (this.dialog.isShowing()) {
+                    this.dialog.dismiss();
+                }
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<Course>() {
+                    }.getType();
+                    course = gson.fromJson(jsonResponse, type);
+                    upvote.setText(String.valueOf(course.getUpvotes()));
+                    //Remove old course from course list
+                    DataHolder.getInstance().removeCourse(course.get_id());
+                    DataHolder.getInstance().getUser().getUpvoted().remove(course.get_id());
+                    DataHolder.getInstance().getUserById(DataHolder.getInstance().getUser().get_id()).getUpvoted().remove(course.get_id());
+                    //Update new course
+                    DataHolder.getInstance().getCourseList().add(course);
+
+                    //Broadcast update course
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("UPDATE_CARD_LIST");
+                    sendBroadcast(broadcastIntent);
+
+                    Toast.makeText(CourseActivity.this, "Remove vote", Toast.LENGTH_SHORT).show();
+                    upVoteBtn.setText("Upvote");
+                    upvoteIcon.setImageResource(R.drawable.ic_action_like);
+                }
+                else if (responseCode == 400){
+
+                }
+                else {
+                    Toast.makeText(CourseActivity.this, "Error while remove vote", Toast.LENGTH_LONG).show();
+                }
+            } catch (Exception e) {
+
+            }
+        }
+    }
     private class PairUpRequest extends AsyncTask<String, Void, Integer> {
         private String jsonResponse;
         private final ProgressDialog dialog = new ProgressDialog(CourseActivity.this);
@@ -246,6 +371,7 @@ public class CourseActivity extends AppCompatActivity{
                     this.dialog.dismiss();
                 }
                 if (responseCode == HttpURLConnection.HTTP_OK) {
+
                 } else {
                     Toast.makeText(CourseActivity.this, "Error while pair up", Toast.LENGTH_LONG).show();
                 }

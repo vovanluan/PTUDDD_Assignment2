@@ -53,9 +53,11 @@ import entity.Notification;
 import entity.User;
 import support.Support;
 
-public class NotificationFragment extends Fragment implements AdapterView.OnItemClickListener,SharedPreferences.OnSharedPreferenceChangeListener {
+public class NotificationFragment extends Fragment implements AdapterView.OnItemClickListener{
     ListView myListView;
     private int INTERVAL = 10 * 1000;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.OnSharedPreferenceChangeListener mPreferenceListener = null;
     public NotificationAdapter adapter;
 
     public NotificationFragment() {
@@ -69,6 +71,22 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         DataHolder.getInstance().setOldNotifications(new ArrayList<Notification>());
         DataHolder.getInstance().setNewNotifications(new ArrayList<Notification>());
         adapter = new NotificationAdapter(getActivity(), R.layout.user_fragment, DataHolder.getInstance().getNewNotifications());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mPreferenceListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                // listener implementation
+                if (key.equals("notification")) {
+                    boolean turnOn = prefs.getBoolean("notification", true);
+                    //TODO: turn on/off notification
+                    if (turnOn) {
+                        Log.e("TURN ON", "TEST");
+                    } else {
+                        Log.e("TURN OFF", "TEST");
+                    }
+                }
+            }
+        };
+        sharedPreferences.registerOnSharedPreferenceChangeListener(mPreferenceListener);
     }
 
     @Override
@@ -80,30 +98,24 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        if (key.equals("notification")) {
-            boolean turnOn = prefs.getBoolean("notification", true);
-            //TODO: turn on/off notification
-            if (turnOn) {
-                Log.e("TURN ON", "TEST");
-            } else {
-                Log.e("TURN OFF", "TEST");
-            }
-        }
+    public void onDestroy() {
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(mPreferenceListener);
+        super.onDestroy();
     }
 
-    @Override
+/*    @Override
     public void onResume() {
         super.onResume();
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(this);
-
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        Log.e("Register", "WTF");
     }
 
     @Override
     public void onPause() {
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(this);
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        Log.e("Unregister", "WTF");
         super.onPause();
-    }
+    }*/
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

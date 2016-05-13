@@ -19,11 +19,11 @@ public class User {
     private Local local;
     private Bio bio;
     private String[] image;
-    private ArrayList<String> cards;
-    private ArrayList<String> followers;
-    private ArrayList<String> following;
-    private ArrayList<String> upvoted;
-    private ArrayList<String> reviews;
+    private ArrayList<String> cards = new ArrayList<>();
+    private ArrayList<String> followers = new ArrayList<>();
+    private ArrayList<String> following = new ArrayList<>();
+    private ArrayList<String> upvoted = new ArrayList<>();
+    private ArrayList<String> reviews = new ArrayList<>();
     public User() {
         local = new Local();
         bio = new Bio();

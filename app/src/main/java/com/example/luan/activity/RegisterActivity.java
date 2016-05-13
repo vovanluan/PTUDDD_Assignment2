@@ -16,6 +16,9 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -85,6 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private class RegisterRequest extends AsyncTask<String, Void, Integer> {
+        String jsonResponse;
         private final ProgressDialog dialog = new ProgressDialog(RegisterActivity.this);
 
         @Override
@@ -119,6 +123,17 @@ public class RegisterActivity extends AppCompatActivity {
                 wr.flush();
                 wr.close();
                 Log.e("Response Message", urlConnection.getResponseMessage());
+
+                InputStream isResponse = urlConnection.getInputStream();
+                BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(isResponse));
+
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseBuffer.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                jsonResponse = stringBuilder.toString();
+                Log.e("User", jsonResponse);
                 return urlConnection.getResponseCode();
             } catch (Exception e) {
 
@@ -133,7 +148,11 @@ public class RegisterActivity extends AppCompatActivity {
                 this.dialog.dismiss();
             }
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                DataHolder.getInstance().setUser(user);
+                Gson gson = new Gson();
+                Type type = new TypeToken<User>() {
+                }.getType();
+                //user = gson.fromJson(jsonResponse, type);
+                DataHolder.getInstance().setUser((User) gson.fromJson(jsonResponse, type));
                 Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
