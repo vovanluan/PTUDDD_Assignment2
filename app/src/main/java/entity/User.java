@@ -24,6 +24,8 @@ public class User {
     private ArrayList<String> following = new ArrayList<>();
     private ArrayList<String> upvoted = new ArrayList<>();
     private ArrayList<String> reviews = new ArrayList<>();
+    private ArrayList<String> students = new ArrayList<>();
+    private ArrayList<String> teachers = new ArrayList<>();
     public User() {
         local = new Local();
         bio = new Bio();
@@ -94,6 +96,22 @@ public class User {
 
     public void setReviews(ArrayList<String> reviews) {
         this.reviews = reviews;
+    }
+
+    public ArrayList<String> getStudents() {
+        return students;
+    }
+
+    public void setStudents(ArrayList<String> students) {
+        this.students = students;
+    }
+
+    public ArrayList<String> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(ArrayList<String> teachers) {
+        this.teachers = teachers;
     }
 }
 

@@ -4,6 +4,10 @@ package entity;
  * Created by Admin on 5/12/2016.
  */
 public class Notification {
+    private String _id;
+    private String studentName;
+    private String teacherName;
+    private String cardName;
     private String description;
     private String created_by;
     private String for_card;
@@ -11,6 +15,14 @@ public class Notification {
     private int status;
     private String createdAt;
     private String updatedAt;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public String getDescription() {
         return description;
@@ -66,5 +78,30 @@ public class Notification {
 
     public void setTo(String to) {
         this.to = to;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
+    }
+
+    public String getStudentName() {
+
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 }

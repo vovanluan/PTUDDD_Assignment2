@@ -42,7 +42,7 @@ public class CourseActivity extends AppCompatActivity{
     public TextView star;
     private TextView title, creator, people, language, location, time, description, upvote;
     private Button pairUpBtn, reviewBtn, upVoteBtn;
-    private ImageView courseImage, upvoteIcon, starIcon;
+    private ImageView courseImage, upvoteIcon, starIcon, peopleIcon;
     private Notification notification;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +68,8 @@ public class CourseActivity extends AppCompatActivity{
         upVoteBtn = (Button)  findViewById(R.id.upvoteBtn);
         upvoteIcon = (ImageView) findViewById(R.id.upvoteIcon);
         starIcon = (ImageView) findViewById(R.id.starIcon);
+        people = (TextView) findViewById(R.id.people);
+        peopleIcon = (ImageView) findViewById(R.id.peopleIcon);
 
         //initialize upvote icon and button
         if(DataHolder.getInstance().getUser().getUpvoted().contains(course.get_id())) {
@@ -79,6 +81,12 @@ public class CourseActivity extends AppCompatActivity{
             upvoteIcon.setImageResource(R.drawable.ic_action_like);
         }
 
+        if(course.getStudents().contains(DataHolder.getInstance().getUser().get_id())) {
+            peopleIcon.setImageResource(R.drawable.ic_big_group);
+        }
+        else {
+            peopleIcon.setImageResource(R.drawable.ic_group_add);
+        }
 /*        if(DataHolder.getInstance().getUser().getReviews().contains(course.get_id())) {
             starIcon.setImageResource(R.drawable.ic_action_reviewed);
         }
@@ -92,6 +100,7 @@ public class CourseActivity extends AppCompatActivity{
         star.setText(String.valueOf(course.getRating()));
         time.setText(course.getTime());
         upvote.setText(String.valueOf(course.getUpvotes()));
+        people.setText(String.valueOf(course.getStudents().size()));
 
         Random generator = new Random();
         int random = generator.nextInt(9);
@@ -111,8 +120,7 @@ public class CourseActivity extends AppCompatActivity{
                 startActivity(i);
             }
         });
-
-        pairUpBtn.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener pairUpListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Check if user joined this course
@@ -120,16 +128,24 @@ public class CourseActivity extends AppCompatActivity{
                     Toast.makeText(CourseActivity.this, "You joined this course", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                //TODO user joins a course, waiting for API
+                User teacher = DataHolder.getInstance().getUserById(course.getCreated_by());
+                String studentName = DataHolder.getInstance().getUser().getBio().getFirstName() + " " + DataHolder.getInstance().getUser().getBio().getLastName();
+                String teacherName = teacher.getBio().getFirstName() + " " + teacher.getBio().getLastName();
                 notification = new Notification();
                 notification.setCreated_by(DataHolder.getInstance().getUser().get_id());
-                notification.setDescription("Pair up");
                 notification.setFor_card(course.get_id());
                 notification.setTo(course.getCreated_by());
+                notification.setStudentName(studentName);
+                notification.setTeacherName(teacherName);
+                notification.setDescription(studentName + " wants to join class: " + course.getTitle() + " taught by " + teacherName );
+                notification.setCardName(course.getTitle());
 
                 new PairUpRequest().execute(Support.HOST + "users/pairup");
             }
-        });
+        };
+
+        pairUpBtn.setOnClickListener(pairUpListener);
+        peopleIcon.setOnClickListener(pairUpListener);
 
         reviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -355,6 +371,7 @@ public class CourseActivity extends AppCompatActivity{
                 wr.write(json);
                 wr.flush();
                 wr.close();
+
                 return urlConnection.getResponseCode();
 
             } catch (Exception e) {
@@ -371,8 +388,23 @@ public class CourseActivity extends AppCompatActivity{
                     this.dialog.dismiss();
                 }
                 if (responseCode == HttpURLConnection.HTTP_OK) {
+                    DataHolder.getInstance().getCourseById(course.get_id()).getStudents().add(DataHolder.getInstance().getUser().get_id());
+                    DataHolder.getInstance().getUser().getTeachers().add(course.getCreated_by());
+                    DataHolder.getInstance().getUserById(DataHolder.getInstance().getUser().get_id()).getTeachers().add(course.getCreated_by());
+                    course.getStudents().add(DataHolder.getInstance().getUser().get_id());
+                    people.setText(String.valueOf(course.getStudents().size()));
+                    peopleIcon.setImageResource(R.drawable.ic_big_group);
+                    Toast.makeText(CourseActivity.this, "Awesome!!! You've joined this course!", Toast.LENGTH_SHORT).show();
 
-                } else {
+                    //Broadcast update course
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("UPDATE_CARD_LIST");
+                    sendBroadcast(broadcastIntent);
+                }
+                else if(responseCode == 400){
+                    Toast.makeText(CourseActivity.this, "You joined this course already", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     Toast.makeText(CourseActivity.this, "Error while pair up", Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {

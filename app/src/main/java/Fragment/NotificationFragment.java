@@ -130,8 +130,8 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
 
             @Override
             public void run() {
-                //TODO waiting for API
-                //new GetNotificationListRequest().execute(Support.HOST + "users/pairup");
+                Log.e("Get notification list", "10s");
+                new GetNotificationListRequest().execute(Support.HOST + "users/" + DataHolder.getInstance().getUser().get_id() + "/notification");
             }
 
         }, 0, INTERVAL);

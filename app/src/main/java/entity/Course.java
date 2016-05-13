@@ -33,13 +33,13 @@ public class Course {
 
     private String place;
 
-    private ArrayList<String> reviews;
+    private ArrayList<String> reviews = new ArrayList<>();
 
     private int limit = 1;
 
     private int accepted;
 
-    private ArrayList<String> students;
+    private ArrayList<String> students = new ArrayList<>();
 
 
     public Course() {

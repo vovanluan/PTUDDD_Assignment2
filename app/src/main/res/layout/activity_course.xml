@@ -117,10 +117,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_margin="0dp"
-                        android:src="@drawable/ic_big_group"
+                        android:src="@drawable/ic_group_add"
                         android:layout_marginRight="4dp"
                         android:layout_toRightOf="@+id/upvote"
                         android:id="@+id/peopleIcon"
+                        android:clickable="true"
                         />
                     <TextView
                         android:layout_width="wrap_content"

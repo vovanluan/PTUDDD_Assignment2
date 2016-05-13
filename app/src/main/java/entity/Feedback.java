@@ -4,10 +4,18 @@ package entity;
  * Created by Rana on 5/8/2016.
  */
 public class Feedback {
+    private String _id;
     private String title;
     private String description;
     private String created_by;
 
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
     public String getTitle() {
         return title;
     }
