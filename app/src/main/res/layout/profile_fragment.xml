@@ -92,7 +92,8 @@
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Vietnamese"/>
+                        android:text="Vietnamese"
+                        android:id="@+id/vietnamese"/>
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

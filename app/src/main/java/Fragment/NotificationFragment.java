@@ -53,11 +53,10 @@ import entity.Notification;
 import entity.User;
 import support.Support;
 
-public class NotificationFragment extends Fragment implements AdapterView.OnItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class NotificationFragment extends Fragment implements AdapterView.OnItemClickListener,SharedPreferences.OnSharedPreferenceChangeListener {
     ListView myListView;
     private int INTERVAL = 10 * 1000;
     public NotificationAdapter adapter;
-    SharedPreferences prefs;
 
     public NotificationFragment() {
     }
@@ -70,13 +69,20 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         DataHolder.getInstance().setOldNotifications(new ArrayList<Notification>());
         DataHolder.getInstance().setNewNotifications(new ArrayList<Notification>());
         adapter = new NotificationAdapter(getActivity(), R.layout.user_fragment, DataHolder.getInstance().getNewNotifications());
-
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+
+        return inflater.inflate(R.layout.user_fragment, container, false);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         if (key.equals("notification")) {
-            boolean turnOn = sharedPreferences.getBoolean("notification", true);
+            boolean turnOn = prefs.getBoolean("notification", true);
             //TODO: turn on/off notification
             if (turnOn) {
                 Log.e("TURN ON", "TEST");
@@ -84,13 +90,6 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
                 Log.e("TURN OFF", "TEST");
             }
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.user_fragment, container, false);
     }
 
     @Override

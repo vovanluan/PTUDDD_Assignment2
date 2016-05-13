@@ -70,6 +70,7 @@ public class ProfileFragment extends Fragment {
         university = (EditText) view.findViewById(R.id.university);
         update = (Button) view.findViewById(R.id.update);
 
+
         //Check if user view another user's profile
         if(!userFromActivity.get_id().equals(DataHolder.getInstance().getUser().get_id())) {
             update.setVisibility(View.GONE);

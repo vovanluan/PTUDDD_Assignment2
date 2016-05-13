@@ -4,6 +4,7 @@ package fragment;
  * Created by Luan on 5/2/2016.
  */
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.example.luan.activity.CourseActivity;
 import com.example.luan.activity.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -91,7 +93,13 @@ public class UserCourseFragment extends Fragment implements AdapterView.OnItemCl
         Course course = courseList.get(position);
 
         // do something
-        Toast.makeText(getActivity(), course.getTitle(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), CourseActivity.class);
+        Gson gson = new Gson();
+        Type type = new TypeToken<Course>() {
+        }.getType();
+        String jsonCourse = gson.toJson(course, type);
+        intent.putExtra("course", jsonCourse);
+        startActivity(intent);
     }
     private class GetCardRequest extends AsyncTask<String, Void, Integer> {
 

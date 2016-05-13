@@ -123,7 +123,8 @@ public class CourseActivity extends AppCompatActivity{
         upVoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String upVoteURL = Support.HOST + "cards/" + course.get_id() + "/upvote";
+                String upVoteURL = Support.HOST + "cards/" + course.get_id() + "/" + DataHolder.getInstance().getUser().get_id() + "/upvote";
+                Log.e("UpvoteURL", upVoteURL);
                 new UpvoteRequest().execute(upVoteURL);
             }
         });

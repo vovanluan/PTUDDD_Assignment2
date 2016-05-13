@@ -54,7 +54,8 @@ public class HomeActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
-    private BroadcastReceiver logOutBroadcastReceiver, userChangeBroadcastReceiver;
+    private BroadcastReceiver logOutBroadcastReceiver, userChangeBroadcastReceiver, gotUserListBroadCastReceiver, gotCardListBroadCastReceiver, updateCardListBroadcastReceiver;
+    private IntentFilter gotUserListIntentFilter, gotCardListIntentFilter, logOutIntentFilter, updateCardListIntentFilter, userChangeIntentFilter;
     private AlertDialog.Builder logoutDialog;
     private CourseFragment courseFragment;
     private UserFragment userFragment;
@@ -66,6 +67,92 @@ public class HomeActivity extends AppCompatActivity {
             R.drawable.ic_user_list,
             R.drawable.ic_notifications
     };
+
+/*    @Override
+    protected void onPause() {
+        if (gotUserListBroadCastReceiver != null)
+            unregisterReceiver(gotUserListBroadCastReceiver);
+        if (gotCardListBroadCastReceiver != null)
+            unregisterReceiver(gotCardListBroadCastReceiver);
+        if (userChangeBroadcastReceiver != null)
+            unregisterReceiver(userChangeBroadcastReceiver);
+        if (logOutBroadcastReceiver != null)
+            unregisterReceiver(logOutBroadcastReceiver);
+        if (updateCardListBroadcastReceiver != null)
+            unregisterReceiver(updateCardListBroadcastReceiver);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(gotUserListBroadCastReceiver, gotUserListIntentFilter);
+        registerReceiver(gotCardListBroadCastReceiver, gotCardListIntentFilter);
+        registerReceiver(logOutBroadcastReceiver, logOutIntentFilter);
+        registerReceiver(updateCardListBroadcastReceiver, updateCardListIntentFilter);
+        registerReceiver(userChangeBroadcastReceiver, userChangeIntentFilter);
+    }*/
+
+/*    @Override
+    protected void onStop()
+    {
+        try {
+            if (gotUserListBroadCastReceiver != null) {
+                unregisterReceiver(gotUserListBroadCastReceiver);
+                gotUserListBroadCastReceiver = null;
+            }
+            if (gotCardListBroadCastReceiver != null) {
+                unregisterReceiver(gotCardListBroadCastReceiver);
+                gotCardListBroadCastReceiver = null;
+            }
+            if (userChangeBroadcastReceiver != null) {
+                unregisterReceiver(userChangeBroadcastReceiver);
+                userChangeBroadcastReceiver = null;
+            }
+            if (logOutBroadcastReceiver != null) {
+                unregisterReceiver(logOutBroadcastReceiver);
+                logOutBroadcastReceiver = null;
+            }
+            if (updateCardListBroadcastReceiver != null) {
+                unregisterReceiver(updateCardListBroadcastReceiver);
+                updateCardListBroadcastReceiver = null;
+            }
+        }
+        catch (Exception e) {
+            throw e;
+        }
+        super.onStop();
+    }*/
+
+    @Override
+    protected void onDestroy() {
+        try {
+            if (gotUserListBroadCastReceiver != null) {
+                unregisterReceiver(gotUserListBroadCastReceiver);
+                gotUserListBroadCastReceiver = null;
+            }
+            if (gotCardListBroadCastReceiver != null) {
+                unregisterReceiver(gotCardListBroadCastReceiver);
+                gotCardListBroadCastReceiver = null;
+            }
+            if (userChangeBroadcastReceiver != null) {
+                unregisterReceiver(userChangeBroadcastReceiver);
+                userChangeBroadcastReceiver = null;
+            }
+            if (logOutBroadcastReceiver != null) {
+                unregisterReceiver(logOutBroadcastReceiver);
+                logOutBroadcastReceiver = null;
+            }
+            if (updateCardListBroadcastReceiver != null) {
+                unregisterReceiver(updateCardListBroadcastReceiver);
+                updateCardListBroadcastReceiver = null;
+            }
+        }
+        catch (Exception e) {
+            throw e;
+        }
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,26 +176,26 @@ public class HomeActivity extends AppCompatActivity {
         backgroundRequest.getUserListRequest();
 
         // get broadcast that get user list finished
-        BroadcastReceiver gotUserListBroadCastReceiver = new BroadcastReceiver() {
+        gotUserListBroadCastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 backgroundRequest.getCardListRequest();
                 userFragment.adapter.setListUser(DataHolder.getInstance().getUserList());
             }
         };
-        IntentFilter gotUserListIntentFilter = new IntentFilter();
+        gotUserListIntentFilter = new IntentFilter();
         gotUserListIntentFilter.addAction("GOT_USER_LIST");
         registerReceiver(gotUserListBroadCastReceiver, gotUserListIntentFilter);
 
         // get broadcast that get card list finished
-        BroadcastReceiver gotCardListBroadCastReceiver = new BroadcastReceiver() {
+        gotCardListBroadCastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 courseFragment.adapter.setListCard(DataHolder.getInstance().getCourseList());
             }
         };
 
-        IntentFilter gotCardListIntentFilter = new IntentFilter();
+        gotCardListIntentFilter = new IntentFilter();
         gotCardListIntentFilter.addAction("GOT_CARD_LIST");
         registerReceiver(gotCardListBroadCastReceiver, gotCardListIntentFilter);
         // create navigation tab and viewpager
@@ -166,17 +253,17 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
             }
         };
-        IntentFilter logOutIntentFilter = new IntentFilter();
+        logOutIntentFilter = new IntentFilter();
         logOutIntentFilter.addAction("ACTION_LOGOUT");
         registerReceiver(logOutBroadcastReceiver, logOutIntentFilter);
 
-        BroadcastReceiver updateCardListBroadcastReceiver = new BroadcastReceiver() {
+        updateCardListBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 HomeActivity.this.courseFragment.adapter.setListCard(DataHolder.getInstance().getCourseList());
             }
         };
-        IntentFilter updateCardListIntentFilter = new IntentFilter();
+        updateCardListIntentFilter = new IntentFilter();
         updateCardListIntentFilter.addAction("UPDATE_CARD_LIST");
         registerReceiver(updateCardListBroadcastReceiver, updateCardListIntentFilter);
 
@@ -190,7 +277,7 @@ public class HomeActivity extends AppCompatActivity {
                 email.setText(DataHolder.getInstance().getUser().getLocal().getEmail());
             }
         };
-        IntentFilter userChangeIntentFilter = new IntentFilter();
+        userChangeIntentFilter = new IntentFilter();
         userChangeIntentFilter.addAction("USER_CHANGE");
         registerReceiver(userChangeBroadcastReceiver, userChangeIntentFilter);
 
@@ -270,12 +357,6 @@ public class HomeActivity extends AppCompatActivity {
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
-    }
-
-    @Override
-    protected void onStop() {
-        //unregisterReceiver(broadcastReceiver);
-        super.onStop();
     }
 
     @Override
