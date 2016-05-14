@@ -63,7 +63,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/feedback_margin"
         android:hint="Title"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:maxLines="1"/>
 
     <EditText
         android:id="@+id/description"

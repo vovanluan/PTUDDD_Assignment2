@@ -82,7 +82,7 @@ public class CreateCourseActivity extends AppCompatActivity implements DatePicke
         searchableSpinner = (SearchableSpinner) findViewById(R.id.languageSpinner);
 
         creator.setText(DataHolder.getInstance().getUser().getBio().getFirstName());
-        fromTime.setText(DateTime.now().getHourOfDay() + "h" + DateTime.now().getMinuteOfHour());
+        fromTime.setText(DateTime.now().getHourOfDay() + ":" + DateTime.now().getMinuteOfHour());
         date.setText(DateTime.now().getDayOfMonth() + "/" + DateTime.now().getMonthOfYear() + "/" + DateTime.now().getYear());
         create.setBackgroundColor(Color.parseColor("#2CC88F"));
 

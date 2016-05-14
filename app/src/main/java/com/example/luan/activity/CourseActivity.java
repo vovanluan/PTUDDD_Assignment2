@@ -105,7 +105,7 @@ public class CourseActivity extends AppCompatActivity{
         star.setText(String.valueOf(course.getRating()));
 
         DateTime timeCourseStart = new DateTime(course.getTime());
-        time.setText(timeCourseStart.getHourOfDay() + ":" + timeCourseStart.getMinuteOfHour() + ", " + timeCourseStart.getDayOfMonth() + "/" + timeCourseStart.getMonthOfYear() + "/" + timeCourseStart.getYear());
+        time.setText(timeCourseStart.getDayOfMonth() + "/" + timeCourseStart.getMonthOfYear() + "/" + timeCourseStart.getYear() + " at " + timeCourseStart.getHourOfDay() + ":" + timeCourseStart.getMinuteOfHour());
         upvote.setText(String.valueOf(course.getUpvotes()));
         people.setText(String.valueOf(course.getStudents().size()));
         language.setText(course.getCategory());

@@ -23,13 +23,6 @@
                 app:border_color="#FF000000"
                 android:layout_margin="@dimen/avatar_margin"
                 android:layout_centerInParent="true"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/gray"
-                android:layout_marginBottom="2dp"
-                android:layout_centerInParent="true"/>
-
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -121,7 +114,8 @@
                 android:layout_marginLeft="5dp"
                 android:id="@+id/place"
                 style="@style/BigDescription"
-                android:background="@android:color/transparent"/>
+                android:background="@android:color/transparent"
+                android:maxLines="1"/>
         </RelativeLayout>
 
         <View
@@ -150,23 +144,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/fromToRL"
-                    android:layout_centerInParent="true">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="From"
-                        android:id="@+id/fromTime"
-                        style="@style/BigDescription"
-                        android:onClick="showFromTimePicker"
-                        android:clickable="true"/>
+                    android:layout_alignParentLeft="true">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Date"
                         android:id="@+id/date"
                         style="@style/BigDescription"
-                        android:layout_toRightOf="@+id/fromTime"
                         android:onClick="showDatePicker"
+                        android:clickable="true"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/at"
+                        android:text=" at "
+                        style="@style/BigDescription"
+                        android:layout_toRightOf="@+id/date"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="From"
+                        android:id="@+id/fromTime"
+                        style="@style/BigDescription"
+                        android:layout_toRightOf="@+id/at"
+                        android:onClick="showFromTimePicker"
                         android:clickable="true"/>
                 </RelativeLayout>
 

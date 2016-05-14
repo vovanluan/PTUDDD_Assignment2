@@ -32,24 +32,6 @@
                 android:layout_centerVertical="true"
                 style="@style/TextViewApperance"/>
         </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_facebook"
-                android:id="@+id/facebookIcon"
-                android:layout_margin="@dimen/activity_top_margin" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="facebook.com/luanvo"
-                android:id="@+id/facebook"
-                android:layout_toRightOf="@id/facebookIcon"
-                android:layout_centerVertical="true"
-                style="@style/TextViewApperance"/>
-        </RelativeLayout>
+        //TODO : add more contact
     </LinearLayout>
 </ScrollView>
