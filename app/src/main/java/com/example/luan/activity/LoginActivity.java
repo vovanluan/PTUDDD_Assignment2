@@ -45,10 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         login = (Button) findViewById(R.id.login);
         signup = (Button) findViewById(R.id.signup);
 
-        //TODO : for faster debug, remember to clear before commit or push
-        email.setText("vovanluan@gmail.com");
-        password.setText("123456");
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
