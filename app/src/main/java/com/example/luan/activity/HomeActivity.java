@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import entity.Course;
 import entity.Notification;
 import entity.User;

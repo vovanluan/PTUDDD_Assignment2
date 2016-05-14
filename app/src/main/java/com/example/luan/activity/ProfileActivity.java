@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ContactFragment contactFragment;
     private UserCourseFragment userCourseFragment;
     private TextView name, followers, cards;
-    private ImageButton followBtn;
+    private ImageView followBtn;
     private User user;
     private Follow follow;
     @Override
@@ -56,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
         name = (TextView) findViewById(R.id.name);
         followers = (TextView) findViewById(R.id.followers);
         cards = (TextView) findViewById(R.id.cards);
-        followBtn = (ImageButton) findViewById(R.id.followBtn);
+        followBtn = (ImageView) findViewById(R.id.followBtn);
         // transfer user information to fragment
         String jsonUser = getIntent().getStringExtra("User");
         Bundle bundle = new Bundle();

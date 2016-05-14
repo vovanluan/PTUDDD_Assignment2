@@ -71,6 +71,8 @@ public class CourseActivity extends AppCompatActivity{
         people = (TextView) findViewById(R.id.people);
         peopleIcon = (ImageView) findViewById(R.id.peopleIcon);
 
+        pairUpBtn.setBackgroundColor(Color.parseColor("#2CC88F"));
+        upVoteBtn.setBackgroundColor(Color.parseColor("#2196F3"));
         //initialize upvote icon and button
         if(DataHolder.getInstance().getUser().getUpvoted().contains(course.get_id())) {
             upVoteBtn.setText("Remove vote");

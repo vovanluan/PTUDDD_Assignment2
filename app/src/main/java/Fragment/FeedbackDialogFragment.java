@@ -36,7 +36,6 @@ public class FeedbackDialogFragment extends DialogFragment {
     private EditText title;
     private EditText description;
     private TextView submit;
-    private TextView cancel;
     public Feedback feedBack;
     private static final FeedbackDialogFragment frag = new FeedbackDialogFragment();
     public FeedbackDialogFragment() {
@@ -67,7 +66,6 @@ public class FeedbackDialogFragment extends DialogFragment {
         title = (EditText) view.findViewById(R.id.title);
         description = (EditText) view.findViewById(R.id.description);
         submit = (TextView) view.findViewById(R.id.submit);
-        cancel = (TextView) view.findViewById(R.id.cancel);
 
         // Show soft keyboard automatically and request focus to field
         title.requestFocus();
@@ -83,13 +81,6 @@ public class FeedbackDialogFragment extends DialogFragment {
                 feedBack.setCreated_by(DataHolder.getInstance().getUser().get_id());
                 String sendFeedBackURL = Support.HOST + "feedbacks";
                 new FeedbackRequest().execute(sendFeedBackURL);
-            }
-        });
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FeedbackDialogFragment.getInstance().dismiss();
             }
         });
     }

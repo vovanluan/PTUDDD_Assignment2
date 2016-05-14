@@ -31,7 +31,7 @@
                 android:id="@+id/profile_image"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:src="@drawable/profile"
+                android:src="@drawable/user_ava_1"
                 app:border_color="#FF000000"
                 android:layout_margin="@dimen/avatar_margin"
                 android:layout_alignParentLeft="true"/>
@@ -204,6 +204,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="    Pair up"
+                android:textColor="@color/white"
                 android:id="@+id/pairUpBtn"
                 style="@style/pairUpButton"
                 android:background="@drawable/icon_button"
@@ -230,6 +231,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="  Review"
+                    android:textColor="@color/gray"
                     android:id="@+id/reviewBtn"
                     style="@style/buttonStyle"
                     android:background="@drawable/icon_button"
@@ -241,6 +243,7 @@
                     android:id="@+id/upvoteBtn"
                     style="@style/buttonStyle"
                     android:background="@drawable/icon_button"
+                    android:textColor="@color/white"
                     android:drawableLeft="@drawable/ic_action_like"
                     android:layout_toRightOf="@+id/reviewBtn"/>
             </RelativeLayout>

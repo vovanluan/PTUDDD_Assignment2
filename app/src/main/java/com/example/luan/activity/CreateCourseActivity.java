@@ -55,7 +55,8 @@ import support.Support;
 public class CreateCourseActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private EditText title, description, place;
     private TextView creator;
-    private Button create, fromTime, date;
+    private Button create;
+    private TextView fromTime, date;
     private SearchableSpinner searchableSpinner;
     private ArrayList<String> languages;
     private Course course;
@@ -74,13 +75,17 @@ public class CreateCourseActivity extends AppCompatActivity implements DatePicke
         place = (EditText) findViewById(R.id.place);
         description = (EditText) findViewById(R.id.description);
         create = (Button) findViewById(R.id.createBtn);
-        fromTime = (Button) findViewById(R.id.fromTime);
+        fromTime = (TextView) findViewById(R.id.fromTime);
         //toTime = (Button) findViewById(R.id.toTime);
-        date = (Button) findViewById(R.id.date);
+        date = (TextView) findViewById(R.id.date);
         timeCourseStart = new DateTime();
         searchableSpinner = (SearchableSpinner) findViewById(R.id.languageSpinner);
 
         creator.setText(DataHolder.getInstance().getUser().getBio().getFirstName());
+        fromTime.setText(DateTime.now().getHourOfDay() + "h" + DateTime.now().getMinuteOfHour());
+        date.setText(DateTime.now().getDayOfMonth() + "/" + DateTime.now().getMonthOfYear() + "/" + DateTime.now().getYear());
+        create.setBackgroundColor(Color.parseColor("#2CC88F"));
+
         searchableSpinner.setTitle("Select Item");
         searchableSpinner.setPositiveButton("OK");
         languages = new ArrayList<>();

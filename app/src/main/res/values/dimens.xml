@@ -32,7 +32,7 @@
     <dimen name="feedback_margin">5dp</dimen>
     <dimen name="profile_header_height">180dp</dimen>
     <dimen name="profile_avatar_size">76dp</dimen>
-    <dimen name="follow_size">36dp</dimen>
+    <dimen name="follow_size">48dp</dimen>
     <dimen name="name_size">24dp</dimen>
     <dimen name="profile_info_size">18dp</dimen>
     <dimen name="rectangle_margin">4dp</dimen>

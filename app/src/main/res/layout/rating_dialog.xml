@@ -82,19 +82,10 @@
             style="@style/BigDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginLeft="20dp"
             android:clickable="true"
             android:text="Submit" />
-        <TextView
-            android:id="@+id/cancel"
-            style="@style/BigDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:clickable="true"
-            android:text="Cancel" />
     </RelativeLayout>
 
 

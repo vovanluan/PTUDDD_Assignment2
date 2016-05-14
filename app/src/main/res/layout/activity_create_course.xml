@@ -147,25 +147,27 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/timeIcon">
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/fromToRL">
-                    <Button
+                    android:id="@+id/fromToRL"
+                    android:layout_centerInParent="true">
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="From"
                         android:id="@+id/fromTime"
-                        style="@style/buttonStyle"
-                        android:onClick="showFromTimePicker"/>
-                    <Button
+                        style="@style/BigDescription"
+                        android:onClick="showFromTimePicker"
+                        android:clickable="true"/>
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:text="Date"
                         android:id="@+id/date"
-                        style="@style/buttonStyle"
-                        android:layout_centerHorizontal="true"
-                        android:onClick="showDatePicker"/>
+                        style="@style/BigDescription"
+                        android:layout_toRightOf="@+id/fromTime"
+                        android:onClick="showDatePicker"
+                        android:clickable="true"/>
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -211,6 +213,7 @@
                     android:text="  Create"
                     android:id="@+id/createBtn"
                     style="@style/buttonStyle"
+                    android:textColor="@color/white"
                     android:background="@drawable/icon_button"
                     android:drawableLeft="@drawable/ic_play"
                     android:layout_centerInParent="true"/>
