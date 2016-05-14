@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.joda.time.DateTime;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -63,6 +65,7 @@ public class CourseActivity extends AppCompatActivity{
         time = (TextView) findViewById(R.id.time);
         star = (TextView) findViewById(R.id.star);
         upvote = (TextView) findViewById(R.id.upvote);
+        language = (TextView) findViewById(R.id.language);
         pairUpBtn = (Button)  findViewById(R.id.pairUpBtn);
         reviewBtn = (Button)  findViewById(R.id.reviewBtn);
         upVoteBtn = (Button)  findViewById(R.id.upvoteBtn);
@@ -100,14 +103,14 @@ public class CourseActivity extends AppCompatActivity{
         creator.setText(DataHolder.getInstance().getUserById(course.getCreated_by()).getBio().getFirstName());
         description.setText(course.getDescription());
         star.setText(String.valueOf(course.getRating()));
-        time.setText(course.getTime());
+
+        DateTime timeCourseStart = new DateTime(course.getTime());
+        time.setText(timeCourseStart.getHourOfDay() + ":" + timeCourseStart.getMinuteOfHour() + ", " + timeCourseStart.getDayOfMonth() + "/" + timeCourseStart.getMonthOfYear() + "/" + timeCourseStart.getYear());
         upvote.setText(String.valueOf(course.getUpvotes()));
         people.setText(String.valueOf(course.getStudents().size()));
-
-        Random generator = new Random();
-        int random = generator.nextInt(9);
-        String color = Support.COLOR[random];
-        courseImage.setBackgroundColor(Color.parseColor(color));
+        language.setText(course.getCategory());
+        courseImage.setImageResource(Support.getCategoryFlag(course.getCategory()));
+        courseImage.setBackgroundColor(Color.parseColor("#E0E0E0"));
 
         creator.setOnClickListener(new View.OnClickListener() {
 

@@ -17,6 +17,7 @@
         android:scaleType="centerInside"
         android:src="@drawable/yuyo_logo"
         android:layout_gravity="center"
+        android:layout_marginTop="60dp"
         />
 
     <EditText
@@ -42,13 +43,14 @@
         android:singleLine="true"
         android:textColor="@color/black"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="@dimen/activity_top_margin"
         android:layout_marginLeft="@dimen/activity_left_margin"
-        android:layout_marginRight="@dimen/activity_right_margin">
+        android:layout_marginRight="@dimen/activity_right_margin"
+        android:layout_gravity="center"
+        >
         <Button
             android:id="@+id/login"
             android:layout_width="@dimen/button_width"
@@ -65,7 +67,8 @@
             android:textSize="@dimen/text_size"
             android:background="@drawable/btn"
             android:text="Sign up"
-            android:layout_marginLeft="@dimen/left_button"/>
-    </LinearLayout>
+            android:layout_marginLeft="@dimen/left_button"
+            android:layout_toRightOf="@id/login"/>
+    </RelativeLayout>
 
 </LinearLayout>

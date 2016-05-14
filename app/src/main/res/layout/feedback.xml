@@ -42,6 +42,7 @@
             android:layout_alignParentEnd="true"
             android:layout_margin = "20dp"
             android:clickable="true"
-            android:text="Submit" />
+            android:text="Submit"
+            android:textColor="@color/colorAccent"/>
     </RelativeLayout>
 </LinearLayout>

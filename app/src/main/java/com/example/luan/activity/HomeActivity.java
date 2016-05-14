@@ -19,8 +19,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,7 +64,8 @@ public class HomeActivity extends AppCompatActivity {
     private ViewPagerAdapter adapter;
     private BroadcastReceiver logOutBroadcastReceiver, userChangeBroadcastReceiver, gotUserListBroadCastReceiver, gotCardListBroadCastReceiver, updateCardListBroadcastReceiver;
     private IntentFilter gotUserListIntentFilter, gotCardListIntentFilter, logOutIntentFilter, updateCardListIntentFilter, userChangeIntentFilter;
-    private AlertDialog.Builder logoutDialog;
+    private AlertDialog.Builder logoutDialogBuilder;
+    private AlertDialog logoutDialog;
     private CourseFragment courseFragment;
     private UserFragment userFragment;
     private NotificationFragment notificationFragment;
@@ -179,22 +183,9 @@ public class HomeActivity extends AppCompatActivity {
 
         final TextView name = (TextView) findViewById(R.id.username);
         final TextView email = (TextView) findViewById(R.id.email);
-        logoutDialog = new AlertDialog.Builder(HomeActivity.this)
+        logoutDialogBuilder = new AlertDialog.Builder(HomeActivity.this)
                 .setTitle("Log out")
-                .setMessage("Are you sure you want to log out?")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        String url = Support.HOST + "logout";
-                        new LogoutRequest().execute(url);
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
                 .setIcon(android.R.drawable.ic_dialog_alert);
-
         // parse data to header
         name.setText(DataHolder.getInstance().getUser().getBio().getFirstName() + " " + DataHolder.getInstance().getUser().getBio().getLastName());
         email.setText(DataHolder.getInstance().getUser().getLocal().getEmail());
@@ -286,7 +277,41 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(aboutUsIntent);
                         return true;
                     case R.id.logOut:
+                        logoutDialog = logoutDialogBuilder.create();
+                        LayoutInflater layoutInflater = LayoutInflater.from(HomeActivity.this);
+                        View promptView = layoutInflater.inflate(R.layout.logout_dialog, null);
+
+                        TextView yes = (TextView) promptView.findViewById(R.id.yes);
+
+                        TextView no = (TextView) promptView.findViewById(R.id.no);
+
+                        yes.setOnClickListener(new View.OnClickListener() {
+                            public void onClick(View v) {
+                                new LogoutRequest().execute(Support.HOST + "logout");
+                            }
+                        });
+
+                        no.setOnClickListener(new View.OnClickListener() {
+                            public void onClick(View v) {
+                                logoutDialog.dismiss();
+                            }
+                        });
+
+                        logoutDialog.setView(promptView);
+
                         logoutDialog.show();
+/*                        logoutDialog.getButton(R.id.yes).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                new LogoutRequest().execute(Support.HOST + "logout");
+                            }
+                        });
+                        logoutDialog.getButton(R.id.no).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                logoutDialog.dismiss();
+                            }
+                        });*/
                         return true;
                     default:
                         Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();

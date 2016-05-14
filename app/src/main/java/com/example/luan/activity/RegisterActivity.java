@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -32,6 +33,7 @@ import support.Support;
 public class RegisterActivity extends AppCompatActivity {
     EditText password, confirmPassword, email, firstName, lastName;
     Button signup;
+    TextView signIn;
     User user;
 
     @Override
@@ -43,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
         confirmPassword = (EditText) findViewById(R.id.confirm_password);
         email = (EditText) findViewById(R.id.email);
         signup = (Button) findViewById(R.id.signup);
+        signIn = (TextView) findViewById(R.id.signIn);
 
 
         signup.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +81,12 @@ public class RegisterActivity extends AppCompatActivity {
 
                 String url = Support.HOST + "signup";
                 new RegisterRequest().execute(url);
+            }
+        });
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

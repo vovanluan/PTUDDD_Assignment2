@@ -62,19 +62,23 @@ public class CardAdapter extends BaseAdapter {
         String color = Support.COLOR[random];
 
         convertView.setBackgroundColor(Color.parseColor(color));*/
-        ImageView courseImage = (ImageView) convertView.findViewById(R.id.courseImage);
         TextView title = (TextView) convertView.findViewById(R.id.title);
         TextView creator = (TextView) convertView.findViewById(R.id.creator);
         TextView description = (TextView) convertView.findViewById(R.id.description);
         TextView star = (TextView) convertView.findViewById(R.id.star);
         TextView people = (TextView) convertView.findViewById(R.id.people);
         TextView upvotes = (TextView) convertView.findViewById(R.id.upvotes);
+        ImageView category = (ImageView) convertView.findViewById(R.id.category);
+
         Course course = courses.get(position);
 
         title.setText(course.getTitle());
         creator.setText(DataHolder.getInstance().getUserById(course.getCreated_by()).getBio().getFirstName());
         description.setText(course.getDescription());
         star.setText(String.valueOf(course.getRating()));
+        category.setImageResource(Support.getCategoryFlag(course.getCategory()));
+        category.setBackgroundColor(Color.parseColor("#E0E0E0"));
+
         if(course.getStudents() == null){
             people.setText(String.valueOf(0));
         }
@@ -82,11 +86,6 @@ public class CardAdapter extends BaseAdapter {
             people.setText(String.valueOf(course.getStudents().size()));
         }
         upvotes.setText(String.valueOf(course.getUpvotes()));
-
-        Random generator = new Random();
-        int random = generator.nextInt(9);
-        String color = Support.COLOR[random];
-        courseImage.setBackgroundColor(Color.parseColor(color));
 
         return convertView;
     }

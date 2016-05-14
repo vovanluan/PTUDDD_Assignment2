@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_top_margin"
     tools:context="com.example.luan.activity.LoginActivity"
     android:orientation="vertical"
-    android:background="@color/colorPrimary">
+    android:background="@color/white">
 
     <ImageView android:id="@+id/splashscreen_logo"
         android:layout_width="150dp"
@@ -44,13 +44,33 @@
 
     <Button
         android:id="@+id/signup"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_top_margin"
         android:layout_marginLeft="@dimen/activity_left_margin"
         android:layout_marginRight="@dimen/activity_right_margin"
         android:textColor="@drawable/button_text_color"
         android:background="@drawable/btn"
+        android:layout_gravity="center"
         android:textSize="20dp"
         android:text="Sign up"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Already have an account? "
+            android:id="@+id/text"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/text"
+            android:text="Sign in here"
+            android:textStyle="bold|italic"
+            android:clickable="true"
+            android:id="@+id/signIn"/>
+    </RelativeLayout>
 </LinearLayout>

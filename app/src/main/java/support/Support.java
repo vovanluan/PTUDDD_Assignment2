@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 
+import com.example.luan.activity.R;
+
 import java.util.ArrayList;
 
 import entity.DataHolder;
@@ -39,6 +41,23 @@ public class Support {
             return Patterns.PHONE.matcher(phoneNumber).matches();
         }
         return false;
+    }
+
+    public static final int getCategoryFlag(String category){
+        switch(category) {
+            case "English":
+                return R.drawable.usa;
+            case "Vietnamese":
+                return R.drawable.vietnam;
+            case "French":
+                return R.drawable.france;
+            case "Japanese":
+                return R.drawable.japan;
+            case "Spanish":
+                return R.drawable.spain;
+            default:
+                return R.drawable.usa;
+        }
     }
 
 }
