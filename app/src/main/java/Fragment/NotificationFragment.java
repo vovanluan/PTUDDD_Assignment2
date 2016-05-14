@@ -50,12 +50,14 @@ import java.util.prefs.PreferenceChangeListener;
 import adapter.NotificationAdapter;
 import adapter.UserAdapter;
 import entity.DataHolder;
+import entity.Local;
 import entity.Notification;
 import entity.User;
 import support.Support;
 
 public class NotificationFragment extends Fragment implements AdapterView.OnItemClickListener{
     ListView myListView;
+    private Notification updateNotification;
     private int INTERVAL = 10 * 1000;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener mPreferenceListener = null;
@@ -71,7 +73,7 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         // initialize adapter
         ArrayList<Notification> initialNotificationList = DataHolder.getInstance().getNewNotifications();
         adapter = new NotificationAdapter(getActivity(), R.layout.user_fragment, initialNotificationList);
-/*        Timer timer = new Timer();
+        Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
@@ -80,8 +82,7 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
                 new GetNotificationListRequest().execute(Support.HOST + "users/" + DataHolder.getInstance().getUser().get_id() + "/notification");
             }
 
-        }, 0, INTERVAL);*/
-        new GetNotificationListRequest().execute(Support.HOST + "users/" + DataHolder.getInstance().getUser().get_id() + "/notification");
+        }, 0, INTERVAL);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mPreferenceListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -135,9 +136,9 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
                             long id) {
         // retrieve the ListView item
         Notification notification = adapter.getNotificationList().get(position);
-        //TODO: handle when user click into a notification
+        updateNotification = notification;
+        new UpdateNotificationRequest().execute(Support.HOST + "/users/" + notification.get_id());
         DataHolder.getInstance().getNewNotifications().remove(notification);
-        DataHolder.getInstance().getOldNotifications().add(notification);
         adapter.setNotificationList(DataHolder.getInstance().getNewNotifications());
     }
 
@@ -183,14 +184,10 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
                     Type type = new TypeToken<ArrayList<Notification>>() {
                     }.getType();
                     ArrayList<Notification> notificationList =  gson.fromJson(jsonResponse, type);
-                    for (Notification notification: notificationList) {
-                        Log.e("Old contains", String.valueOf(DataHolder.getInstance().getOldNotifications().contains(notification)));
-                        if(!DataHolder.getInstance().getOldNotifications().contains(notification)) {
-                            DataHolder.getInstance().getNewNotifications().add(notification);
-                        }
-                    }
+                    Log.e("Notification response", jsonResponse);
+                    DataHolder.getInstance().getNewNotifications().clear();
+                    DataHolder.getInstance().getNewNotifications().addAll(notificationList);
                     Log.e("New size", String.valueOf(DataHolder.getInstance().getNewNotifications().size()));
-                    Log.e("Old size", String.valueOf(DataHolder.getInstance().getOldNotifications().size()));
                 }
                 adapter.setNotificationList(DataHolder.getInstance().getNewNotifications());
             } catch (Exception e) {
@@ -199,5 +196,53 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
+    private class UpdateNotificationRequest extends AsyncTask<String, Void, Integer> {
 
+        private String jsonResponse;
+        @Override
+        protected Integer doInBackground(String... urls) {
+            try {
+                // Create connection
+                URL url = new URL(urls[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("PUT");
+                urlConnection.setDoInput(true);
+                urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.connect();
+
+                // Convert this object to json string using gson
+                Gson gson = new Gson();
+                Type type = new TypeToken<Notification>() {
+                }.getType();
+                String json = gson.toJson(updateNotification, type);
+                Log.e("UPDATE notification", json);
+                OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
+                wr.write(json);
+                wr.flush();
+                wr.close();
+
+                return urlConnection.getResponseCode();
+
+            } catch (Exception e) {
+
+            }
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer responseCode) {
+            try {
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    //TODO : need improvement :
+                   /* DataHolder.getInstance().getNewNotifications().remove(updateNotification);
+                    Log.e("update", String.valueOf(DataHolder.getInstance().getNewNotifications().size()));*/
+                }
+
+                adapter.setNotificationList(DataHolder.getInstance().getNewNotifications());
+            } catch (Exception e) {
+
+            }
+        }
+    }
 }

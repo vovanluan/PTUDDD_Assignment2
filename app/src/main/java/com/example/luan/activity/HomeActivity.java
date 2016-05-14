@@ -34,6 +34,8 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import entity.Course;
 import entity.Notification;
@@ -120,6 +122,15 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         backgroundRequest = new BackgroundRequest(this);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+
+            }
+
+        }, 0, 10 * 1000);
         backgroundRequest.getUserListRequest();
 
         // get broadcast that get user list finished

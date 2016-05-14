@@ -80,6 +80,10 @@ public class DataHolder {
         return newNotifications;
     }
 
+/*    public boolean containsNotificationById(String id) {
+
+    }*/
+
     public void setNewNotifications(ArrayList<Notification> newNotifications) {
         this.newNotifications = newNotifications;
     }
