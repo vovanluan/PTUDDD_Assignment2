@@ -140,7 +140,7 @@ public class HomeActivity extends AppCompatActivity {
                 backgroundRequest.getUserListRequest();
             }
 
-        }, 0, 15 * 1000);
+        }, 0, 30 * 1000);
 
 
         // get broadcast that get user list finished

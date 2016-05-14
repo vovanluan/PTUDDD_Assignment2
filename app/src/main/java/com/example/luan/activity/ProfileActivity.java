@@ -180,6 +180,8 @@ public class ProfileActivity extends AppCompatActivity {
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     followBtn.setImageResource(R.drawable.ic_star_followed);
                     DataHolder.getInstance().getUser().getFollowing().add(user.get_id());
+                    user.getFollowers().add(DataHolder.getInstance().getUser().get_id());
+                    followers.setText(String.valueOf(user.getFollowers().size()));
                     Toast.makeText(ProfileActivity.this, "Followed " + user.getBio().getFirstName(), Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(ProfileActivity.this, "Error while following", Toast.LENGTH_LONG).show();
@@ -252,6 +254,8 @@ public class ProfileActivity extends AppCompatActivity {
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     followBtn.setImageResource(R.drawable.ic_star_border);
                     DataHolder.getInstance().getUser().getFollowing().remove(user.get_id());
+                    user.getFollowers().remove(DataHolder.getInstance().getUser().get_id());
+                    followers.setText(String.valueOf(user.getFollowers().size()));
                     Toast.makeText(ProfileActivity.this, "Remove follow " + user.getBio().getFirstName(), Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(ProfileActivity.this, "Error while remove follow", Toast.LENGTH_LONG).show();
