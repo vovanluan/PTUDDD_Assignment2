@@ -36,6 +36,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import entity.Course;
+import entity.Notification;
 import entity.User;
 import fragment.CourseFragment;
 import fragment.UserFragment;
@@ -192,10 +193,12 @@ public class HomeActivity extends AppCompatActivity {
                 Log.d("onReceive", "Logout in progress");
                 //start login activity
                 Intent i = new Intent(HomeActivity.this, LoginActivity.class);
-                DataHolder.getInstance().setUser(null);
-                DataHolder.getInstance().setUserList(null);
-                DataHolder.getInstance().setCourseList(null);
                 startActivity(i);
+                DataHolder.getInstance().setUser(new User());
+                DataHolder.getInstance().setUserList(new ArrayList<User>());
+                DataHolder.getInstance().setCourseList(new ArrayList<Course>());
+                DataHolder.getInstance().setNewNotifications(new ArrayList<Notification>());
+                DataHolder.getInstance().setOldNotifications(new ArrayList<Notification>());
                 finish();
             }
         };

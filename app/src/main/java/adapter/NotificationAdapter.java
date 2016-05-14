@@ -52,11 +52,8 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
     // update list user
     public void setNotificationList(ArrayList<Notification> notifications) {
-        Log.e("NOTI SIZE", String.valueOf(notifications.size()));
         this.notificationList = new ArrayList<>();
-        Log.e("NOTI SIZE", String.valueOf(notifications.size()));
         this.notificationList.addAll(notifications);
-        Log.e("NOTI SIZE", String.valueOf(notifications.size()));
         notifyDataSetChanged();
     }
 

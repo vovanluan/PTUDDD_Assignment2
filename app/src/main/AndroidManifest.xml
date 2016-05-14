@@ -25,6 +25,7 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".CourseActivity" />
         <activity android:name=".CreateCourseActivity" />
+        <activity android:name=".AboutUsActivity" />
         <activity android:name="com.example.luan.activity.InformationActivity"
             android:parentActivityName=".HomeActivity"/>
         <activity
