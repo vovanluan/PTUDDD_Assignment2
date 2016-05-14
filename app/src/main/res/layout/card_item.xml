@@ -79,7 +79,7 @@
             android:layout_alignParentStart="true"
             />
         <TextView
-            android:layout_width="20dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:id="@+id/star"
             android:textColor="@color/gray"
@@ -91,11 +91,11 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_like"
             android:layout_marginLeft="10dp"
-            android:layout_toEndOf="@+id/star"
+            android:layout_centerInParent="true"
             android:id="@+id/likeImg"
             />
         <TextView
-            android:layout_width="20dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:id="@+id/upvotes"
             android:textColor="@color/gray"
@@ -107,17 +107,17 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_group"
             android:layout_marginLeft="10dp"
-            android:layout_toEndOf="@+id/upvotes"
             android:id="@+id/peopleImg"
-            android:layout_centerInParent="true"/>
+            android:layout_toLeftOf="@+id/people"
+            android:layout_centerVertical="true"/>
         <TextView
-            android:layout_width="20dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:id="@+id/people"
             android:text="10"
             android:textColor="@color/gray"
-            android:layout_toEndOf="@+id/peopleImg"
-            android:layout_centerInParent="true"/>
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
 
     </RelativeLayout>
 

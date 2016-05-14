@@ -121,17 +121,22 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // create navigation tab and viewpager
+        courseFragment = new CourseFragment();
+        userFragment = new UserFragment();
+        notificationFragment = new NotificationFragment();
+
         backgroundRequest = new BackgroundRequest(this);
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
             public void run() {
-
+                backgroundRequest.getUserListRequest();
             }
 
-        }, 0, 10 * 1000);
-        backgroundRequest.getUserListRequest();
+        }, 0, 15 * 1000);
+
 
         // get broadcast that get user list finished
         gotUserListBroadCastReceiver = new BroadcastReceiver() {
@@ -156,10 +161,6 @@ public class HomeActivity extends AppCompatActivity {
         gotCardListIntentFilter = new IntentFilter();
         gotCardListIntentFilter.addAction("GOT_CARD_LIST");
         registerReceiver(gotCardListBroadCastReceiver, gotCardListIntentFilter);
-        // create navigation tab and viewpager
-        courseFragment = new CourseFragment();
-        userFragment = new UserFragment();
-        notificationFragment = new NotificationFragment();
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());

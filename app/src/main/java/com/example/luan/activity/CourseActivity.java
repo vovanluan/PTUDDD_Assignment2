@@ -137,7 +137,7 @@ public class CourseActivity extends AppCompatActivity{
                 notification.setTo(course.getCreated_by());
                 notification.setStudentName(studentName);
                 notification.setTeacherName(teacherName);
-                notification.setDescription(studentName + " wants to join class: " + course.getTitle() + " taught by " + teacherName );
+                notification.setDescription(studentName + " wants to join your " + course.getTitle() + " class");
                 notification.setCardName(course.getTitle());
 
                 new PairUpRequest().execute(Support.HOST + "users/pairup");
