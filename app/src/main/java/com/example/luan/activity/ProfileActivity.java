@@ -88,6 +88,8 @@ public class ProfileActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        //check if this user is watching his own profile
+        followBtn.setVisibility(View.INVISIBLE);
         // initialize following button: check if user followed this opened profile
         if(DataHolder.getInstance().getUser().getFollowing().contains(user.get_id())) {
             followBtn.setImageResource(R.drawable.ic_star_followed);

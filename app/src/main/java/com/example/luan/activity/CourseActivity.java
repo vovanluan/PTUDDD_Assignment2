@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -73,10 +74,41 @@ public class CourseActivity extends AppCompatActivity{
         starIcon = (ImageView) findViewById(R.id.starIcon);
         people = (TextView) findViewById(R.id.people);
         peopleIcon = (ImageView) findViewById(R.id.peopleIcon);
+        location = (TextView) findViewById(R.id.location);
 
         pairUpBtn.setBackgroundColor(Color.parseColor("#2CC88F"));
         upVoteBtn.setBackgroundColor(Color.parseColor("#2196F3"));
-        //initialize upvote icon and button
+
+        // check if this user is watching his course
+        // hide all button: pair up, review, upvote
+        if (course.getCreated_by().equals(DataHolder.getInstance().getUser().get_id())) {
+            pairUpBtn.setVisibility(View.INVISIBLE);
+            reviewBtn.setVisibility(View.INVISIBLE);
+            upVoteBtn.setVisibility(View.INVISIBLE);
+            peopleIcon.setVisibility(View.INVISIBLE);
+            people.setVisibility(View.INVISIBLE);
+            upvoteIcon.setOnClickListener(null);
+        }
+        else {
+            View.OnClickListener mUpvoteClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!DataHolder.getInstance().getUser().getUpvoted().contains(course.get_id())) {
+                        String upVoteURL = Support.HOST + "cards/" + course.get_id() + "/" + DataHolder.getInstance().getUser().get_id() + "/upvote";
+                        Log.e("UpvoteURL", upVoteURL);
+                        new UpvoteRequest().execute(upVoteURL);
+                    }
+                    else {
+                        String removeVoteURL = Support.HOST + "cards/" + course.get_id() + "/" + DataHolder.getInstance().getUser().get_id() + "/removeupvote";
+                        Log.e("removeVoteURL", removeVoteURL);
+                        new RemoveVoteRequest().execute(removeVoteURL);
+                    }
+                }
+            };
+            upvoteIcon.setOnClickListener(mUpvoteClickListener);
+            upVoteBtn.setOnClickListener(mUpvoteClickListener);
+        }
+        //initialize upvote icon and button\
         if(DataHolder.getInstance().getUser().getUpvoted().contains(course.get_id())) {
             upVoteBtn.setText("Remove vote");
             upvoteIcon.setImageResource(R.drawable.ic_action_liked);
@@ -103,6 +135,7 @@ public class CourseActivity extends AppCompatActivity{
         creator.setText(DataHolder.getInstance().getUserById(course.getCreated_by()).getBio().getFirstName());
         description.setText(course.getDescription());
         star.setText(String.valueOf(course.getRating()));
+        location.setText(course.getPlace());
 
         DateTime timeCourseStart = new DateTime(course.getTime());
         time.setText(timeCourseStart.getDayOfMonth() + "/" + timeCourseStart.getMonthOfYear() + "/" + timeCourseStart.getYear() + " at " + timeCourseStart.getHourOfDay() + ":" + timeCourseStart.getMinuteOfHour());
@@ -160,24 +193,11 @@ public class CourseActivity extends AppCompatActivity{
                 reviewDialogFragment.show(getSupportFragmentManager(), "ReviewDialog");
             }
         });
-        View.OnClickListener mUpvoteClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!DataHolder.getInstance().getUser().getUpvoted().contains(course.get_id())) {
-                    String upVoteURL = Support.HOST + "cards/" + course.get_id() + "/" + DataHolder.getInstance().getUser().get_id() + "/upvote";
-                    Log.e("UpvoteURL", upVoteURL);
-                    new UpvoteRequest().execute(upVoteURL);
-                }
-                else {
-                    String removeVoteURL = Support.HOST + "cards/" + course.get_id() + "/" + DataHolder.getInstance().getUser().get_id() + "/removeupvote";
-                    Log.e("removeVoteURL", removeVoteURL);
-                    new RemoveVoteRequest().execute(removeVoteURL);
-                }
-            }
-        };
-        upvoteIcon.setOnClickListener(mUpvoteClickListener);
 
-        upVoteBtn.setOnClickListener(mUpvoteClickListener);
+
+
+
+
     }
 
     private class UpvoteRequest extends AsyncTask<String, Void, Integer> {
