@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_top_margin"
-    tools:context="com.example.luan.activity.LoginActivity"
-    android:orientation="vertical"
-    android:background="@color/white">
+    tools:context="com.example.luan.activity.LoginActivity">
 
-    <ImageView android:id="@+id/splashscreen_logo"
+    <ImageView
+        android:id="@+id/splashscreen_logo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/yuyo_logo"
         android:layout_gravity="center"
         android:layout_marginTop="60dp"
-        />
+        android:scaleType="centerInside"
+        android:src="@drawable/yuyo_logo" />
 
     <EditText
         android:id="@+id/email"
@@ -27,48 +28,66 @@
         android:layout_marginLeft="@dimen/activity_left_margin"
         android:layout_marginRight="@dimen/activity_right_margin"
         android:layout_marginTop="@dimen/activity_top_margin"
-        android:textSize="@dimen/text_size"
         android:hint="Email"
         android:singleLine="true"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size" />
+
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_left_margin"
         android:layout_marginRight="@dimen/activity_right_margin"
-        android:textSize="@dimen/text_size"
         android:hint="Password"
         android:inputType="textPassword"
         android:singleLine="true"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_top_margin"
+        android:layout_gravity="center"
         android:layout_marginLeft="@dimen/activity_left_margin"
         android:layout_marginRight="@dimen/activity_right_margin"
-        android:layout_gravity="center"
-        >
-        <Button
+        android:layout_marginTop="@dimen/activity_top_margin">
+        <mehdi.sakout.fancybuttons.FancyButton
             android:id="@+id/login"
-            android:layout_width="@dimen/button_width"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@drawable/button_text_color"
-            android:textSize="@dimen/text_size"
-            android:background="@drawable/btn"
-            android:text="Sign in" />
-        <Button
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            fancy:fb_borderColor="@color/colorAccent"
+            fancy:fb_defaultColor="@color/colorAccent"
+            fancy:fb_focusColor="#27ae60"
+            fancy:fb_radius="5dp"
+            fancy:fb_text="Log In"
+            fancy:fb_textColor="@color/white"
+            fancy:fb_textSize="@dimen/text_size" />
+
+        <mehdi.sakout.fancybuttons.FancyButton
             android:id="@+id/signup"
-            android:layout_width="@dimen/button_width"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@drawable/button_text_color"
-            android:textSize="@dimen/text_size"
-            android:background="@drawable/btn"
-            android:text="Sign up"
             android:layout_marginLeft="@dimen/left_button"
-            android:layout_toRightOf="@id/login"/>
+            android:layout_toRightOf="@id/login"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            fancy:fb_borderColor="@color/colorAccent"
+            fancy:fb_borderWidth="2dp"
+            fancy:fb_defaultColor="@color/white"
+            fancy:fb_focusColor="#27ae60"
+            fancy:fb_radius="5dp"
+            fancy:fb_text="Sign Up"
+            fancy:fb_textColor="@color/colorAccent"
+            fancy:fb_textSize="@dimen/text_size"  />
+
+
     </RelativeLayout>
 
 </LinearLayout>

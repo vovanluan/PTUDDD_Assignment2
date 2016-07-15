@@ -120,4 +120,10 @@
         <item name="android:layout_margin">0dp</item>
     </style>
 
+    <style name="Theme.App.Activity" parent="@style/MyMaterialTheme">
+        <item name="colorControlNormal">@color/gray</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorActivated</item>
+    </style>
+
 </resources>

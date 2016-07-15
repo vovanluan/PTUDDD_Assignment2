@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -23,37 +24,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_top_margin"
-        android:hint="email"
+        android:hint="Email"
         android:singleLine="true"/>
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_top_margin"
-        android:hint="password"
-        android:password="true"
+        android:hint="Password"
+        android:inputType="textPassword"
         android:singleLine="true"/>
     <EditText
         android:id="@+id/confirm_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_top_margin"
-        android:hint="confirm password"
-        android:password="true"
+        android:hint="Confirm password"
+        android:inputType="textPassword"
         android:singleLine="true"/>
 
-    <Button
+    <mehdi.sakout.fancybuttons.FancyButton
         android:id="@+id/signup"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_top_margin"
-        android:layout_marginLeft="@dimen/activity_left_margin"
-        android:layout_marginRight="@dimen/activity_right_margin"
-        android:textColor="@drawable/button_text_color"
-        android:background="@drawable/btn"
         android:layout_gravity="center"
-        android:textSize="20dp"
-        android:text="Sign up"/>
+        fancy:fb_borderColor="@color/colorAccent"
+        fancy:fb_borderWidth="2dp"
+        fancy:fb_defaultColor="@color/white"
+        fancy:fb_focusColor="#27ae60"
+        fancy:fb_radius="5dp"
+        fancy:fb_text="Sign Up"
+        fancy:fb_textColor="@color/colorAccent"
+        fancy:fb_textSize="@dimen/text_size"  />
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

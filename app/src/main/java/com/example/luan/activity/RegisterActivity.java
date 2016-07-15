@@ -28,11 +28,12 @@ import java.net.URL;
 import entity.DataHolder;
 import entity.Local;
 import entity.User;
+import mehdi.sakout.fancybuttons.FancyButton;
 import support.Support;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText password, confirmPassword, email, firstName, lastName;
-    Button signup;
+    FancyButton signup;
     TextView signIn;
     User user;
 
@@ -44,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.password);
         confirmPassword = (EditText) findViewById(R.id.confirm_password);
         email = (EditText) findViewById(R.id.email);
-        signup = (Button) findViewById(R.id.signup);
+        signup = (FancyButton) findViewById(R.id.signup);
         signIn = (TextView) findViewById(R.id.signIn);
 
 
