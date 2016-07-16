@@ -4,96 +4,97 @@
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true">
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/rectangle_margin"
+            android:background="@drawable/rounded_rectangle"
+            android:orientation="vertical"
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_top_margin"
-            android:layout_margin="@dimen/rectangle_margin"
-            android:orientation="vertical"
-            android:background="@drawable/rounded_rectangle">
+            android:paddingTop="@dimen/activity_top_margin">
             <TextView
+                style="@style/TextViewApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="First Name"
-                style="@style/TextViewApperance"/>
+                android:text="First Name" />
             <EditText
                 android:id="@+id/firstname"
+                style="@style/EditTextApperance"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/EditTextApperance"/>
+                android:layout_height="wrap_content" />
             <TextView
+                style="@style/TextViewApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Last Name"
-                style="@style/TextViewApperance"/>
+                android:text="Last Name" />
             <EditText
                 android:id="@+id/lastname"
+                style="@style/EditTextApperance"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/EditTextApperance"/>
+                android:layout_height="wrap_content" />
             <TextView
+                style="@style/TextViewApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Age"
-                style="@style/TextViewApperance"/>
+                android:text="Age" />
             <EditText
                 android:id="@+id/age"
+                style="@style/EditTextApperance"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/EditTextApperance"/>
+                android:layout_height="wrap_content" />
             <TextView
+                style="@style/TextViewApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Phone"
-                style="@style/TextViewApperance"/>
+                android:text="Phone" />
             <EditText
                 android:id="@+id/phone"
+                style="@style/EditTextApperance"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/EditTextApperance"/>
+                android:layout_height="wrap_content" />
             <TextView
+                style="@style/TextViewApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Job/University"
-                style="@style/TextViewApperance"/>
+                android:text="Job/University" />
             <EditText
                 android:id="@+id/university"
+                style="@style/EditTextApperance"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/EditTextApperance"/>
+                android:layout_height="wrap_content" />
             <TextView
+                style="@style/TextViewApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Experience"
-                style="@style/TextViewApperance"/>
+                android:text="Experience" />
             <EditText
                 android:id="@+id/experience"
+                style="@style/EditTextApperance"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/EditTextApperance"/>
+                android:layout_height="wrap_content" />
             <TextView
+                style="@style/TextViewApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Wants to learn:"
-                style="@style/TextViewApperance"/>
+                android:text="Wants to learn:" />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <LinearLayout
+                    android:id="@+id/leftLanguage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/leftLanguage"
-                    android:orientation="vertical"
-                    android:layout_margin="@dimen/activity_top_margin">
+                    android:layout_margin="@dimen/activity_top_margin"
+                    android:orientation="vertical">
                     <RadioButton
+                        android:id="@+id/vietnamese"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Vietnamese"
-                        android:id="@+id/vietnamese"/>
+                        android:text="Vietnamese" />
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -108,12 +109,12 @@
                         android:text="French"/>
                 </LinearLayout >
                 <LinearLayout
+                    android:id="@+id/rightLanguage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/rightLanguage"
-                    android:orientation="vertical"
                     android:layout_alignParentRight="true"
-                    android:layout_margin="@dimen/activity_top_margin">
+                    android:layout_margin="@dimen/activity_top_margin"
+                    android:orientation="vertical">
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -138,9 +139,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_top_margin"
+                android:background="@drawable/btn"
                 android:text="Update information"
                 android:textColor="@drawable/button_text_color"
-                android:background="@drawable/btn"
                 android:textSize="20dp"/>
         </LinearLayout>
     </LinearLayout>

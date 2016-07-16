@@ -11,7 +11,7 @@
         <item name="colorControlActivated">@color/colorActivated</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
-        <item name="android:textColorPrimary">@color/gray</item>
+        <item name="android:textColorPrimary">@color/white</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
@@ -123,7 +123,7 @@
     <style name="Theme.App.Activity" parent="@style/MyMaterialTheme">
         <item name="colorControlNormal">@color/gray</item>
         <item name="colorControlActivated">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/colorActivated</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
 
 </resources>
