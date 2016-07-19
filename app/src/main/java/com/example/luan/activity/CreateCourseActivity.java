@@ -81,6 +81,11 @@ public class CreateCourseActivity extends AppCompatActivity implements DatePicke
         timeCourseStart = new DateTime();
         searchableSpinner = (SearchableSpinner) findViewById(R.id.languageSpinner);
 
+        // set date value to current day
+        year = DateTime.now().getYear();
+        monthOfYear = DateTime.now().getMonthOfYear();
+        dayOfMonth = DateTime.now().getDayOfMonth();
+
         creator.setText(DataHolder.getInstance().getUser().getBio().getFirstName());
         fromTime.setText(DateTime.now().getHourOfDay() + ":" + DateTime.now().getMinuteOfHour());
         date.setText(DateTime.now().getDayOfMonth() + "/" + DateTime.now().getMonthOfYear() + "/" + DateTime.now().getYear());
@@ -94,6 +99,11 @@ public class CreateCourseActivity extends AppCompatActivity implements DatePicke
         languages.add("French");
         languages.add("Japanese");
         languages.add("Spanish");
+        languages.add("Chinese");
+        languages.add("Finland");
+        languages.add("German");
+        languages.add("Korean");
+        languages.add("Russian");
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.language_spinner, languages) {
 
             @Override

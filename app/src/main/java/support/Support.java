@@ -1,17 +1,9 @@
 package support;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 
 import com.example.luan.activity.R;
-
-import java.util.ArrayList;
-
-import entity.DataHolder;
 
 /**
  * Created by Luan on 29/03/2016.
@@ -46,17 +38,27 @@ public class Support {
     public static final int getCategoryFlag(String category){
         switch(category) {
             case "English":
-                return R.drawable.usa;
+                return R.drawable.ic_flag_usa;
             case "Vietnamese":
-                return R.drawable.vietnam;
+                return R.drawable.ic_flag_vietnam;
             case "French":
-                return R.drawable.france;
+                return R.drawable.ic_flag_france;
             case "Japanese":
-                return R.drawable.japan;
+                return R.drawable.ic_flag_japan;
             case "Spanish":
-                return R.drawable.spain;
+                return R.drawable.ic_flag_spain;
+            case "Chinese":
+                return R.drawable.ic_flag_chinese;
+            case "Finland":
+                return R.drawable.ic_flag_finland;
+            case "German":
+                return R.drawable.ic_flag_german;
+            case "Korean":
+                return R.drawable.ic_flag_korean;
+            case "Russian":
+                return R.drawable.ic_flag_russian;
             default:
-                return R.drawable.usa;
+                return R.drawable.ic_flag_usa;
         }
     }
 
