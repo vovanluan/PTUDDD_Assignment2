@@ -43,6 +43,7 @@
                         android:layout_centerInParent="true"
                         android:background="@android:color/transparent"
                         android:maxLines="1"
+                        android:gravity="center"
                         />
                 </RelativeLayout>
 

@@ -35,7 +35,7 @@ public class Course {
 
     private ArrayList<String> reviews = new ArrayList<>();
 
-    private int limit = 1;
+    private int limit;
 
     private int accepted;
 
