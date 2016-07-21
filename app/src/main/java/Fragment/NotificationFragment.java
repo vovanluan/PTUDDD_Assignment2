@@ -4,38 +4,24 @@ package fragment;
  * Created by Luan on 5/2/2016.
  */
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.example.luan.activity.ProfileActivity;
-import com.example.luan.activity.R;
+import com.yuyo.hikaru.activity.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -45,14 +31,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.prefs.PreferenceChangeListener;
 
 import adapter.NotificationAdapter;
-import adapter.UserAdapter;
 import entity.DataHolder;
-import entity.Local;
 import entity.Notification;
-import entity.User;
 import support.Support;
 
 public class NotificationFragment extends Fragment implements AdapterView.OnItemClickListener{

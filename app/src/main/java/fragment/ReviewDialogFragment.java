@@ -2,7 +2,6 @@ package fragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,12 +15,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.luan.activity.CourseActivity;
-import com.example.luan.activity.R;
+import com.yuyo.hikaru.activity.CourseActivity;
+import com.yuyo.hikaru.activity.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -32,11 +30,9 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Random;
 
 import entity.Course;
 import entity.DataHolder;
-import entity.Feedback;
 import entity.Review;
 import support.Support;
 // ...

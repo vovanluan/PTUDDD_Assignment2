@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_top_margin"
-    tools:context="com.example.luan.activity.LoginActivity"
+    tools:context="com.yuyo.hikaru.activity.LoginActivity"
     android:orientation="vertical">
 
     <TextView

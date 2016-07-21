@@ -6,7 +6,6 @@ package fragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,7 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.luan.activity.R;
+import com.yuyo.hikaru.activity.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

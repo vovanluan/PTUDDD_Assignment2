@@ -1,4 +1,4 @@
-package com.example.luan.activity;
+package com.yuyo.hikaru.activity;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;

@@ -1,15 +1,13 @@
 package adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.luan.activity.R;
+import com.yuyo.hikaru.activity.R;
 
 import java.util.ArrayList;
 

@@ -9,14 +9,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.luan.activity.R;
+import com.yuyo.hikaru.activity.R;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import entity.Course;
 import entity.DataHolder;
-import entity.User;
 import support.Support;
 
 /**

@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.luan.activity.R;
+import com.yuyo.hikaru.activity.R;
 
 /**
  * Created by Admin on 04-06-2015.

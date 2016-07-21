@@ -1,4 +1,4 @@
-package com.example.luan.activity;
+package com.yuyo.hikaru.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

@@ -3,7 +3,7 @@ package support;
 import android.text.TextUtils;
 import android.util.Patterns;
 
-import com.example.luan.activity.R;
+import com.yuyo.hikaru.activity.R;
 
 /**
  * Created by Luan on 29/03/2016.

@@ -1,4 +1,4 @@
-package com.example.luan.activity;
+package com.yuyo.hikaru.activity;
 
 /**
  * Created by Luan on 3/30/2016.

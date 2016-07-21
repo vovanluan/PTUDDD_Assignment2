@@ -7,7 +7,7 @@
     android:paddingLeft="4dp"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/small_top_margin"
-    tools:context="com.example.luan.activity.LoginActivity"
+    tools:context="com.yuyo.hikaru.activity.LoginActivity"
     android:orientation="horizontal">
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"

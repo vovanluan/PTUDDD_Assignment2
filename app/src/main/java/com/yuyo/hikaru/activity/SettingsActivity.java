@@ -1,18 +1,12 @@
-package com.example.luan.activity;
+package com.yuyo.hikaru.activity;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Vibrator;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 
 import java.util.List;
-
-import entity.DataHolder;
 
 /**
  * Created by Admin on 5/13/2016.

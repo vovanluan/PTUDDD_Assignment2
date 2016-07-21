@@ -1,11 +1,10 @@
-package com.example.luan.activity;
+package com.yuyo.hikaru.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,11 +26,9 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Random;
 
 import entity.Course;
 import entity.DataHolder;
-import entity.Local;
 import entity.Notification;
 import entity.User;
 import fragment.ReviewDialogFragment;

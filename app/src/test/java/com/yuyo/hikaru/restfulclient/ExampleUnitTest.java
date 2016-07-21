@@ -1,4 +1,4 @@
-package com.example.luan.activity;
+package com.yuyo.hikaru.activity;
 
 import org.junit.Test;
 

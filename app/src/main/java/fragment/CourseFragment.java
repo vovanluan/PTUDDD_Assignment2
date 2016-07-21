@@ -22,8 +22,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.example.luan.activity.CourseActivity;
-import com.example.luan.activity.R;
+import com.yuyo.hikaru.activity.CourseActivity;
+import com.yuyo.hikaru.activity.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import adapter.CardAdapter;
 import entity.Course;
 import entity.DataHolder;
-import support.Support;
 
 public class CourseFragment extends Fragment implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener{
     public CardAdapter adapter;

@@ -1,17 +1,15 @@
-package com.example.luan.activity;
+package com.yuyo.hikaru.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -31,63 +29,46 @@ import entity.User;
 import mehdi.sakout.fancybuttons.FancyButton;
 import support.Support;
 
-public class RegisterActivity extends AppCompatActivity {
-    EditText password, confirmPassword, email, firstName, lastName;
-    FancyButton signup;
-    TextView signIn;
+public class LoginActivity extends AppCompatActivity {
+    EditText email, password;
+    FancyButton login, signup;
     User user;
+    Local local;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_login);
 
-        password = (EditText) findViewById(R.id.password);
-        confirmPassword = (EditText) findViewById(R.id.confirm_password);
         email = (EditText) findViewById(R.id.email);
+        password = (EditText) findViewById(R.id.password);
+        login = (FancyButton) findViewById(R.id.login);
         signup = (FancyButton) findViewById(R.id.signup);
-        signIn = (TextView) findViewById(R.id.signIn);
 
-
-        signup.setOnClickListener(new View.OnClickListener() {
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Check empty field or blank space
                 Support support = new Support();
                 if (!support.isValidEmail(email.getText().toString())) {
                     showError(email);
                     email.setError("Please enter your email");
-                    return;
                 } else if (password.getText().toString().isEmpty() || password.getText().toString().contains(" ")) {
                     showError(password);
                     password.setError("Please enter your password");
-                    return;
-                } else if (confirmPassword.getText().toString().isEmpty() || confirmPassword.getText().toString().contains(" ")) {
-                    showError(confirmPassword);
-                    confirmPassword.setError("Please confirm your password");
-                    return;
+                } else {
+                    String url = Support.HOST + "login";
+                    local = new Local();
+                    local.setEmail(email.getText().toString());
+                    local.setPassword(password.getText().toString());
+                    new LoginRequest().execute(url);
                 }
-
-                // Check password and confirm password fields have the same value
-                if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
-                    confirmPassword.setError("Password not match");
-                    return;
-                }
-
-
-                // Create a user object
-                user = new User();
-                user.getLocal().setPassword(password.getText().toString());
-                user.getLocal().setEmail(email.getText().toString());
-
-                String url = Support.HOST + "signup";
-                new RegisterRequest().execute(url);
             }
         });
-        signIn.setOnClickListener(new View.OnClickListener() {
+        signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -97,13 +78,13 @@ public class RegisterActivity extends AppCompatActivity {
         editText.startAnimation(shake);
     }
 
-    private class RegisterRequest extends AsyncTask<String, Void, Integer> {
-        String jsonResponse;
-        private final ProgressDialog dialog = new ProgressDialog(RegisterActivity.this);
+    private class LoginRequest extends AsyncTask<String, Void, Integer> {
+        private String jsonResponse;
+        private final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
 
         @Override
         protected void onPreExecute() {
-            this.dialog.setMessage("Sign up...");
+            this.dialog.setMessage("Log in...");
             this.dialog.setCancelable(false);
             this.dialog.show();
         }
@@ -111,11 +92,10 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         protected Integer doInBackground(String... urls) {
             try {
-                Log.e("URL", urls[0]);
-                // Create connection
+                // Step 1 : Create a HttpURLConnection object send REQUEST to server
                 URL url = new URL(urls[0]);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setDoOutput(true);
+                urlConnection.setDoInput(true);
                 urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
                 urlConnection.setRequestProperty("Content-Type", "application/json");
                 urlConnection.setRequestMethod("POST");
@@ -125,18 +105,18 @@ public class RegisterActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 Type type = new TypeToken<Local>() {
                 }.getType();
-                String json = gson.toJson(user.getLocal(), type);
-                Log.e("Json", json);
+                String json = gson.toJson(local, type);
 
                 OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
                 wr.write(json);
                 wr.flush();
                 wr.close();
-                Log.e("Response Message", urlConnection.getResponseMessage());
 
+                // Step 2: wait for incoming RESPONSE stream, place data in a buffer
                 InputStream isResponse = urlConnection.getInputStream();
                 BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(isResponse));
 
+                // Step 3: Arriving JSON fragments are concatenate into a StringBuilder
                 String line = "";
                 StringBuilder stringBuilder = new StringBuilder();
                 while ((line = responseBuffer.readLine()) != null) {
@@ -145,31 +125,41 @@ public class RegisterActivity extends AppCompatActivity {
                 jsonResponse = stringBuilder.toString();
                 Log.e("User", jsonResponse);
                 return urlConnection.getResponseCode();
+
             } catch (Exception e) {
-
+                e.printStackTrace();
+                Log.e("error", e.toString());
             }
-
             return 0;
         }
 
         @Override
         protected void onPostExecute(Integer responseCode) {
-            if (this.dialog.isShowing()) {
-                this.dialog.dismiss();
-            }
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                Gson gson = new Gson();
-                Type type = new TypeToken<User>() {
-                }.getType();
-                //user = gson.fromJson(jsonResponse, type);
-                DataHolder.getInstance().setUser((User) gson.fromJson(jsonResponse, type));
-                Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                Toast.makeText(RegisterActivity.this, "Email already in use. Please use another email!", Toast.LENGTH_LONG).show();
-            }
+            try {
+                if (this.dialog.isShowing()) {
+                    this.dialog.dismiss();
+                }
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    // Step 4 : Convert JSON string to User object
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<User>() {
+                    }.getType();
+                    //user = gson.fromJson(jsonResponse, type);
+                    DataHolder.getInstance().setUser((User) gson.fromJson(jsonResponse, type));
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    //intent.putExtra("User", jsonResponse);
+                    startActivity(intent);
+                    LoginActivity.this.finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
+                    email.setText("");
+                    password.setText("");
+                }
+            } catch (Exception e) {
 
+            }
         }
     }
+
 }
+
