@@ -25,7 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import entity.DataHolder;
-import entity.Local;
+import entity.RegisterInfo;
 import entity.User;
 import mehdi.sakout.fancybuttons.FancyButton;
 import support.Support;
@@ -35,6 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
     FancyButton signup;
     TextView signIn;
     User user;
+    RegisterInfo registerInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,8 @@ public class RegisterActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.email);
         signup = (FancyButton) findViewById(R.id.signup);
         signIn = (TextView) findViewById(R.id.signIn);
+        firstName = (EditText) findViewById(R.id.txtFirstName);
+        lastName = (EditText) findViewById(R.id.txtLastName);
 
 
         signup.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +68,12 @@ public class RegisterActivity extends AppCompatActivity {
                     showError(confirmPassword);
                     confirmPassword.setError("Please confirm your password");
                     return;
+                } else if (firstName.getText().toString().isEmpty() ) { // Make sure name is not empty
+                    showError(firstName);
+                    confirmPassword.setError("Please enter your first name");
+                } else if (lastName.getText().toString().isEmpty() ) { // Make sure name is not empty
+                    showError(lastName);
+                    confirmPassword.setError("Please enter your last name");
                 }
 
                 // Check password and confirm password fields have the same value
@@ -73,13 +82,20 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-
-                // Create a user object
+               /* // Create a user object
                 user = new User();
                 user.getLocal().setPassword(password.getText().toString());
-                user.getLocal().setEmail(email.getText().toString());
+                user.getLocal().setEmail(email.getText().toString());*/
 
-                String url = Support.HOST + "signup";
+                // Create Register Information entity
+                registerInfo = new RegisterInfo();
+                registerInfo.setPassword(password.getText().toString());
+                registerInfo.setEmail(email.getText().toString());
+                registerInfo.setFirstName(firstName.getText().toString());
+                registerInfo.setLastName(lastName.getText().toString());
+
+
+                String url = Support.HOST + "signupwithname";
                 new RegisterRequest().execute(url);
             }
         });
@@ -97,8 +113,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private class RegisterRequest extends AsyncTask<String, Void, Integer> {
-        String jsonResponse;
         private final ProgressDialog dialog = new ProgressDialog(RegisterActivity.this);
+        String jsonResponse;
 
         @Override
         protected void onPreExecute() {
@@ -122,9 +138,9 @@ public class RegisterActivity extends AppCompatActivity {
 
                 // Convert this object to json string using gson
                 Gson gson = new Gson();
-                Type type = new TypeToken<Local>() {
+                Type type = new TypeToken<RegisterInfo>() {
                 }.getType();
-                String json = gson.toJson(user.getLocal(), type);
+                String json = gson.toJson(registerInfo, type);
                 Log.e("Json", json);
 
                 OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());

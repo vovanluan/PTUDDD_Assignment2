@@ -21,9 +21,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.yuyo.hikaru.activity.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.yuyo.hikaru.activity.R;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -135,8 +135,8 @@ public class ProfileFragment extends Fragment {
 
     private class UpdateRequest extends AsyncTask<String, Void, Integer> {
 
-        public User u;
         private final ProgressDialog dialog = new ProgressDialog(getActivity());
+        public User u;
 
         @Override
         protected void onPreExecute() {

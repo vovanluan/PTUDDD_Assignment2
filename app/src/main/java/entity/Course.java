@@ -1,6 +1,5 @@
 package entity;
 
-import java.security.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -35,7 +34,7 @@ public class Course {
 
     private ArrayList<String> reviews = new ArrayList<>();
 
-    private int limit;
+    private int limit = 1;
 
     private int accepted;
 

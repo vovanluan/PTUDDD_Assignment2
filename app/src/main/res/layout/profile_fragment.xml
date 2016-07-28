@@ -2,10 +2,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusableInTouchMode="true">
+
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -16,124 +18,166 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_top_margin">
+
             <TextView
                 style="@style/TextViewApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="First Name" />
+
             <EditText
                 android:id="@+id/firstname"
                 style="@style/EditTextApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <TextView
                 style="@style/TextViewApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Last Name" />
+
             <EditText
                 android:id="@+id/lastname"
                 style="@style/EditTextApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <TextView
                 style="@style/TextViewApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Age" />
+
             <EditText
                 android:id="@+id/age"
                 style="@style/EditTextApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <TextView
                 style="@style/TextViewApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Phone" />
+
             <EditText
                 android:id="@+id/phone"
                 style="@style/EditTextApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <TextView
                 style="@style/TextViewApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Job/University" />
+
             <EditText
                 android:id="@+id/university"
                 style="@style/EditTextApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <TextView
                 style="@style/TextViewApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Experience" />
+
             <EditText
                 android:id="@+id/experience"
                 style="@style/EditTextApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <TextView
                 style="@style/TextViewApperance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Wants to learn:" />
-            <RelativeLayout
+
+            <RadioGroup
+                android:id="@+id/radioLanguage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <LinearLayout
-                    android:id="@+id/leftLanguage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/activity_top_margin"
-                    android:orientation="vertical">
-                    <RadioButton
-                        android:id="@+id/vietnamese"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Vietnamese" />
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="English"/>
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Chinese"/>
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="French"/>
-                </LinearLayout >
-                <LinearLayout
-                    android:id="@+id/rightLanguage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="@dimen/activity_top_margin"
-                    android:orientation="vertical">
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Japanese"/>
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="German"/>
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Korean"/>
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Spanish"/>
-                </LinearLayout >
 
-            </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <LinearLayout
+                        android:id="@+id/leftLanguage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/activity_top_margin"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/vietnamese"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Vietnamese" />
+
+                        <RadioButton
+                            android:id="@+id/english"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="English" />
+
+                        <RadioButton
+                            android:id="@+id/chinese"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Chinese" />
+
+                        <RadioButton
+                            android:id="@+id/French"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="French" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/rightLanguage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="@dimen/activity_top_margin"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/japanese"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Japanese" />
+
+                        <RadioButton
+                            android:id="@+id/german"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="German" />
+
+                        <RadioButton
+                            android:id="@+id/korean"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Korean" />
+
+                        <RadioButton
+                            android:id="@+id/spanish"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Spanish" />
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+            </RadioGroup>
+
             <Button
                 android:id="@+id/update"
                 android:layout_width="match_parent"
@@ -142,7 +186,7 @@
                 android:background="@drawable/btn"
                 android:text="Update information"
                 android:textColor="@drawable/button_text_color"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

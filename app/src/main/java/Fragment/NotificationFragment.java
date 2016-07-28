@@ -17,9 +17,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.yuyo.hikaru.activity.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.yuyo.hikaru.activity.R;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -38,12 +38,12 @@ import entity.Notification;
 import support.Support;
 
 public class NotificationFragment extends Fragment implements AdapterView.OnItemClickListener{
+    public NotificationAdapter adapter;
     ListView myListView;
     private Notification updateNotification;
     private int INTERVAL = 10 * 1000;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener mPreferenceListener = null;
-    public NotificationAdapter adapter;
 
     public NotificationFragment() {
     }

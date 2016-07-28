@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,38 +10,38 @@
         android:background="@color/white"
         android:orientation="vertical">
         <ImageView
+            android:id="@+id/appLogo"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:id="@+id/appLogo"
-            android:src="@drawable/yuyo_logo"
             android:layout_gravity="center|top"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="30dp"
+            android:src="@drawable/yuyo_logo"/>
         <ImageView
+            android:id="@+id/yuyoImg"
             android:layout_width="150dp"
             android:layout_height="80dp"
-            android:id="@+id/yuyoImg"
-            android:src="@drawable/yuyo_name"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:src="@drawable/yuyo_name"/>
         <TextView
+            android:id="@+id/description"
+            style="@style/AppDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/description"
-            android:text="    TEST"
-            style="@style/AppDescription"
-            android:layout_gravity="left"/>
+            android:layout_gravity="left"
+            android:text="    TEST"/>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/created_by"
-            android:text="    TEST"
             style="@style/CreatorDescription"
-            android:layout_gravity="bottom|center"/>
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:text="    TEST"/>
+        <TextView
             android:id="@+id/copyright"
-            android:text="    TEST"
             style="@style/CreatorDescription"
-            android:layout_gravity="bottom|center" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:text="    TEST" />
     </LinearLayout>
 </ScrollView>

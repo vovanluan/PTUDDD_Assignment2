@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_top_margin"
-    tools:context="com.yuyo.hikaru.activity.LoginActivity"
-    android:orientation="vertical"
-    android:background="@color/white">
+    tools:context="com.yuyo.hikaru.activity.LoginActivity">
 
     <ImageView android:id="@+id/splashscreen_logo"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:layout_gravity="center"
         android:scaleType="centerInside"
         android:src="@drawable/yuyo_logo"
-        android:layout_gravity="center"
         />
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_top_margin"
+        android:layout_marginTop="@dimen/button_top_margin"
         android:hint="Email"
         android:singleLine="true"/>
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_top_margin"
+        android:layout_marginTop="@dimen/button_top_margin"
         android:hint="Password"
         android:inputType="textPassword"
         android:singleLine="true"/>
@@ -38,9 +38,25 @@
         android:id="@+id/confirm_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_top_margin"
+        android:layout_marginTop="@dimen/button_top_margin"
         android:hint="Confirm password"
         android:inputType="textPassword"
+        android:singleLine="true"/>
+    <EditText
+        android:id="@+id/txtFirstName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/button_top_margin"
+        android:hint="First Name"
+        android:inputType="text"
+        android:singleLine="true"/>
+    <EditText
+        android:id="@+id/txtLastName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/button_top_margin"
+        android:hint="Last Name"
+        android:inputType="text"
         android:singleLine="true"/>
 
     <mehdi.sakout.fancybuttons.FancyButton
@@ -48,6 +64,7 @@
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/activity_top_margin"
         fancy:fb_borderColor="@color/colorAccent"
         fancy:fb_borderWidth="2dp"
         fancy:fb_defaultColor="@color/white"
@@ -62,17 +79,17 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp">
         <TextView
+            android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Already have an account? "
-            android:id="@+id/text"/>
+            android:text="Already have an account? "/>
         <TextView
+            android:id="@+id/signIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/text"
-            android:text="Sign in here"
-            android:textStyle="bold|italic"
             android:clickable="true"
-            android:id="@+id/signIn"/>
+            android:text="Sign in here"
+            android:textStyle="bold|italic"/>
     </RelativeLayout>
 </LinearLayout>
