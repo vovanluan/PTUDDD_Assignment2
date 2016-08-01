@@ -22,12 +22,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -35,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import adapter.CardAdapter;
+import adapter.UserAdapter;
 import entity.Course;
 import entity.Notification;
 import entity.User;
@@ -127,45 +133,9 @@ public class HomeActivity extends AppCompatActivity {
         userFragment = new UserFragment();
         notificationFragment = new NotificationFragment();
 
-        backgroundRequest = new BackgroundRequest(this);
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-
-            @Override
-            public void run() {
-                backgroundRequest.getUserListRequest();
-            }
-
-        }, 0, 30 * 1000);
-
-
         // new log
          // Log.e("Current user id", DataHolder.getInstance().getUser().get_id());
         startService(new Intent(getBaseContext(), NotificationService.class));
-
-        // get broadcast that get user list finished
-        gotUserListBroadCastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                backgroundRequest.getCardListRequest();
-                userFragment.adapter.setListUser(DataHolder.getInstance().getUserList());
-            }
-        };
-        gotUserListIntentFilter = new IntentFilter();
-        gotUserListIntentFilter.addAction("GOT_USER_LIST");
-        registerReceiver(gotUserListBroadCastReceiver, gotUserListIntentFilter);
-
-        // get broadcast that get card list finished
-        gotCardListBroadCastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                courseFragment.adapter.setListCard(DataHolder.getInstance().getCourseList());
-            }
-        };
-
-        gotCardListIntentFilter = new IntentFilter();
-        gotCardListIntentFilter.addAction("GOT_CARD_LIST");
-        registerReceiver(gotCardListBroadCastReceiver, gotCardListIntentFilter);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -244,16 +214,15 @@ public class HomeActivity extends AppCompatActivity {
             // This method will trigger on item Click of navigation menu
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-
-
                 //Checking if the item is in checked state or not, if not make it in checked state
-                if (menuItem.isChecked()) menuItem.setChecked(false);
-                else menuItem.setChecked(true);
+/*                if (menuItem.isChecked()) menuItem.setChecked(false);
+                else menuItem.setChecked(true);*/
 
                 //Closing drawer on item click
                 drawerLayout.closeDrawers();
 
                 //Check to see which item was being clicked and perform appropriate action
+
                 switch (menuItem.getItemId()) {
                     case R.id.profile:
                         Intent i = new Intent(HomeActivity.this, ProfileActivity.class);
@@ -326,6 +295,7 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
 
                 }
+
             }
         });
 
@@ -352,8 +322,50 @@ public class HomeActivity extends AppCompatActivity {
 
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // get broadcast that get user list finished
 
+        gotUserListBroadCastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                backgroundRequest.getCardListRequest();
+                if (userFragment.adapter != null) {
+                    userFragment.adapter.setListUser(DataHolder.getInstance().getUserList());
+                }
+            }
+        };
+        gotUserListIntentFilter = new IntentFilter();
+        gotUserListIntentFilter.addAction("GOT_USER_LIST");
+        registerReceiver(gotUserListBroadCastReceiver, gotUserListIntentFilter);
+
+        // get broadcast that get card list finished
+        gotCardListBroadCastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (courseFragment.adapter != null) {
+                    courseFragment.adapter.setListCard(DataHolder.getInstance().getCourseList());
+                }
+            }
+        };
+
+        gotCardListIntentFilter = new IntentFilter();
+        gotCardListIntentFilter.addAction("GOT_CARD_LIST");
+        registerReceiver(gotCardListBroadCastReceiver, gotCardListIntentFilter);
+
+        backgroundRequest = new BackgroundRequest(this);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                backgroundRequest.getUserListRequest();
+            }
+
+        }, 0, 30 * 1000);
     }
 
     @Override
@@ -412,6 +424,132 @@ public class HomeActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "Can not log out!", Toast.LENGTH_LONG).show();
                 }
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
+    private class GetCardListRequest extends AsyncTask<String, Void, Integer> {
+
+        private String jsonResponse;
+        private final ProgressDialog dialog = new ProgressDialog(HomeActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setCancelable(false);
+            this.dialog.show();
+        }
+        @Override
+        protected Integer doInBackground(String... urls) {
+            try {
+                // Create connection
+                URL url = new URL(urls[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setDoInput(true);
+                urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.connect();
+
+                InputStream isResponse = urlConnection.getInputStream();
+                BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(isResponse));
+
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseBuffer.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                jsonResponse = stringBuilder.toString();
+                Log.e("CourseList", jsonResponse);
+                Log.e("message", urlConnection.getResponseMessage());
+                return urlConnection.getResponseCode();
+
+            } catch (Exception e) {
+
+            }
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer responseCode) {
+            try {
+                if (this.dialog.isShowing()) {
+                    this.dialog.dismiss();
+                }
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<ArrayList<Course>>() {
+                    }.getType();
+                    DataHolder.getInstance().setCourseList((ArrayList<Course>) gson.fromJson(jsonResponse, type));
+                    Log.e("Size course", String.valueOf(DataHolder.getInstance().getCourseList().size()));
+                }
+/*                Intent broadcastIntent = new Intent();
+                broadcastIntent.setAction("GOT_CARD_LIST");
+                sendBroadcast(broadcastIntent);*/
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class GetUserListRequest extends AsyncTask<String, Void, Integer> {
+
+        private String jsonResponse;
+        private final ProgressDialog dialog = new ProgressDialog(HomeActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setCancelable(false);
+            this.dialog.show();
+        }
+        @Override
+        protected Integer doInBackground(String... urls) {
+            try {
+                // Create connection
+                URL url = new URL(urls[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setDoInput(true);
+                urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.connect();
+
+                InputStream isResponse = urlConnection.getInputStream();
+                BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(isResponse));
+
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseBuffer.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                jsonResponse = stringBuilder.toString();
+                Log.e("Json User", jsonResponse);
+                Log.e("message USer", urlConnection.getResponseMessage());
+                return urlConnection.getResponseCode();
+
+            } catch (Exception e) {
+
+            }
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer responseCode) {
+            try {
+                if (this.dialog.isShowing()) {
+                    this.dialog.dismiss();
+                }
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<ArrayList<User>>() {
+                    }.getType();
+                    DataHolder.getInstance().setUserList((ArrayList<User>) gson.fromJson(jsonResponse, type));
+                    Log.e("Size User", String.valueOf(DataHolder.getInstance().getUserList().size()));
+                }
+/*                Intent broadcastIntent = new Intent();
+                broadcastIntent.setAction("GOT_USER_LIST");
+                sendBroadcast(broadcastIntent);*/
             } catch (Exception e) {
 
             }

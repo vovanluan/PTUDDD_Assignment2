@@ -4,7 +4,10 @@ package fragment;
  * Created by Luan on 5/2/2016.
  */
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,15 +37,20 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import adapter.CardAdapter;
 import entity.Course;
 import entity.DataHolder;
+import support.BackgroundRequest;
+import support.Support;
 
 public class CourseFragment extends Fragment implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener{
     public CardAdapter adapter;
-    private GridView gridView;
+    public GridView gridView;
     private View view;
+    private int INTERVAL = 10 * 1000;
     public CourseFragment() {
     }
 
@@ -52,6 +60,16 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
 
         // initialize adapter
         adapter = new CardAdapter(getActivity());
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                Log.e("Get notification list", "10s");
+                new GetCardListRequest().execute(Support.HOST + "cards");
+            }
+
+        }, 0, INTERVAL);
     }
 
     @Override
@@ -74,6 +92,7 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+        //adapter.setListCard(DataHolder.getInstance().getCourseList());
     }
 
     @Override
@@ -181,16 +200,7 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
         startActivity(intent);
     }
     private class GetCardRequest extends AsyncTask<String, Void, Integer> {
-
         private String jsonResponse;
-        private final ProgressDialog dialog = new ProgressDialog(getActivity());
-        @Override
-        protected void onPreExecute() {
-            this.dialog.setMessage("Load cards...");
-            this.dialog.setCancelable(false);
-            this.dialog.show();
-        }
-
         @Override
         protected Integer doInBackground(String... urls) {
             try {
@@ -227,9 +237,6 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
         @Override
         protected void onPostExecute(Integer responseCode) {
             try {
-                if (this.dialog.isShowing()) {
-                    this.dialog.dismiss();
-                }
                 Log.e("CODE", String.valueOf(responseCode));
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     Gson gson = new Gson();
@@ -245,5 +252,57 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
             }
         }
     }
+    private class GetCardListRequest extends AsyncTask<String, Void, Integer> {
 
+        private String jsonResponse;
+        @Override
+        protected Integer doInBackground(String... urls) {
+            try {
+                // Create connection
+                URL url = new URL(urls[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setDoInput(true);
+                urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.connect();
+
+                InputStream isResponse = urlConnection.getInputStream();
+                BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(isResponse));
+
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseBuffer.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                jsonResponse = stringBuilder.toString();
+                Log.e("CourseList", jsonResponse);
+                Log.e("message", urlConnection.getResponseMessage());
+                return urlConnection.getResponseCode();
+
+            } catch (Exception e) {
+
+            }
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer responseCode) {
+            try {
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<ArrayList<Course>>() {
+                    }.getType();
+                    DataHolder.getInstance().setCourseList((ArrayList<Course>) gson.fromJson(jsonResponse, type));
+                    Log.e("Size course", String.valueOf(DataHolder.getInstance().getCourseList().size()));
+                }
+                adapter.setListCard(DataHolder.getInstance().getCourseList());
+/*                Intent broadcastIntent = new Intent();
+                broadcastIntent.setAction("GOT_CARD_LIST");
+                sendBroadcast(broadcastIntent);*/
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

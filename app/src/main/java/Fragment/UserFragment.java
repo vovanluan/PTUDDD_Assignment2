@@ -4,7 +4,12 @@ package fragment;
  * Created by Luan on 5/2/2016.
  */
 
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,17 +31,26 @@ import com.yuyo.hikaru.activity.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import adapter.UserAdapter;
 import entity.DataHolder;
 import entity.User;
+import support.BackgroundRequest;
+import support.Support;
 
 public class UserFragment extends Fragment implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener {
-    ListView myListView;
+    public ListView myListView;
     public UserAdapter adapter;
-
+    private int INTERVAL = 10 * 1000;
     public UserFragment() {
     }
 
@@ -47,7 +61,16 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
         // initialize adapter
 
         adapter = new UserAdapter(getActivity(), R.layout.user_fragment, DataHolder.getInstance().getUserList());
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
 
+            @Override
+            public void run() {
+                Log.e("Get notification list", "10s");
+                new GetUserListRequest().execute(Support.HOST + "users");
+            }
+
+        }, 0, INTERVAL);
     }
 
     @Override
@@ -69,6 +92,8 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+        //adapter.setListUser(DataHolder.getInstance().getUserList());
+
     }
 
     @Override
@@ -172,5 +197,58 @@ public class UserFragment extends Fragment implements AdapterView.OnItemClickLis
         String jsonUser = gson.toJson(user, type);
         i.putExtra("User", jsonUser);
         startActivity(i);
+    }
+    private class GetUserListRequest extends AsyncTask<String, Void, Integer> {
+
+        private String jsonResponse;
+        @Override
+        protected Integer doInBackground(String... urls) {
+            try {
+                // Create connection
+                URL url = new URL(urls[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setDoInput(true);
+                urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.connect();
+
+                InputStream isResponse = urlConnection.getInputStream();
+                BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(isResponse));
+
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseBuffer.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                jsonResponse = stringBuilder.toString();
+                Log.e("Json User", jsonResponse);
+                Log.e("message USer", urlConnection.getResponseMessage());
+                return urlConnection.getResponseCode();
+
+            } catch (Exception e) {
+
+            }
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer responseCode) {
+            try {
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<ArrayList<User>>() {
+                    }.getType();
+                    DataHolder.getInstance().setUserList((ArrayList<User>) gson.fromJson(jsonResponse, type));
+                    Log.e("Size User", String.valueOf(DataHolder.getInstance().getUserList().size()));
+                }
+                adapter.setListUser(DataHolder.getInstance().getUserList());
+/*                Intent broadcastIntent = new Intent();
+                broadcastIntent.setAction("GOT_USER_LIST");
+                sendBroadcast(broadcastIntent);*/
+            } catch (Exception e) {
+
+            }
+        }
     }
 }
