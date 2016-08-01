@@ -160,7 +160,7 @@ public class CourseActivity extends AppCompatActivity{
             public void onClick(View v) {
                 // Check if user joined this course
                 if(course.getStudents().contains(DataHolder.getInstance().getUser().get_id())) {
-                    Toast.makeText(CourseActivity.this, "You joined this course", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CourseActivity.this, "You already joined this course", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 User teacher = DataHolder.getInstance().getUserById(course.getCreated_by());

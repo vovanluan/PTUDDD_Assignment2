@@ -1,10 +1,14 @@
 package com.yuyo.hikaru.activity;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -27,13 +31,18 @@ import entity.DataHolder;
 import entity.Local;
 import entity.User;
 import mehdi.sakout.fancybuttons.FancyButton;
+import services.NotificationService;
+import support.Preference;
 import support.Support;
 
 public class LoginActivity extends AppCompatActivity {
     EditText email, password;
     FancyButton login, signup;
+    FancyButton startService, stopService;
     User user;
     Local local;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,13 @@ public class LoginActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.password);
         login = (FancyButton) findViewById(R.id.login);
         signup = (FancyButton) findViewById(R.id.signup);
+        // New Code
+//        startService = (FancyButton) findViewById(R.id.btnStartService);
+//        stopService = (FancyButton) findViewById(R.id.btnStopService);
+
+        final SharedPreferences pref = getSharedPreferences(Preference.PREF_NAME, MODE_PRIVATE);
+        String EMAIL = pref.getString(Preference.PREF_EMAIL, null);
+        String PASSWORD = pref.getString(Preference.PREF_PASSWORD, null);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +76,14 @@ public class LoginActivity extends AppCompatActivity {
                     local = new Local();
                     local.setEmail(email.getText().toString());
                     local.setPassword(password.getText().toString());
+
+                    // Store username and password for constant log in
+                    getSharedPreferences(Preference.PREF_NAME,MODE_PRIVATE)
+                            .edit()
+                            .putString(Preference.PREF_EMAIL, email.getText().toString())
+                            .putString(Preference.PREF_PASSWORD, password.getText().toString())
+                            .apply();
+
                     new LoginRequest().execute(url);
                 }
             }
@@ -71,6 +95,8 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
     }
 
     private void showError(EditText editText) {
@@ -152,7 +178,6 @@ public class LoginActivity extends AppCompatActivity {
                     LoginActivity.this.finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
-                    email.setText("");
                     password.setText("");
                 }
             } catch (Exception e) {

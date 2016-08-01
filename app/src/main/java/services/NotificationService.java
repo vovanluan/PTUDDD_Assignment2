@@ -7,10 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.yuyo.hikaru.activity.HomeActivity;
 import com.yuyo.hikaru.activity.R;
 import com.yuyo.hikaru.activity.RegisterActivity;
 
@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import entity.DataHolder;
 import entity.Notification;
 import support.Support;
 
@@ -45,13 +46,13 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // Let it continue running until it is stopped.
-        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+
 
         // test1@gmail.com id: 5736a4a0a2f2e811007d1ad3
         // nguyenbach2810@gmail.com id: 572ec9cb464db7041be753f0
         final String URL = Support.HOST + "users/" +
                 //DataHolder.getInstance().getUser().get_id() +
-                "572ec9cb464db7041be753f0" +
+                DataHolder.getInstance().getUser().get_id() +
                 "/notification";
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -63,24 +64,24 @@ public class NotificationService extends Service {
             }
 
         }, 0, INTERVAL);
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
         timer.cancel();
+        super.onDestroy();
     }
 
     private void createNotification() {
         int notiId = 10285;
-        Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+        intent.putExtra("selectTab", "Notification");
         PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
 
         android.app.Notification noti = new android.app.Notification.Builder(getApplicationContext())
                 .setContentTitle("New partner found")
-                .setContentText("[Log In]Some one wants to join your course")
+                .setContentText("Some one wants to join your course, go check it out!!")
                 .setSmallIcon(R.drawable.ic_favorite_black)
                 .setContentIntent(pIntent)
                 .setVibrate(new long[]{500, 500})
@@ -131,8 +132,7 @@ public class NotificationService extends Service {
                     Type type = new TypeToken<ArrayList<Notification>>() {
                     }.getType();
                     ArrayList<Notification> notificationList = gson.fromJson(jsonResponse, type);
-                    Toast.makeText(getApplicationContext(), "Notification size: " + notificationList.size(),
-                            Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Notification size: " + notificationList.size(), Toast.LENGTH_SHORT).show();
                     if (!firstRequest) {
                         firstRequest = true;
                         unreadNoti = notificationList.size();

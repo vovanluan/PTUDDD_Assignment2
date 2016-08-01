@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1054893178999",
+    "firebase_url": "https://yuyo-cdc04.firebaseio.com",
+    "project_id": "yuyo-cdc04",
+    "storage_bucket": "yuyo-cdc04.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054893178999:android:edc5aba18fc3c138",
+        "android_client_info": {
+          "package_name": "com.yuyo.hikaru.activity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1054893178999-vvfvdg4knn6gnj4nt8rbnv2hnjnm5bma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBd7y35eT267CntawxsMZcHepK5vG-wTro"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

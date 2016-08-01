@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -43,7 +44,9 @@ import fragment.NotificationFragment;
 import fragment.FeedbackDialogFragment;
 import adapter.ViewPagerAdapter;
 import entity.DataHolder;
+import services.NotificationService;
 import support.BackgroundRequest;
+import support.Preference;
 import support.Support;
 
 public class HomeActivity extends AppCompatActivity {
@@ -136,6 +139,10 @@ public class HomeActivity extends AppCompatActivity {
         }, 0, 30 * 1000);
 
 
+        // new log
+         // Log.e("Current user id", DataHolder.getInstance().getUser().get_id());
+        startService(new Intent(getBaseContext(), NotificationService.class));
+
         // get broadcast that get user list finished
         gotUserListBroadCastReceiver = new BroadcastReceiver() {
             @Override
@@ -174,11 +181,12 @@ public class HomeActivity extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
 
+
         final TextView name = (TextView) findViewById(R.id.username);
         final TextView email = (TextView) findViewById(R.id.email);
         logoutDialogBuilder = new AlertDialog.Builder(HomeActivity.this)
                 .setTitle("Log out")
-                .setIcon(android.R.drawable.ic_dialog_alert);
+                ;
         // parse data to header
         name.setText(DataHolder.getInstance().getUser().getBio().getFirstName() + " " + DataHolder.getInstance().getUser().getBio().getLastName());
         email.setText(DataHolder.getInstance().getUser().getLocal().getEmail());
@@ -280,6 +288,13 @@ public class HomeActivity extends AppCompatActivity {
 
                         yes.setOnClickListener(new View.OnClickListener() {
                             public void onClick(View v) {
+                                // reset username and password
+                                getSharedPreferences(Preference.PREF_NAME,MODE_PRIVATE)
+                                        .edit()
+                                        .putString(Preference.PREF_EMAIL, null)
+                                        .putString(Preference.PREF_PASSWORD, null)
+                                        .apply();
+                                stopService(new Intent(getBaseContext(), NotificationService.class));
                                 new LogoutRequest().execute(Support.HOST + "logout");
                             }
                         });
@@ -337,6 +352,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
+
 
     }
 
