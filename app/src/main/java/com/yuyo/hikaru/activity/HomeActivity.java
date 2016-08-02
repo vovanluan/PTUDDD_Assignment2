@@ -73,6 +73,7 @@ public class HomeActivity extends AppCompatActivity {
     private NotificationFragment notificationFragment;
     private FloatingActionButton floatingActionButton;
     private BackgroundRequest backgroundRequest;
+    ActionBarDrawerToggle drawerToggle;
     private int[] tabIcons = {
             R.drawable.ic_class,
             R.drawable.ic_user_list,
@@ -113,98 +114,75 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        PreferenceManager.setDefaultValues(this, R.xml.preferences_fragment, false);
-
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, CreateCourseActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        // create navigation tab and viewpager
-        courseFragment = new CourseFragment();
-        userFragment = new UserFragment();
-        notificationFragment = new NotificationFragment();
 
         // new log
-         // Log.e("Current user id", DataHolder.getInstance().getUser().get_id());
         startService(new Intent(getBaseContext(), NotificationService.class));
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+         initComponent();
 
-        adapter.addFragment(courseFragment, "");
-        adapter.addFragment(userFragment, "");
-        adapter.addFragment(notificationFragment, "");
-        viewPager.setAdapter(adapter);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        // setup tab icons
-        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+        Intent intent = getIntent();
+        int tabNum = intent.getIntExtra("selectTab", -1);
+        if (tabNum != -1) {
+            tabLayout.getTabAt(tabNum).select();
+        }
+    }
 
+    private void initComponent() {
+        initFabButton();
+
+        initToolbar();
+
+        initTabLayoutAndNavigationViewer();
+
+
+        logoutDialogBuilder = new AlertDialog.Builder(HomeActivity.this)
+                .setTitle("Log out");
 
         final TextView name = (TextView) findViewById(R.id.username);
         final TextView email = (TextView) findViewById(R.id.email);
-        logoutDialogBuilder = new AlertDialog.Builder(HomeActivity.this)
-                .setTitle("Log out")
-                ;
         // parse data to header
         name.setText(DataHolder.getInstance().getUser().getBio().getFirstName() + " " + DataHolder.getInstance().getUser().getBio().getLastName());
         email.setText(DataHolder.getInstance().getUser().getLocal().getEmail());
 
-        // receive broadcast on secured activity
-        logOutBroadcastReceiver = new BroadcastReceiver() {
+
+        initLogoutBroadcastReciever();
+
+        initUpdateCardBroadcastReciever();
+
+        initUserUpdateBroadcastReciever(name, email);
+
+        initNavigationView();
+
+        initDrawerLayout();
+    }
+
+    private void initDrawerLayout() {
+        // Initializing Drawer Layout and ActionBarToggle
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
+
             @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.d("onReceive", "Logout in progress");
-                //start login activity
-                Intent i = new Intent(HomeActivity.this, LoginActivity.class);
-                startActivity(i);
-                DataHolder.getInstance().setUser(new User());
-                DataHolder.getInstance().setUserList(new ArrayList<User>());
-                DataHolder.getInstance().setCourseList(new ArrayList<Course>());
-                DataHolder.getInstance().setNewNotifications(new ArrayList<Notification>());
-                DataHolder.getInstance().setOldNotifications(new ArrayList<Notification>());
-                finish();
+            public void onDrawerClosed(View drawerView) {
+                // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
+
+                super.onDrawerOpened(drawerView);
             }
         };
-        logOutIntentFilter = new IntentFilter();
-        logOutIntentFilter.addAction("ACTION_LOGOUT");
-        registerReceiver(logOutBroadcastReceiver, logOutIntentFilter);
 
-        updateCardListBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                HomeActivity.this.courseFragment.adapter.setListCard(DataHolder.getInstance().getCourseList());
-            }
-        };
-        updateCardListIntentFilter = new IntentFilter();
-        updateCardListIntentFilter.addAction("UPDATE_CARD_LIST");
-        registerReceiver(updateCardListBroadcastReceiver, updateCardListIntentFilter);
+        //Setting the actionbarToggle to drawer layout
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
-        // receive broadcast on user change
-        userChangeBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                // Update text view
-                Log.e("Update", DataHolder.getInstance().getUser().getBio().getFirstName());
-                name.setText(DataHolder.getInstance().getUser().getBio().getFirstName() + " " + DataHolder.getInstance().getUser().getBio().getLastName());
-                email.setText(DataHolder.getInstance().getUser().getLocal().getEmail());
-            }
-        };
-        userChangeIntentFilter = new IntentFilter();
-        userChangeIntentFilter.addAction("USER_CHANGE");
-        registerReceiver(userChangeBroadcastReceiver, userChangeIntentFilter);
+        //calling sync state is necessay or else your hamburger icon wont show up
+        actionBarDrawerToggle.syncState();
+    }
 
+    private void initNavigationView() {
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
@@ -277,18 +255,6 @@ public class HomeActivity extends AppCompatActivity {
                         logoutDialog.setView(promptView);
 
                         logoutDialog.show();
-/*                        logoutDialog.getButton(R.id.yes).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                new LogoutRequest().execute(Support.HOST + "logout");
-                            }
-                        });
-                        logoutDialog.getButton(R.id.no).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                logoutDialog.dismiss();
-                            }
-                        });*/
                         return true;
                     default:
                         Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
@@ -298,31 +264,96 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+    }
 
-        // Initializing Drawer Layout and ActionBarToggle
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
-
+    private void initUserUpdateBroadcastReciever(final TextView name, final TextView email) {
+        // receive broadcast on user change
+        userChangeBroadcastReceiver = new BroadcastReceiver() {
             @Override
-            public void onDrawerClosed(View drawerView) {
-                // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
-                super.onDrawerClosed(drawerView);
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
-
-                super.onDrawerOpened(drawerView);
+            public void onReceive(Context context, Intent intent) {
+                // Update text view
+                Log.e("Update", DataHolder.getInstance().getUser().getBio().getFirstName());
+                name.setText(DataHolder.getInstance().getUser().getBio().getFirstName() + " " + DataHolder.getInstance().getUser().getBio().getLastName());
+                email.setText(DataHolder.getInstance().getUser().getLocal().getEmail());
             }
         };
-
-        //Setting the actionbarToggle to drawer layout
-        drawerLayout.setDrawerListener(actionBarDrawerToggle);
-
-        //calling sync state is necessay or else your hamburger icon wont show up
-        actionBarDrawerToggle.syncState();
+        userChangeIntentFilter = new IntentFilter();
+        userChangeIntentFilter.addAction("USER_CHANGE");
+        registerReceiver(userChangeBroadcastReceiver, userChangeIntentFilter);
     }
+
+    private void initUpdateCardBroadcastReciever() {
+        updateCardListBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                HomeActivity.this.courseFragment.adapter.setListCard(DataHolder.getInstance().getCourseList());
+            }
+        };
+        updateCardListIntentFilter = new IntentFilter();
+        updateCardListIntentFilter.addAction("UPDATE_CARD_LIST");
+        registerReceiver(updateCardListBroadcastReceiver, updateCardListIntentFilter);
+    }
+
+    private void initLogoutBroadcastReciever() {
+        // receive broadcast on secured activity
+        logOutBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("onReceive", "Logout in progress");
+                //start login activity
+                Intent i = new Intent(HomeActivity.this, LoginActivity.class);
+                startActivity(i);
+                DataHolder.getInstance().setUser(new User());
+                DataHolder.getInstance().setUserList(new ArrayList<User>());
+                DataHolder.getInstance().setCourseList(new ArrayList<Course>());
+                DataHolder.getInstance().setNewNotifications(new ArrayList<Notification>());
+                DataHolder.getInstance().setOldNotifications(new ArrayList<Notification>());
+                finish();
+            }
+        };
+        logOutIntentFilter = new IntentFilter();
+        logOutIntentFilter.addAction("ACTION_LOGOUT");
+        registerReceiver(logOutBroadcastReceiver, logOutIntentFilter);
+    }
+
+    private void initTabLayoutAndNavigationViewer() {
+        // create navigation tab and viewpager
+        courseFragment = new CourseFragment();
+        userFragment = new UserFragment();
+        notificationFragment = new NotificationFragment();
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        adapter.addFragment(courseFragment, "");
+        adapter.addFragment(userFragment, "");
+        adapter.addFragment(notificationFragment, "");
+        viewPager.setAdapter(adapter);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        // setup tab icons
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+    }
+
+    private void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void initFabButton() {
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, CreateCourseActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
 
     @Override
     protected void onStart() {

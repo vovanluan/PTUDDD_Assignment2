@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -89,48 +90,9 @@
             fancy:fb_textSize="@dimen/text_size"  />
 
 
-        <!--<mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/btnStartService"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/left_button"
-            android:layout_marginTop="@dimen/button_top_margin"
-            android:layout_toRightOf="@id/login"
-            android:onClick="startService"
-            android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="10dp"
-            android:layout_below="@id/login"
-            android:layout_alignStart="@id/login"
-            fancy:fb_borderColor="#8870FF"
-            fancy:fb_borderWidth="2dp"
-            fancy:fb_defaultColor="@color/white"
-            fancy:fb_focusColor="#8870FF"
-            fancy:fb_radius="5dp"
-            fancy:fb_text="Start Service"
-            fancy:fb_textColor="#8870FF"
-            fancy:fb_textSize="@dimen/text_size" />
 
-        <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/btnStopService"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/left_button"
-            android:layout_marginTop="@dimen/button_top_margin"
-            android:onClick="stopService"
-            android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="10dp"
-            fancy:fb_borderColor="#25373D"
-            fancy:fb_borderWidth="2dp"
-            fancy:fb_defaultColor="@color/white"
-            fancy:fb_focusColor="#25373D"
-            fancy:fb_radius="5dp"
-            fancy:fb_text="Stop Service"
-            fancy:fb_textColor="#25373D"
-            fancy:fb_textSize="@dimen/text_size" />-->
     </RelativeLayout>
+
+
 
 </LinearLayout>

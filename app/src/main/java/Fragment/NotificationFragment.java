@@ -4,6 +4,7 @@ package fragment;
  * Created by Luan on 5/2/2016.
  */
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.yuyo.hikaru.activity.CourseActivity;
 import com.yuyo.hikaru.activity.R;
 
 import java.io.BufferedReader;
@@ -33,6 +35,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import adapter.NotificationAdapter;
+import entity.Course;
 import entity.DataHolder;
 import entity.Notification;
 import support.Support;
@@ -44,6 +47,8 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
     private int INTERVAL = 10 * 1000;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener mPreferenceListener = null;
+
+    private Course notiCourse;
 
     public NotificationFragment() {
     }
@@ -119,8 +124,16 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         // retrieve the ListView item
         Notification notification = adapter.getNotificationList().get(position);
         updateNotification = notification;
-        new UpdateNotificationRequest().execute(Support.HOST + "/users/" + notification.get_id());
-        DataHolder.getInstance().getNewNotifications().remove(notification);
+        String noti_id = notification.get_id();
+        String card_id = notification.getFor_card();
+
+        // TODO: after tesing, remove 2 comments to del notification after click and update status
+        //DataHolder.getInstance().getNewNotifications().remove(notification);
+        //new UpdateNotificationRequest().execute(Support.HOST + "/users/" + noti_id);
+
+
+        new GetOneCourseRequest().execute(Support.HOST + "cards/" + card_id);
+
         adapter.setNotificationList(DataHolder.getInstance().getNewNotifications());
     }
 
@@ -176,6 +189,55 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
 
             }
         }
+    }
+
+    private class GetOneCourseRequest extends AsyncTask<String, Void, Integer> {
+
+        private String jsonResponse;
+        @Override
+        protected Integer doInBackground(String... urls) {
+            try {
+                // Create connection
+                URL url = new URL(urls[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setDoInput(true);
+                urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.connect();
+
+                InputStream isResponse = urlConnection.getInputStream();
+                BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(isResponse));
+
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseBuffer.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                jsonResponse = stringBuilder.toString();
+                return urlConnection.getResponseCode();
+
+            } catch (Exception e) {
+
+            }
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer responseCode) {
+            try {
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    Intent intent = new Intent(getActivity(), CourseActivity.class);
+                    intent.putExtra("course", jsonResponse);
+                    startActivity(intent);
+                }
+                adapter.setNotificationList(DataHolder.getInstance().getNewNotifications());
+            } catch (Exception e) {
+                Log.e("GET one card", "Some thing went wrong");
+            }
+        }
+
+
     }
 
     private class UpdateNotificationRequest extends AsyncTask<String, Void, Integer> {

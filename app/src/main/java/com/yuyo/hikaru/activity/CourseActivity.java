@@ -146,48 +146,24 @@ public class CourseActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CourseActivity.this, ProfileActivity.class);
-                User user = DataHolder.getInstance().getUserById(course.getCreated_by());
-                Gson gson = new Gson();
-                Type type = new TypeToken<User>(){}.getType();
-                String jsonUser = gson.toJson(user, type);
-                i.putExtra("User", jsonUser);
-                startActivity(i);
+                creatorBtnHandler();
             }
         });
+
         View.OnClickListener pairUpListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Check if user joined this course
-                if(course.getStudents().contains(DataHolder.getInstance().getUser().get_id())) {
-                    Toast.makeText(CourseActivity.this, "You already joined this course", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                User teacher = DataHolder.getInstance().getUserById(course.getCreated_by());
-                String studentName = DataHolder.getInstance().getUser().getBio().getFirstName() + " " + DataHolder.getInstance().getUser().getBio().getLastName();
-                String teacherName = teacher.getBio().getFirstName() + " " + teacher.getBio().getLastName();
-                notification = new Notification();
-                notification.setCreated_by(DataHolder.getInstance().getUser().get_id());
-                notification.setFor_card(course.get_id());
-                notification.setTo(course.getCreated_by());
-                notification.setStudentName(studentName);
-                notification.setTeacherName(teacherName);
-                notification.setDescription(studentName + " wants to join your " + course.getTitle() + " class");
-                notification.setCardName(course.getTitle());
+                pairupBtnHandler();
 
-                new PairUpRequest().execute(Support.HOST + "users/pairup");
             }
         };
-
         pairUpBtn.setOnClickListener(pairUpListener);
         peopleIcon.setOnClickListener(pairUpListener);
 
         reviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ReviewDialogFragment reviewDialogFragment = ReviewDialogFragment.getInstance();
-                reviewDialogFragment.course = CourseActivity.this.course;
-                reviewDialogFragment.show(getSupportFragmentManager(), "ReviewDialog");
+                reviewBtnHandler();
             }
         });
 
@@ -195,6 +171,43 @@ public class CourseActivity extends AppCompatActivity{
 
 
 
+    }
+
+    private void reviewBtnHandler() {
+        ReviewDialogFragment reviewDialogFragment = ReviewDialogFragment.getInstance();
+        reviewDialogFragment.course = CourseActivity.this.course;
+        reviewDialogFragment.show(getSupportFragmentManager(), "ReviewDialog");
+    }
+
+    private void pairupBtnHandler() {
+        // Check if user joined this course
+        if(course.getStudents().contains(DataHolder.getInstance().getUser().get_id())) {
+            Toast.makeText(CourseActivity.this, "You already joined this course", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        User teacher = DataHolder.getInstance().getUserById(course.getCreated_by());
+        String studentName = DataHolder.getInstance().getUser().getBio().getFirstName() + " " + DataHolder.getInstance().getUser().getBio().getLastName();
+        String teacherName = teacher.getBio().getFirstName() + " " + teacher.getBio().getLastName();
+        notification = new Notification();
+        notification.setCreated_by(DataHolder.getInstance().getUser().get_id());
+        notification.setFor_card(course.get_id());
+        notification.setTo(course.getCreated_by());
+        notification.setStudentName(studentName);
+        notification.setTeacherName(teacherName);
+        notification.setDescription(studentName + " wants to join your " + course.getTitle() + " class");
+        notification.setCardName(course.getTitle());
+
+        new PairUpRequest().execute(Support.HOST + "users/pairup");
+    }
+
+    private void creatorBtnHandler() {
+        Intent i = new Intent(CourseActivity.this, ProfileActivity.class);
+        User user = DataHolder.getInstance().getUserById(course.getCreated_by());
+        Gson gson = new Gson();
+        Type type = new TypeToken<User>(){}.getType();
+        String jsonUser = gson.toJson(user, type);
+        i.putExtra("User", jsonUser);
+        startActivity(i);
     }
 
     private class UpvoteRequest extends AsyncTask<String, Void, Integer> {

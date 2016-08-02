@@ -1,3 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="F:\Project\PTUDDD_Assignment2\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-22.2.0_93614b700dad6d21916761888bb1142bf8892cfb.jar" />
+    </item>
+    <item
+        jar="F:\Project\PTUDDD_Assignment2\app\build\intermediates\exploded-aar\com.weiwangcn.betterspinner\library-material\1.1.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8d8c5463a1a50691e2cf66cd7ce4751c8545b584">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\com.weiwangcn.betterspinner-library-material-1.1.0_e02cb2f4fdb793efbafdae4502243502620fc112.jar" />
+    </item>
+    <item
+        jar="F:\Project\PTUDDD_Assignment2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.1.1_b074776eebe05f91510f25fb75d1b64ce41acfbf.jar" />
+    </item>
+    <item
+        jar="F:\Project\PTUDDD_Assignment2\app\build\intermediates\exploded-aar\net.danlew\android.joda\2.9.3\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="87714d074681677b8e418ee36b1d11cde180f78e">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\net.danlew-android.joda-2.9.3_ba2575fb90a658154c3049b576a4f7ff3d264321.jar" />
+    </item>
+    <item
+        jar="C:\Users\Bach Do\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.6.2\f1bc476cc167b18e66c297df599b2377131a8947\gson-2.6.2.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="f1bc476cc167b18e66c297df599b2377131a8947">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\gson-2.6.2_b67cb59ec5efb21dddef4306e1a29292763d1753.jar" />
+    </item>
+    <item
+        jar="E:\Android\SDK\extras\android\m2repository\com\android\support\support-annotations\23.1.1\support-annotations-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8d680ba5a623724d1fb0e81c36a790f023a6cede">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\support-annotations-23.1.1_2b787ed1a6bc00ca4b059ae6f8a57b460eb94269.jar" />
+    </item>
+    <item
+        jar="F:\Project\PTUDDD_Assignment2\app\build\intermediates\exploded-aar\com.toptoche.searchablespinner\searchablespinnerlibrary\1.3.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="dbfaa66636f1fadb6cff4080a3a271e97f288340">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\com.toptoche.searchablespinner-searchablespinnerlibrary-1.3.1_8eb42a54932c6706587df98ac5518e7c80ac7056.jar" />
+    </item>
+    <item
+        jar="F:\Project\PTUDDD_Assignment2\app\build\intermediates\exploded-aar\com.rengwuxian.materialedittext\library\2.0.3\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="052802ed198178e7133de387fbc87d3f2998482a">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\com.rengwuxian.materialedittext-library-2.0.3_aa939325206e744ba6381e2dc6457cc41d7b1720.jar" />
+    </item>
+    <item
+        jar="C:\Users\Bach Do\.gradle\caches\modules-2\files-2.1\joda-time\joda-time\2.9.3\5d506d4238dd8a1d1c8a1188ffb819a2f2eb286d\joda-time-2.9.3-no-tzdb.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5d506d4238dd8a1d1c8a1188ffb819a2f2eb286d">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\joda-time-2.9.3-no-tzdb_8649c039d440b50f839323506a964cf03ccdbaf4.jar" />
+    </item>
+    <item
+        jar="F:\Project\PTUDDD_Assignment2\app\build\intermediates\exploded-aar\de.hdodenhof\circleimageview\1.3.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="ac6948cce36f694f3eb3d73a135e298dc4b3527a">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\de.hdodenhof-circleimageview-1.3.0_53c5a9d09cef2aa28e3465e0fec6096107940da8.jar" />
+    </item>
+    <item
+        jar="F:\Project\PTUDDD_Assignment2\app\build\intermediates\exploded-aar\com.wdullaer\materialdatetimepicker\2.3.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a95fd025efad7b05be3d29737bec37652e0fdb9e">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\com.wdullaer-materialdatetimepicker-2.3.0_487064f9d413553d1e9deca42aec2bbc10e1e8dd.jar" />
+    </item>
+    <item
+        jar="F:\Project\PTUDDD_Assignment2\app\build\intermediates\exploded-aar\com.github.medyo\fancybuttons\1.8.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="1d2264766f0334470f9917ead03eab24c55c26c9">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\com.github.medyo-fancybuttons-1.8.1_acb41a53d0236a35ff1a5a415aeab709b9611044.jar" />
+    </item>
+    <item
+        jar="C:\Users\Bach Do\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\library-2.4.0_7a39b44dbcba1cb7e22610b047a6340e20f20be1.jar" />
+    </item>
+    <item
+        jar="F:\Project\PTUDDD_Assignment2\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\libs\internal_impl-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\internal_impl-23.1.1_df10f3f35ea87bc58f2792f521ec2b00c3d1d61a.jar" />
+    </item>
+    <item
+        jar="F:\Project\PTUDDD_Assignment2\app\build\intermediates\exploded-aar\com.android.support\design\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="fc63b820d54c8a27a3a614bdd93920e0076581c2">
+        <dex dex="F:\Project\PTUDDD_Assignment2\app\build\intermediates\pre-dexed\debug\com.android.support-design-22.2.0_0ef0117915b02eaaae0015157febbe06e6d01f1d.jar" />
+    </item>
+
+</items>

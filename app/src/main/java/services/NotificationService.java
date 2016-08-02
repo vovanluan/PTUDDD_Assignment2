@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.IBinder;
 
@@ -76,13 +78,17 @@ public class NotificationService extends Service {
     private void createNotification() {
         int notiId = 10285;
         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-        intent.putExtra("selectTab", "Notification");
+        intent.putExtra("selectTab", 2);
         PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+
+        Bitmap iconBitmap = BitmapFactory.decodeResource(this.getResources(),
+                R.drawable.yuyo_logo);
 
         android.app.Notification noti = new android.app.Notification.Builder(getApplicationContext())
                 .setContentTitle("New partner found")
-                .setContentText("Some one wants to join your course, go check it out!!")
+                .setContentText("Someone joint your course, check it out!!")
                 .setSmallIcon(R.drawable.ic_favorite_black)
+                .setLargeIcon(iconBitmap)
                 .setContentIntent(pIntent)
                 .setVibrate(new long[]{500, 500})
                 .setAutoCancel(true).build();

@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App.Activity">
         <activity
-            android:name="com.yuyo.hikaru.activity.SplashActivity"
+            android:name=".SplashActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,21 +20,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.yuyo.hikaru.activity.LoginActivity" />
-        <activity android:name="com.yuyo.hikaru.activity.HomeActivity" />
-        <activity android:name="com.yuyo.hikaru.activity.RegisterActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".RegisterActivity" />
         <activity
-            android:name="com.yuyo.hikaru.activity.ProfileActivity"
+            android:name=".ProfileActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name="com.yuyo.hikaru.activity.CourseActivity" />
-        <activity android:name="com.yuyo.hikaru.activity.CreateCourseActivity" />
-        <activity android:name="com.yuyo.hikaru.activity.AboutUsActivity" />
-        <activity android:name="com.yuyo.hikaru.activity.InformationActivity"
-            android:parentActivityName="com.yuyo.hikaru.activity.HomeActivity"/>
+        <activity android:name=".CourseActivity" />
+        <activity android:name=".CreateCourseActivity" />
+        <activity android:name=".AboutUsActivity" />
         <activity
-            android:name="com.yuyo.hikaru.activity.SettingsActivity"
-            android:label="Preferences">
-        </activity>
+            android:name=".InformationActivity"
+            android:parentActivityName=".HomeActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Preferences"></activity>
 
         <service android:name="services.NotificationService" />
 
