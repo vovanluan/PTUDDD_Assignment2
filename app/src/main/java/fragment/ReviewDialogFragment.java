@@ -203,7 +203,7 @@ public class ReviewDialogFragment extends DialogFragment {
                     Type type = new TypeToken<Course>() {
                     }.getType();
                     course = gson.fromJson(jsonResponse, type);
-                    ((CourseActivity)getActivity()).star.setText(String.valueOf(course.getRating()));
+                    //((CourseActivity)getActivity()).star.setText(String.valueOf(course.getRating()));
                     Toast.makeText(getActivity(), "Thanks for your review!", Toast.LENGTH_LONG).show();
 
                     DataHolder.getInstance().removeCourse(course.get_id());

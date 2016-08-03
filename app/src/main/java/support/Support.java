@@ -62,4 +62,30 @@ public class Support {
         }
     }
 
+    public static final int getHeaderPic(String category) {
+        switch(category) {
+            case "English":
+                return R.drawable.header_usa_small;
+            case "Vietnamese":
+                return R.drawable.header_vietnam_small;
+            case "French":
+                return R.drawable.header_paris_small;
+            case "Japanese":
+                return R.drawable.header_japan_small;
+            case "Spanish":
+                return R.drawable.header_spain_small;
+            case "Chinese":
+                return R.drawable.header_china_small;
+            case "Finland":
+                return R.drawable.header_finland_small;
+            case "German":
+                return R.drawable.header_german_small;
+            case "Korean":
+                return R.drawable.header_korea_small;
+            case "Russian":
+                return R.drawable.header_russia_small;
+            default:
+                return R.drawable.ic_flag_usa;
+        }
+    }
 }

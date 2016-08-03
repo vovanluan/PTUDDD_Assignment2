@@ -2,11 +2,19 @@ package com.yuyo.hikaru.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.preference.PreferenceActivity;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
+import android.support.v7.internal.widget.ActivityChooserModel;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +24,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 
 import org.joda.time.DateTime;
 
@@ -32,31 +41,61 @@ import entity.DataHolder;
 import entity.Notification;
 import entity.User;
 import fragment.ReviewDialogFragment;
+import mehdi.sakout.fancybuttons.FancyButton;
 import support.Support;
 
-/**
- * Created by Admin on 5/11/2016.
- */
-public class CourseActivity extends AppCompatActivity{
+public class CourseActivity extends AppCompatActivity {
+
+    private CoordinatorLayout rootLayout;
+    private Toolbar toolbar;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+
+    private ImageView imgHeader;
     private Course course;
+
+    private ImageView iconLanguage, iconTime, iconLocation, iconFlag;
+
+    //private SimpleRatingBar ratingBar;
+
     public TextView star;
     private TextView title, creator, people, language, location, time, description, upvote;
     private Button pairUpBtn, reviewBtn, upVoteBtn;
-    private ImageView courseImage, upvoteIcon, starIcon, peopleIcon;
+    private ImageView upvoteIcon, starIcon, peopleIcon;
     private Notification notification;
+
+
+    private Palette palette;
+
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
 
-        final String jsonCourse = getIntent().getStringExtra("course");
-        Log.e("Course:", jsonCourse);
-        Gson gson = new Gson();
-        Type type = new TypeToken<Course>() {
-        }.getType();
-        course = gson.fromJson(jsonCourse, type);
+        initInstances();
+    }
 
-        courseImage = (ImageView) findViewById(R.id.courseImage);
+    private void initInstances() {
+
+        getCourseIntent();
+
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
+        collapsingToolbarLayout.setTitle(course.getTitle());
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+//        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        rootLayout = (CoordinatorLayout) findViewById(R.id.rootLayout);
+
+        iconLanguage = (ImageView) findViewById(R.id.languageIcon);
+        iconTime = (ImageView) findViewById(R.id.timeIcon);
+        iconLocation = (ImageView) findViewById(R.id.locationIcon);
+        iconFlag = (ImageView) findViewById(R.id.languageFlag);
+
+        // previous code
         title = (TextView) findViewById(R.id.title);
         creator = (TextView) findViewById(R.id.creator);
         description = (TextView) findViewById(R.id.description);
@@ -73,17 +112,28 @@ public class CourseActivity extends AppCompatActivity{
         peopleIcon = (ImageView) findViewById(R.id.peopleIcon);
         location = (TextView) findViewById(R.id.location);
 
-        pairUpBtn.setBackgroundColor(Color.parseColor("#2CC88F"));
-        upVoteBtn.setBackgroundColor(Color.parseColor("#2196F3"));
+        //ratingBar = (SimpleRatingBar) findViewById(R.id.ratingBar);
 
+        reviewBtn = (Button) findViewById(R.id.reviewBtn);
+
+        setupHeaderImg();
+
+        bindColor();
+
+        bindDataFromCourse();
+
+        addListennerEvent();
+
+
+    }
+
+    private void addListennerEvent() {
         // check if this user is watching his course
         // hide all button: pair up, review, upvote
         if (course.getCreated_by().equals(DataHolder.getInstance().getUser().get_id())) {
             pairUpBtn.setVisibility(View.INVISIBLE);
             reviewBtn.setVisibility(View.INVISIBLE);
             upVoteBtn.setVisibility(View.INVISIBLE);
-            peopleIcon.setVisibility(View.INVISIBLE);
-            people.setVisibility(View.INVISIBLE);
             upvoteIcon.setOnClickListener(null);
         }
         else {
@@ -115,32 +165,12 @@ public class CourseActivity extends AppCompatActivity{
             upvoteIcon.setImageResource(R.drawable.ic_action_like);
         }
 
-        if(course.getStudents().contains(DataHolder.getInstance().getUser().get_id())) {
+        /*if(course.getStudents().contains(DataHolder.getInstance().getUser().get_id())) {
             peopleIcon.setImageResource(R.drawable.ic_big_group);
         }
         else {
             peopleIcon.setImageResource(R.drawable.ic_group_add);
-        }
-/*        if(DataHolder.getInstance().getUser().getReviews().contains(course.get_id())) {
-            starIcon.setImageResource(R.drawable.ic_action_reviewed);
-        }
-        else {
-            starIcon.setImageResource(R.drawable.ic_big_star);
         }*/
-
-        title.setText(course.getTitle());
-        creator.setText(DataHolder.getInstance().getUserById(course.getCreated_by()).getBio().getFirstName());
-        description.setText(course.getDescription());
-        star.setText(String.valueOf(course.getRating()));
-        location.setText(course.getPlace());
-
-        DateTime timeCourseStart = new DateTime(course.getTime());
-        time.setText(timeCourseStart.getDayOfMonth() + "/" + timeCourseStart.getMonthOfYear() + "/" + timeCourseStart.getYear() + " at " + timeCourseStart.getHourOfDay() + ":" + timeCourseStart.getMinuteOfHour());
-        upvote.setText(String.valueOf(course.getUpvotes()));
-        people.setText(String.valueOf(course.getStudents().size()));
-        language.setText(course.getCategory());
-        courseImage.setImageResource(Support.getCategoryFlag(course.getCategory()));
-        courseImage.setBackgroundColor(Color.parseColor("#E0E0E0"));
 
         creator.setOnClickListener(new View.OnClickListener() {
 
@@ -166,11 +196,6 @@ public class CourseActivity extends AppCompatActivity{
                 reviewBtnHandler();
             }
         });
-
-
-
-
-
     }
 
     private void reviewBtnHandler() {
@@ -208,6 +233,61 @@ public class CourseActivity extends AppCompatActivity{
         String jsonUser = gson.toJson(user, type);
         i.putExtra("User", jsonUser);
         startActivity(i);
+    }
+
+    private void bindDataFromCourse() {
+        title.setText(course.getTitle());
+        creator.setText(DataHolder.getInstance().getUserById(course.getCreated_by()).getBio().getFirstName() + " " +
+                DataHolder.getInstance().getUserById(course.getCreated_by()).getBio().getLastName());
+        description.setText(course.getDescription());
+        star.setText(String.valueOf(course.getRating()));
+        location.setText(course.getPlace());
+
+        DateTime timeCourseStart = new DateTime(course.getTime());
+        time.setText(timeCourseStart.getDayOfMonth() + "/" + timeCourseStart.getMonthOfYear() + "/" + timeCourseStart.getYear() + " at " + timeCourseStart.getHourOfDay() + ":" + timeCourseStart.getMinuteOfHour());
+        upvote.setText(String.valueOf(course.getUpvotes()));
+        people.setText(String.valueOf(course.getStudents().size()));
+        language.setText(course.getCategory());
+//        ratingBar.setRating(course.getRating());
+
+        // Set language flag
+        int flag = Support.getCategoryFlag(course.getCategory());
+        iconFlag.setImageResource(flag);
+    }
+
+    private void setupHeaderImg() {
+        imgHeader = (ImageView) findViewById(R.id.imgHeader);
+        int headerPic = Support.getHeaderPic(course.getCategory());
+        imgHeader.setImageResource(headerPic);
+
+        // Extract color from header
+        Bitmap iconBitmap = BitmapFactory.decodeResource(this.getResources(),
+                headerPic);
+        if (iconBitmap != null && !iconBitmap.isRecycled()) {
+            palette = Palette.generate (iconBitmap);
+        }
+    }
+
+    private void bindColor() {
+        int defaultColor = 0x000000;
+        int myColor = palette.getVibrantColor(defaultColor);
+        int myColorDark = palette.getDarkVibrantColor(defaultColor);
+        iconLanguage.setColorFilter(myColor);
+        iconTime.setColorFilter(myColor);
+        iconLocation.setColorFilter(myColor);
+        title.setTextColor(myColor);
+
+        pairUpBtn.setBackgroundColor(Color.parseColor("#2CC88F"));
+        upVoteBtn.setBackgroundColor(Color.parseColor("#2196F3"));
+    }
+
+    private void getCourseIntent() {
+        final String jsonCourse = getIntent().getStringExtra("course");
+        Log.e("Course:", jsonCourse);
+        Gson gson = new Gson();
+        Type type = new TypeToken<Course>() {
+        }.getType();
+        course = gson.fromJson(jsonCourse, type);
     }
 
     private class UpvoteRequest extends AsyncTask<String, Void, Integer> {
@@ -373,6 +453,7 @@ public class CourseActivity extends AppCompatActivity{
             }
         }
     }
+
     private class PairUpRequest extends AsyncTask<String, Void, Integer> {
         private String jsonResponse;
         private final ProgressDialog dialog = new ProgressDialog(CourseActivity.this);
