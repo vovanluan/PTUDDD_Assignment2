@@ -5,18 +5,24 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.internal.widget.ActivityChooserModel;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,12 +59,12 @@ public class CourseActivity extends AppCompatActivity {
     private ImageView imgHeader;
     private Course course;
 
-    private ImageView iconLanguage, iconTime, iconLocation, iconFlag;
+    private ImageView iconLanguage, iconTime, iconLocation, iconFlag, iconParticipant, iconDescription;
 
     //private SimpleRatingBar ratingBar;
 
     public TextView star;
-    private TextView title, creator, people, language, location, time, description, upvote;
+    private TextView title, creator, people, language, location, time, description, upvote, participant;
     private Button pairUpBtn, reviewBtn, upVoteBtn;
     private ImageView upvoteIcon, starIcon, peopleIcon;
     private Notification notification;
@@ -94,6 +100,8 @@ public class CourseActivity extends AppCompatActivity {
         iconTime = (ImageView) findViewById(R.id.timeIcon);
         iconLocation = (ImageView) findViewById(R.id.locationIcon);
         iconFlag = (ImageView) findViewById(R.id.languageFlag);
+        iconParticipant = (ImageView) findViewById(R.id.participantIcon);
+        iconDescription = (ImageView) findViewById(R.id.descriptionIcon);
 
         // previous code
         title = (TextView) findViewById(R.id.title);
@@ -111,6 +119,7 @@ public class CourseActivity extends AppCompatActivity {
         people = (TextView) findViewById(R.id.people);
         peopleIcon = (ImageView) findViewById(R.id.peopleIcon);
         location = (TextView) findViewById(R.id.location);
+        participant = (TextView) findViewById(R.id.participant);
 
         //ratingBar = (SimpleRatingBar) findViewById(R.id.ratingBar);
 
@@ -124,8 +133,49 @@ public class CourseActivity extends AppCompatActivity {
 
         addListennerEvent();
 
+        addEventListennerParticipantTextView();
+    }
+
+    private void addEventListennerParticipantTextView() {
+
+        if (course.getStudents().size() > 0) {
+
+            String txt = getDescriptionText(course.getStudents().size());
+
+            SpannableString spanText = new SpannableString(txt);
+            spanText.setSpan(new UnderlineSpan(), 0, txt.length(), 0);
+            participant.setText(spanText);
+            participant.setTextColor(getResources().getColor(R.color.colorActivated));
+
+            participant.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(CourseActivity.this, ParticipantActivity.class);
+                    intent.putExtra("Going List", course.getStudents());
+                    startActivity(intent);
+                }
+            });
+        }
 
     }
+
+    @NonNull
+    private String getDescriptionText(int size) {
+        String txt;
+        if (size == 1) {
+            txt = size + " person is going";
+
+            SpannableString spanText = new SpannableString(txt);
+            spanText.setSpan(new UnderlineSpan(), 0, txt.length(), 0);
+            participant.setText(spanText);
+            participant.setTextColor(getResources().getColor(R.color.colorActivated));
+        }
+        else {
+            txt = size + " people is going";
+        }
+        return txt;
+    }
+
 
     private void addListennerEvent() {
         // check if this user is watching his course
@@ -158,11 +208,14 @@ public class CourseActivity extends AppCompatActivity {
         //initialize upvote icon and button\
         if(DataHolder.getInstance().getUser().getUpvoted().contains(course.get_id())) {
             upVoteBtn.setText("Remove vote");
-            upvoteIcon.setImageResource(R.drawable.ic_action_liked);
+            upvoteIcon.setColorFilter(palette.getDarkVibrantColor(0x000000));
+            upvote.setTextColor(palette.getDarkVibrantColor(0x000000));
+
         }
         else {
             upVoteBtn.setText("Upvote");
-            upvoteIcon.setImageResource(R.drawable.ic_action_like);
+            upvoteIcon.setColorFilter(0x949494);
+            upvote.setTextColor(getResources().getColor( R.color.gray));
         }
 
         /*if(course.getStudents().contains(DataHolder.getInstance().getUser().get_id())) {
@@ -221,7 +274,7 @@ public class CourseActivity extends AppCompatActivity {
         notification.setTeacherName(teacherName);
         notification.setDescription(studentName + " wants to join your " + course.getTitle() + " class");
         notification.setCardName(course.getTitle());
-
+        notification.setType(Support.NOTI_TYPE_PAIRUP);
         new PairUpRequest().execute(Support.HOST + "users/pairup");
     }
 
@@ -272,12 +325,37 @@ public class CourseActivity extends AppCompatActivity {
         int defaultColor = 0x000000;
         int myColor = palette.getVibrantColor(defaultColor);
         int myColorDark = palette.getDarkVibrantColor(defaultColor);
+
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.LOLLIPOP){
+
+            Window window = CourseActivity.this.getWindow();
+
+            // clear FLAG_TRANSLUCENT_STATUS flag:
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+            // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+            // finally change the color
+
+            /*window.setStatusBarColor(myColorDark);
+            window.setNavigationBarColor(myColorDark);
+            //getActionBar().setBackgroundDrawable(new ColorDrawable(myColor));
+            toolbar.setBackgroundColor(myColor);
+            collapsingToolbarLayout.setBackgroundColor(myColor);*/
+        }
+
+
+
         iconLanguage.setColorFilter(myColor);
         iconTime.setColorFilter(myColor);
         iconLocation.setColorFilter(myColor);
+        iconParticipant.setColorFilter(myColor);
+        iconDescription.setColorFilter(myColor);
         title.setTextColor(myColor);
 
-        pairUpBtn.setBackgroundColor(Color.parseColor("#2CC88F"));
+        pairUpBtn.setBackgroundColor(myColor);
         upVoteBtn.setBackgroundColor(Color.parseColor("#2196F3"));
     }
 
@@ -358,7 +436,8 @@ public class CourseActivity extends AppCompatActivity {
                     sendBroadcast(broadcastIntent);
 
                     upVoteBtn.setText("Remove vote");
-                    upvoteIcon.setImageResource(R.drawable.ic_action_liked);
+                    upvoteIcon.setColorFilter(palette.getDarkVibrantColor(0x000000));
+                    upvote.setTextColor(palette.getDarkVibrantColor(0x000000));
                 }
                 else if (responseCode == 400){
 
@@ -440,7 +519,8 @@ public class CourseActivity extends AppCompatActivity {
 
                     Toast.makeText(CourseActivity.this, "Remove vote", Toast.LENGTH_SHORT).show();
                     upVoteBtn.setText("Upvote");
-                    upvoteIcon.setImageResource(R.drawable.ic_action_like);
+                    upvoteIcon.setColorFilter(0x949494);
+                    upvote.setTextColor(getResources().getColor(R.color.gray));
                 }
                 else if (responseCode == 400){
 
@@ -510,6 +590,7 @@ public class CourseActivity extends AppCompatActivity {
                     course.getStudents().add(DataHolder.getInstance().getUser().get_id());
                     people.setText(String.valueOf(course.getStudents().size()));
                     peopleIcon.setImageResource(R.drawable.ic_big_group);
+                    participant.setText(getDescriptionText(DataHolder.getInstance().getCourseById(course.get_id()).getStudents().size()));
                     Toast.makeText(CourseActivity.this, "Awesome!!! You've joined this course!", Toast.LENGTH_SHORT).show();
 
                     //Broadcast update course

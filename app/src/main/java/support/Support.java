@@ -10,6 +10,9 @@ import com.yuyo.hikaru.activity.R;
  */
 public class Support {
     public static final String HOST = "https://yuyo-app.herokuapp.com/mobile/";
+    public static final int NOTI_TYPE_PAIRUP = 1;
+    public static final int NOTI_TYPE_NEWCOURSE = 2;
+    public static final int NOTI_TYPE_NEWUPVOTE = 3;
     public static final String[] COLOR = {
         "#43A047",
         "#689F38",

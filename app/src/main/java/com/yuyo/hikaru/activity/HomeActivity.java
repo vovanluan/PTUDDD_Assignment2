@@ -118,7 +118,7 @@ public class HomeActivity extends AppCompatActivity {
         // new log
         startService(new Intent(getBaseContext(), NotificationService.class));
 
-         initComponent();
+        initComponent();
 
         Intent intent = getIntent();
         int tabNum = intent.getIntExtra("selectTab", -1);
@@ -141,7 +141,8 @@ public class HomeActivity extends AppCompatActivity {
         final TextView name = (TextView) findViewById(R.id.username);
         final TextView email = (TextView) findViewById(R.id.email);
         // parse data to header
-        name.setText(DataHolder.getInstance().getUser().getBio().getFirstName() + " " + DataHolder.getInstance().getUser().getBio().getLastName());
+        String fullName = DataHolder.getInstance().getUser().getBio().getFirstName() + " " + DataHolder.getInstance().getUser().getBio().getLastName();
+        name.setText(fullName);
         email.setText(DataHolder.getInstance().getUser().getLocal().getEmail());
 
 

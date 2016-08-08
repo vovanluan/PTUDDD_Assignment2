@@ -26,7 +26,9 @@
         <activity
             android:name=".ProfileActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".CourseActivity" />
+        <activity android:name=".CourseActivity">
+
+        </activity>
         <activity android:name=".CreateCourseActivity" />
         <activity android:name=".AboutUsActivity" />
         <activity
@@ -34,9 +36,11 @@
             android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".SettingsActivity"
-            android:label="Preferences"></activity>
+            android:label="Preferences" />
 
         <service android:name="services.NotificationService" />
+
+        <activity android:name=".ParticipantActivity" />
 
     </application>
 

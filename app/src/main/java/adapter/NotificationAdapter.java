@@ -1,6 +1,9 @@
 package adapter;
 
 import android.content.Context;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +14,9 @@ import com.yuyo.hikaru.activity.R;
 
 import java.util.ArrayList;
 
-import entity.Course;
-import entity.DataHolder;
+import de.hdodenhof.circleimageview.CircleImageView;
 import entity.Notification;
+import support.Support;
 
 /**
  * Created by Luan on 3/30/2016.
@@ -21,6 +24,7 @@ import entity.Notification;
 public class NotificationAdapter extends ArrayAdapter<Notification> {
     private ArrayList<Notification> notificationList;
     private Context context;
+    private CircleImageView iconNoti;
 
     public NotificationAdapter(Context context, int layoutResourceId, ArrayList<Notification> notifications) {
         super(context, layoutResourceId, notifications);
@@ -40,11 +44,40 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
         Notification notification = notificationList.get(position);
 
         if (notification != null) {
-            TextView notificationTextView = (TextView) convertView.findViewById(R.id.notification);
-            Course course = DataHolder.getInstance().getCourseById(notification.getFor_card());
-            notificationTextView.setText(notification.getDescription());
+            setDescriptionStyle(convertView, notification);
+
+            setNotificationIcon(convertView, notification);
         }
         return convertView;
+    }
+
+    private void setNotificationIcon(View convertView, Notification notification) {
+        iconNoti = (CircleImageView) convertView.findViewById(R.id.imgNoti);
+        if (notification.getType() == Support.NOTI_TYPE_NEWCOURSE) {
+            iconNoti.setImageResource(R.drawable.ic_fiber_new);
+        } else if (notification.getType() == Support.NOTI_TYPE_NEWUPVOTE) {
+            iconNoti.setImageResource(R.drawable.ic_thumb_up);
+        }
+    }
+
+    private void setDescriptionStyle(View convertView, Notification notification) {
+        TextView notificationTextView = (TextView) convertView.findViewById(R.id.notification);
+
+        SpannableString notiDescription = new SpannableString( notification.getDescription() + ".");
+
+        int maxLength = 0;
+        if (notification.getType() == Support.NOTI_TYPE_PAIRUP) {
+            maxLength = notification.getStudentName().length();
+        } else if (notification.getType() == Support.NOTI_TYPE_NEWCOURSE) {
+            maxLength = notification.getTeacherName().length();
+        } else if (notification.getType() == Support.NOTI_TYPE_NEWUPVOTE) {
+            maxLength = notification.getStudentName().length();
+        }
+
+        notiDescription.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0,
+                maxLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        notificationTextView.setText(notiDescription );
     }
 
     // update list user

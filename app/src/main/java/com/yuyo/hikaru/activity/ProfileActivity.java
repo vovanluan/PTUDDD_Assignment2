@@ -73,7 +73,8 @@ public class ProfileActivity extends AppCompatActivity {
         user = gson.fromJson(jsonUser, type);
         Log.e("USER", jsonUser);
 
-        name.setText(user.getBio().getFirstName());
+        String fullName = user.getBio().getFirstName() + " " + user.getBio().getLastName();
+        name.setText(fullName );
         followers.setText(String.valueOf(user.getFollowers().size()));
         cards.setText(String.valueOf(user.getCards().size()));
         // create navigation tab and viewpager
@@ -94,7 +95,9 @@ public class ProfileActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         //check if this user is watching his own profile
-        followBtn.setVisibility(View.INVISIBLE);
+        if (user.get_id().equals( DataHolder.getInstance().getUser().get_id())) {
+            followBtn.setVisibility(View.INVISIBLE);
+        }
         // initialize following button: check if user followed this opened profile
         if(DataHolder.getInstance().getUser().getFollowing().contains(user.get_id())) {
             followBtn.setImageResource(R.drawable.ic_star_followed);

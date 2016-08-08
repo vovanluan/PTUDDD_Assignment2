@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:minHeight="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
+                app:layout_collapseMode="none"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -57,11 +57,8 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-
+            android:paddingBottom="@dimen/activity_vertical_margin"
             >
-
-
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -102,6 +99,7 @@
                             android:text="by "/>
                         <TextView
                             android:id="@+id/creator"
+                            android:textStyle="bold"
                             style="@style/BigCreator"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -150,34 +148,37 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginRight="16dp"
                             android:layout_toRightOf="@+id/starIcon"
                             android:text="a"
                             android:textColor="@color/gray"
-                            android:textSize="20dp"/>
+                            android:textSize="18sp"/>
                         <ImageView
                             android:id="@+id/upvoteIcon"
-                            android:layout_width="36dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_margin="0dp"
-                            android:layout_marginRight="4dp"
+                            android:layout_marginRight="16dp"
                             android:layout_toRightOf="@+id/star"
-                            android:src="@drawable/ic_action_like"
+                            android:src="@drawable/ic_thumb_up"
                             />
                         <TextView
                             android:id="@+id/upvote"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginRight="16dp"
                             android:layout_toRightOf="@+id/upvoteIcon"
                             android:text="10"
                             android:textColor="@color/gray"
-                            android:textSize="20dp"/>
+                            android:textSize="18sp"/>
                         <ImageView
                             android:id="@+id/peopleIcon"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
                             android:layout_margin="0dp"
                             android:layout_marginRight="4dp"
                             android:layout_toRightOf="@+id/upvote"
@@ -189,10 +190,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_centerVertical="true"
+                            android:layout_marginLeft="4dp"
                             android:layout_toRightOf="@id/peopleIcon"
                             android:text="10"
                             android:textColor="@color/gray"
-                            android:textSize="20dp"/>
+                            android:textSize="18sp"/>
 
                     </RelativeLayout>
                 </LinearLayout>
@@ -200,7 +202,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin">
                 <ImageView
                     android:id="@+id/languageIcon"
                     android:layout_width="wrap_content"
@@ -213,7 +217,6 @@
                     style="@style/BigDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/languageIcon"
                     android:text="English"/>
 
@@ -222,25 +225,26 @@
                     android:layout_width="27dp"
                     android:layout_height="18dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
                     android:layout_toEndOf="@id/language" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
                 >
                 <ImageView
                     android:id="@+id/locationIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:src="@drawable/ic_location_on"/>
                 <TextView
                     android:id="@+id/location"
                     style="@style/BigDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_toRightOf="@id/locationIcon"
                     android:text="The Coffee house, Ly Thuong Kiet, Q.10"/>
             </RelativeLayout>
@@ -248,6 +252,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
                 >
                 <ImageView
                     android:id="@+id/timeIcon"
@@ -260,17 +265,54 @@
                     style="@style/BigDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_toRightOf="@id/timeIcon"
                     android:text="Thursday, 3:00 PM - 5:00 PM"/>
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/description"
-                style="@style/BigDescription"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="AFJHAFJKAFJAHFJH"/>
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                >
+                <ImageView
+                    android:id="@+id/participantIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_person_pin"/>
+                <TextView
+                    android:id="@+id/participant"
+                    style="@style/BigDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/participantIcon"
+                    android:text="Be the first to joint"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                >
+                <ImageView
+                    android:id="@+id/descriptionIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_description"/>
+                <TextView
+                    android:id="@+id/description"
+                    style="@style/BigDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/descriptionIcon"
+                    android:text="AFJHAFJKAFJAHFJH"/>
+            </RelativeLayout>
+
+
+
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -284,7 +326,7 @@
                     android:background="@drawable/icon_button"
                     android:drawableLeft="@drawable/ic_email"
                     android:text="    Pair up"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/white"/>
 
             </RelativeLayout>
 
@@ -302,7 +344,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/icon_button"
-                        android:drawableLeft="@drawable/ic_star"
+                        android:drawableLeft="@drawable/ic_star_yellow"
                         android:text="  Review"
                         android:textColor="@color/gray"
                         />
@@ -313,9 +355,10 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/reviewBtn"
                         android:background="@drawable/icon_button"
-                        android:drawableLeft="@drawable/ic_action_like"
-                        android:text="  Upvote"
-                        android:textColor="@color/black"/>
+                        android:drawableLeft="@drawable/ic_thumb_up_white"
+                        android:drawablePadding="4dp"
+                        android:text="   Upvote"
+                        android:textColor="@color/white"/>
                 </RelativeLayout>
             </RelativeLayout>
 

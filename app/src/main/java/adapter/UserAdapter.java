@@ -41,7 +41,8 @@ public class UserAdapter extends ArrayAdapter<User> {
             TextView firstName = (TextView) convertView.findViewById(R.id.firstname);
             TextView age = (TextView) convertView.findViewById(R.id.age);
 
-            firstName.setText(user.getBio().getFirstName());
+            String fullName = user.getBio().getFirstName() + " " + user.getBio().getLastName();
+            firstName.setText(fullName);
             age.setText(String.valueOf(user.getBio().getAge()));
         }
         return convertView;

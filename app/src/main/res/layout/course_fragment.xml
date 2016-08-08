@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/gridview"
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:numColumns="2"
-    android:verticalSpacing="4dp"
-    android:horizontalSpacing="10dp"
-    android:gravity="center"
-    android:background="@color/white"
-    android:paddingBottom="@dimen/rectangle_margin"
-    android:paddingLeft="@dimen/rectangle_margin"
-    android:paddingRight="@dimen/rectangle_margin"
-    android:paddingTop="@dimen/rectangle_margin"
-    />
+    >
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="2"
+        android:verticalSpacing="4dp"
+        android:horizontalSpacing="10dp"
+        android:gravity="center"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/rectangle_margin"
+        android:paddingLeft="@dimen/rectangle_margin"
+        android:paddingRight="@dimen/rectangle_margin"
+        android:paddingTop="@dimen/rectangle_margin"
+        />
+
+</android.support.v4.widget.SwipeRefreshLayout>

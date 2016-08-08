@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,14 +51,15 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
     public CardAdapter adapter;
     public GridView gridView;
     private View view;
-    private int INTERVAL = 10 * 1000;
+    private int INTERVAL = 30 * 1000;
     public CourseFragment() {
     }
+
+    public SwipeRefreshLayout swipeLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // initialize adapter
         adapter = new CardAdapter(getActivity());
         Timer timer = new Timer();
@@ -65,7 +67,7 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
 
             @Override
             public void run() {
-                Log.e("Get notification list", "10s");
+                Log.e("Get notification list", "30s");
                 new GetCardListRequest().execute(Support.HOST + "cards");
             }
 
@@ -86,6 +88,18 @@ public class CourseFragment extends Fragment implements AdapterView.OnItemClickL
         gridView = (GridView) view.findViewById(R.id.gridview);
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(this);
+
+        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
+        swipeLayout.setColorSchemeResources(
+                R.color.colorAccent,
+                R.color.colorActivated);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new GetCardListRequest().execute(Support.HOST + "cards");
+                swipeLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
