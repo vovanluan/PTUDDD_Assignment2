@@ -5,19 +5,17 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
-import android.support.v7.internal.widget.ActivityChooserModel;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +28,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 
 import org.joda.time.DateTime;
 
@@ -47,8 +44,9 @@ import entity.DataHolder;
 import entity.Notification;
 import entity.User;
 import fragment.ReviewDialogFragment;
-import mehdi.sakout.fancybuttons.FancyButton;
 import support.Support;
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 
 public class CourseActivity extends AppCompatActivity {
 
@@ -181,9 +179,9 @@ public class CourseActivity extends AppCompatActivity {
         // check if this user is watching his course
         // hide all button: pair up, review, upvote
         if (course.getCreated_by().equals(DataHolder.getInstance().getUser().get_id())) {
-            pairUpBtn.setVisibility(View.INVISIBLE);
-            reviewBtn.setVisibility(View.INVISIBLE);
-            upVoteBtn.setVisibility(View.INVISIBLE);
+            pairUpBtn.setVisibility(View.GONE);
+            reviewBtn.setVisibility(View.GONE);
+            upVoteBtn.setVisibility(View.GONE);
             upvoteIcon.setOnClickListener(null);
         }
         else {
@@ -297,7 +295,8 @@ public class CourseActivity extends AppCompatActivity {
         location.setText(course.getPlace());
 
         DateTime timeCourseStart = new DateTime(course.getTime());
-        time.setText(timeCourseStart.getDayOfMonth() + "/" + timeCourseStart.getMonthOfYear() + "/" + timeCourseStart.getYear() + " at " + timeCourseStart.getHourOfDay() + ":" + timeCourseStart.getMinuteOfHour());
+
+        getDisplayTimeStyled(timeCourseStart);
         upvote.setText(String.valueOf(course.getUpvotes()));
         people.setText(String.valueOf(course.getStudents().size()));
         language.setText(course.getCategory());
@@ -306,6 +305,24 @@ public class CourseActivity extends AppCompatActivity {
         // Set language flag
         int flag = Support.getCategoryFlag(course.getCategory());
         iconFlag.setImageResource(flag);
+    }
+
+    private void getDisplayTimeStyled(DateTime timeCourseStart) {
+        String monthName = new DateFormatSymbols().getMonths()[timeCourseStart.getMonthOfYear()-1];
+
+        String displayDate = monthName + " " + timeCourseStart.getMonthOfYear() + " " + timeCourseStart.getYear();
+        String displayTime = timeCourseStart.getHourOfDay() + ":" + timeCourseStart.getMinuteOfHour();
+
+        int displayTimeStart = displayDate.length() + 4;
+
+        SpannableString timeDescription = new SpannableString(displayDate + " at " + displayTime);
+
+        timeDescription.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0,
+                displayDate.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        timeDescription.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), displayTimeStart,
+                displayTimeStart + displayTime.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        time.setText(timeDescription);
     }
 
     private void setupHeaderImg() {
@@ -590,6 +607,7 @@ public class CourseActivity extends AppCompatActivity {
                     course.getStudents().add(DataHolder.getInstance().getUser().get_id());
                     people.setText(String.valueOf(course.getStudents().size()));
                     peopleIcon.setImageResource(R.drawable.ic_big_group);
+                    addEventListennerParticipantTextView();
                     participant.setText(getDescriptionText(DataHolder.getInstance().getCourseById(course.get_id()).getStudents().size()));
                     Toast.makeText(CourseActivity.this, "Awesome!!! You've joined this course!", Toast.LENGTH_SHORT).show();
 

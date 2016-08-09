@@ -59,7 +59,7 @@ public class ParticipantAdapter extends BaseAdapter{
 
         String fullName = user.getBio().getFirstName() + " " + user.getBio().getLastName();
         userName.setText(fullName);
-        String description = "Age: " + user.getBio().getAge() + ", Uni/Job: " + user.getBio().getUniversity();
+        String description = "Age: " + user.getBio().getAge();
         userAge.setText(description);
         userImage.setImageResource(R.drawable.user_ava_1);
 

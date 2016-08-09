@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,16 +51,21 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
 
     private Course notiCourse;
 
+    private SwipeRefreshLayout swipeLayout;
+
     public NotificationFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initInstances();
+    }
 
+    private void initInstances() {
         // initialize adapter
         ArrayList<Notification> initialNotificationList = DataHolder.getInstance().getNewNotifications();
-        adapter = new NotificationAdapter(getActivity(), R.layout.user_fragment, initialNotificationList);
+        adapter = new NotificationAdapter(getActivity(), R.layout.notification_fragment, initialNotificationList);
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
 
@@ -94,7 +100,7 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        return inflater.inflate(R.layout.user_fragment, container, false);
+        return inflater.inflate(R.layout.notification_fragment, container, false);
     }
 
     @Override
@@ -109,6 +115,18 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         myListView = (ListView) view.findViewById(R.id.listView);
         myListView.setAdapter(adapter);
         myListView.setOnItemClickListener(this);
+
+        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
+        swipeLayout.setColorSchemeResources(
+                R.color.colorAccent,
+                R.color.colorActivated);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new GetNotificationListRequest().execute(Support.HOST + "users/" + DataHolder.getInstance().getUser().get_id() + "/notification");
+                swipeLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override

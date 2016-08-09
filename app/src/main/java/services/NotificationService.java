@@ -53,7 +53,6 @@ public class NotificationService extends Service {
         // test1@gmail.com id: 5736a4a0a2f2e811007d1ad3
         // nguyenbach2810@gmail.com id: 572ec9cb464db7041be753f0
         final String URL = Support.HOST + "users/" +
-                //DataHolder.getInstance().getUser().get_id() +
                 DataHolder.getInstance().getUser().get_id() +
                 "/notification";
         timer = new Timer();

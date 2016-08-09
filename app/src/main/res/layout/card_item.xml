@@ -126,5 +126,6 @@
         android:layout_height="@dimen/description_height"
         android:id="@+id/description"
         style="@style/Description"
-        android:text="AFJHAFJKAFJAHFJH"/>
+        android:text="AFJHAFJKAFJAHFJH"
+        android:ellipsize="end"/>
 </LinearLayout>

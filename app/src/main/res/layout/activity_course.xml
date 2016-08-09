@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:minHeight="?attr/actionBarSize"
-                app:layout_collapseMode="none"
+                app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -107,26 +107,6 @@
                             android:clickable="true"
                             android:text="abc"/>
                     </RelativeLayout>
-
-                    <!--<RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        >
-
-                        <com.iarcuschin.simpleratingbar.SimpleRatingBar
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:starSize="20dp"
-                            app:numberOfStars="5"
-                            app:rating="3"
-                            app:stepSize="0.1"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/ratingBar"
-                            />
-
-                    </RelativeLayout>-->
-
-
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -307,7 +287,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/descriptionIcon"
-                    android:text="AFJHAFJKAFJAHFJH"/>
+                    android:text="AFJHAFJKAFJAHFJH"
+                    android:ellipsize="end"/>
             </RelativeLayout>
 
 
@@ -324,7 +305,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:background="@drawable/icon_button"
-                    android:drawableLeft="@drawable/ic_email"
+                    android:drawableLeft="@drawable/ic_mail_white"
                     android:text="    Pair up"
                     android:textColor="@color/white"/>
 
